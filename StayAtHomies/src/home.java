@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -6,17 +7,22 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
  
 public class home extends Application 
 {
 	private Stage stage;
 	private BorderPane layout;
 	private Scene scene;
-	
+	ImageView leftChar = new ImageView();
+	ImageView rightChar = new ImageView();
     public static void main(String[] args) 
     {
         launch(args);
@@ -26,11 +32,8 @@ public class home extends Application
     public void start(Stage primaryStage) throws Exception 
     {
     	this.stage = primaryStage;
-    	
     	createUI();
     }
-    
-    
     public void createUI()
     {
         layout = new BorderPane();
@@ -45,13 +48,32 @@ public class home extends Application
         stage.setMinHeight(400);
         stage.setTitle("User Report 1");  
         stage.show(); 
-    }
-    
+    } 
     public void createMainPane()
     {
-    	ListView area = new ListView();
-    	area.setStyle("-fx-background-insets: 10 ;");
-    	layout.setCenter(area);
+    	Image image1 = new Image("images/neutral.png");
+    	Image image2 = new Image("images/joy.png");
+    	
+    	leftChar.setFitHeight(300);
+    	leftChar.setFitWidth(300);
+    	
+   		rightChar.setFitHeight(300);
+    	rightChar.setFitWidth(300);
+    	
+    	leftChar.setImage(image1);
+    	rightChar.setImage(image2);
+    		
+    	
+    	
+    	
+    	HBox hbox = new HBox();
+    	hbox.getChildren().addAll(leftChar,rightChar);
+    	
+    	
+    	hbox.setStyle("-fx-background-insets: 10 ;");
+    	hbox.setAlignment(Pos.BOTTOM_CENTER);
+    	
+    	layout.setCenter(hbox);
     }
     public void createBottomPane()
     {
@@ -70,7 +92,6 @@ public class home extends Application
     	bottom3.setStyle("-fx-border-color: black ;");
     	bottom3.setPrefWidth(200);
     	bottom3.setPrefHeight(200);
-    	
     	
     	hbox.getChildren().addAll(bottom1,bottom2,bottom3);
     	
@@ -110,9 +131,13 @@ public class home extends Application
     	scrollPane.setFitToHeight(true);
     	
     	Button btn1 = new Button();
-        btn1.setText("BTN1");
+        btn1.setText("Rotate");
         btn1.setPrefWidth(100);
         btn1.setPrefHeight(50);
+        btn1.setOnAction(event -> 
+        {
+        	rightChar.setRotate(90);
+        });
         
         Button btn2 = new Button();
         btn2.setText("BTN2");
@@ -154,7 +179,5 @@ public class home extends Application
     	BorderPane buttons = new BorderPane(scrollPane);
     	
         layout.setLeft(buttons);
-    }
-    
-    
+    } 
 }
