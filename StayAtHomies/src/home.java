@@ -17,8 +17,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
-import java.awt.image.BufferedImage;
-
 public class home extends Application 
 {
 	private Stage stage;
@@ -193,7 +191,7 @@ public class home extends Application
         });
         
         Button btn3 = new Button();
-        btn3.setText("BTN3");
+        btn3.setText("Flip");
         btn3.setPrefWidth(100);
         btn3.setPrefHeight(50);
         btn3.setOnAction(event ->{
