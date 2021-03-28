@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,14 +9,16 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class home extends Application 
 {
@@ -30,7 +33,7 @@ public class home extends Application
     {
         launch(args);
     }
-    
+
     @Override
     public void start(Stage primaryStage) throws Exception 
     {
@@ -47,32 +50,29 @@ public class home extends Application
         createBottomPane();
         scene = new Scene(layout);
         stage.setScene(scene);
-        stage.setMinWidth(600);
-        stage.setMinHeight(500);
-        stage.setTitle("User Report 1");  
+        stage.setMinWidth(700);
+        stage.setMinHeight(850);
+        stage.setTitle("HomiesComix");
         stage.show(); 
     } 
     public void createMainPane()
     {
-    	Image image1 = new Image("/images/neutral.png");
-    	Image image2 = new Image("/images/joy.png");
-    	System.out.println("WIDTH: " + image1.getWidth());
-    	
-    	leftChar.setFitHeight(300);
+        leftChar.setFitHeight(300);
     	leftChar.setFitWidth(300);
-    	
+    	leftChar.setPreserveRatio(true);
+
    		rightChar.setFitHeight(300);
     	rightChar.setFitWidth(300);
-    	
-    	leftChar.setImage(image1);
-    	rightChar.setImage(image2);
+    	rightChar.setPreserveRatio(true);
 
-    	leftChar.setStyle("-fx-border-color: black ;");
-    	rightChar.setStyle("-fx-border-color: black ;");
         leftChar.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if(selectedCharacter != null){
+                    selectedCharacter.setEffect(null);
+                }
                 selectedCharacter = leftChar;
+                selectedCharacter.setEffect(new DropShadow(10, Color.BLACK));
                 System.out.println("LEFT SELECTED");
                 event.consume();
             }
@@ -81,40 +81,57 @@ public class home extends Application
         rightChar.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if(selectedCharacter != null){
+                    selectedCharacter.setEffect(null);
+                }
                 selectedCharacter = rightChar;
+                selectedCharacter.setEffect(new DropShadow(10, Color.BLACK));
                 System.out.println("RIGHT SELECTED");
                 event.consume();
             }
         });
 
-    	HBox hbox = new HBox();
-    	hbox.getChildren().addAll(leftChar,rightChar);
-    	
-    	hbox.setStyle("-fx-background-insets: 10 ;");
-    	hbox.setAlignment(Pos.BOTTOM_CENTER);
-    	
-    	layout.setCenter(hbox);
+    	GridPane mainPane = new GridPane();
+    	        //(Node, colIndex, rowIndex, colSpan, rowSpan)
+        mainPane.add(leftChar, 0, 1, 1, 1);
+        mainPane.add(rightChar, 1, 1, 1, 1);
+        mainPane.setStyle("-fx-cursor: hand; -fx-background-color: white");
+        mainPane.setMaxSize(600, 600);
+        mainPane.setHgap(2);
+        //mainPane.setGridLinesVisible(true);
+
+        RowConstraints row0 = new RowConstraints();
+        row0.setPercentHeight(50);
+        RowConstraints row1 = new RowConstraints();
+        row1.setPercentHeight(50);
+        mainPane.getRowConstraints().addAll(row0, row1);
+
+        BorderPane.setAlignment(mainPane, Pos.CENTER);
+    	BorderPane.setMargin(mainPane, new Insets(10, 10, 10, 10));
+    	layout.setCenter(mainPane);
     }
     public void createBottomPane()
     {
     	//Hbox
     	HBox hbox = new HBox();
-    	
+    	hbox.setSpacing(15);
+        hbox.setPadding(new Insets(5, 5, 5, 5));
+    	hbox.setStyle("-fx-background-color: #103859; -fx-border-color: #d4d4d4");
+
     	ListView bottom1 = new ListView();
     	bottom1.setStyle("-fx-border-color: black ;");
-    	bottom1.setPrefWidth(200);
-    	bottom1.setPrefHeight(100);
+    	bottom1.setPrefWidth(150);
+    	bottom1.setPrefHeight(150);
     	ListView bottom2 = new ListView();
     	bottom2.setStyle("-fx-border-color: black ;");
-    	bottom2.setPrefWidth(200);
-    	bottom2.setPrefHeight(200);
+    	bottom2.setPrefWidth(150);
+    	bottom2.setPrefHeight(150);
     	ListView bottom3 = new ListView();
     	bottom3.setStyle("-fx-border-color: black ;");
-    	bottom3.setPrefWidth(200);
-    	bottom3.setPrefHeight(200);
+    	bottom3.setPrefWidth(150);
+    	bottom3.setPrefHeight(150);
     	
     	hbox.getChildren().addAll(bottom1,bottom2,bottom3);
-    	
     	layout.setBottom(hbox);
     }
     public void createTopMenuBar()
@@ -146,16 +163,43 @@ public class home extends Application
     {
     	//VBox within a BorderPane within another BorderPane
     	VBox vbox = new VBox();
-    	
+    	vbox.setMinWidth(60);
+    	vbox.setPrefWidth(60);
+    	vbox.setSpacing(5);
+    	vbox.setAlignment(Pos.TOP_CENTER);
+    	vbox.setPadding(new Insets(5, 10 ,5, 5));
+    	vbox.setStyle("-fx-background-color: #103859");
+
     	ScrollPane scrollPane = new ScrollPane(vbox);
     	scrollPane.setFitToHeight(true);
+    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     	
-    	Button btn1 = new Button();
-        btn1.setText("RotateL");
-        btn1.setPrefWidth(100);
-        btn1.setPrefHeight(50);
-        btn1.setOnAction(event -> 
-        {
+    	Button importLftChar = new Button();
+        buttonCommonStyles(importLftChar);
+        importLftChar.setGraphic(setButtonImg(40, "importLeftChar.png"));
+        importLftChar.setOnAction(event -> insertModel(leftChar));
+        
+        Button importRightChar = new Button();
+        buttonCommonStyles(importRightChar);
+        importRightChar.setGraphic(setButtonImg(40, "importRightChar.png"));
+        importRightChar.setOnAction(event -> insertModel(rightChar));
+        
+        Button flip = new Button();
+        buttonCommonStyles(flip);
+        flip.setGraphic(setButtonImg(40, "flip.png"));
+        flip.setOnAction(event ->{
+            if(selectedCharacter != null){
+                selectedCharacter.setImage(flipImage(selectedCharacter.getImage()));
+            }
+            else{
+                System.out.println("Select one of the characters on which you want to perform the operation");
+            }
+        });
+
+        Button rotateLeft = new Button();
+        buttonCommonStyles(rotateLeft);
+        rotateLeft.setGraphic(setButtonImg(40, "rotateLeft.png"));
+        rotateLeft.setOnAction(event ->{
             if(selectedCharacter != null){
                 double rotate = selectedCharacter.getRotate();
                 rotate -= 90;
@@ -169,13 +213,11 @@ public class home extends Application
                 System.out.println("Select one of the characters on which you want to perform the operation");
             }
         });
-        
-        Button btn2 = new Button();
-        btn2.setText("RotateR");
-        btn2.setPrefWidth(100);
-        btn2.setPrefHeight(50);
-        btn2.setOnAction(event ->
-        {
+
+        Button rotateRight = new Button();
+        buttonCommonStyles(rotateRight);
+        rotateRight.setGraphic(setButtonImg(40, "rotateRight.png"));
+        rotateRight.setOnAction(event ->{
             if(selectedCharacter != null){
                 double rotate = selectedCharacter.getRotate();
                 rotate += 90;
@@ -189,51 +231,43 @@ public class home extends Application
                 System.out.println("Select one of the characters on which you want to perform the operation");
             }
         });
-        
-        Button btn3 = new Button();
-        btn3.setText("Flip");
-        btn3.setPrefWidth(100);
-        btn3.setPrefHeight(50);
-        btn3.setOnAction(event ->{
 
-            if(selectedCharacter != null){
-                selectedCharacter.setImage(flipImage(selectedCharacter.getImage()));
-            }
-            else{
-                System.out.println("Select one of the characters on which you want to perform the operation");
-            }
-        });
-        
-        Button btn4 = new Button();
-        btn4.setText("BTN4");
-        btn4.setPrefWidth(100);
-        btn4.setPrefHeight(50);
-        
-        Button btn5 = new Button();
-        btn5.setText("BTN5");
-        btn5.setPrefWidth(100);
-        btn5.setPrefHeight(50);
-        
         Button btn6 = new Button();
         btn6.setText("BTN6");
-        btn6.setPrefWidth(100);
-        btn6.setPrefHeight(50);
+        btn6.setOnAction(event ->{ });
         
         Button btn7 = new Button();
         btn7.setText("BTN7");
-        btn7.setPrefWidth(100);
-        btn7.setPrefHeight(50);
         
         Button btn8 = new Button();
         btn8.setText("BTN8");
-        btn8.setPrefWidth(100);
-        btn8.setPrefHeight(50);
-        
-        vbox.getChildren().addAll(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8);
 
-    	BorderPane buttons = new BorderPane(scrollPane);
-    	
-        layout.setLeft(buttons);
+        Button btn9 = new Button();
+        btn9.setText("BTN8");
+
+        Button btn10 = new Button();
+        btn10.setText("BTN8");
+
+        Button btn11 = new Button();
+        btn11.setText("BTN8");
+
+        Button b112 = new Button();
+        b112.setText("BTN8");
+        
+        vbox.getChildren().addAll(importLftChar, importRightChar, flip, rotateLeft, rotateRight, btn6, btn7, btn8, btn9, btn10, btn11, b112);
+
+        layout.setLeft(scrollPane);
+    }
+
+    private void insertModel(ImageView imgv){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png"));
+        File file = fileChooser.showOpenDialog(stage);
+
+        if(file != null){
+            Image img = new Image(file.toURI().toString());
+            imgv.setImage(img);
+        }
     }
 
     private Image flipImage(Image image){
@@ -250,5 +284,16 @@ public class home extends Application
             }
         }
         return img;
+    }
+
+    private ImageView setButtonImg(int size, String filename){
+        ImageView imgV =new ImageView("/resources/"+filename);
+        imgV.setFitHeight(size);
+        imgV.setFitWidth(size);
+        return imgV;
+    }
+
+    private void buttonCommonStyles(Button btn){
+        btn.setStyle("-fx-background-color: transparent; -fx-cursor: hand");
     }
 }

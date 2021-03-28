@@ -11,3 +11,19 @@ The Main story editor as of right now is just an empty ListView.
 
 If there isn't enough space for the buttons on screen, a scroll wheel appears. If you minimize the application by about half the size, a scroll wheel appears.
 
+
+=== Story 2 & 3 ====
+
+How to execute:
+-Open cmd in the directory the jar is located
+-Use the command : java --module-path [paste the path to java fx lib here] --add-modules javafx.controls,javafx.fxml --add-exports javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED -jar StayAtHomies.jar
+
+Story2:
+First button on the left opens up a windows for you to search and select the image character that is to be placed on the left side of the panel.
+The second button does the same thing, it lets you import a character for the right side of the panel.
+
+Story 3:
+The third button flips the character image horizontally. Image has to be selected in order for the operation to work.
+
+Additional functionality:
+Buttons 4 & 5 rotate the characters 90 degrees left and right respectively
