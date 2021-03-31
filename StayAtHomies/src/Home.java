@@ -230,7 +230,7 @@ public class Home extends Application
 
         Button colorPalette = new Button();
         buttonCommonStyles(colorPalette);
-        colorPalette.setGraphic(setButtonImg(40, "colorPalette.png"));
+        //colorPalette.setGraphic(setButtonImg(40, "colorPalette.png"));
         colorPalette.setOnAction(event ->{
 
             colorPalette.setOnMouseClicked(new PopupOpenEvent());
