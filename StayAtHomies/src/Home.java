@@ -2,7 +2,6 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
@@ -10,16 +9,14 @@ import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-import javax.swing.event.PopupMenuEvent;
 import java.io.File;
 
-public class home extends Application 
+public class Home extends Application
 {
 	private Stage stage;
 	private BorderPane layout;
@@ -28,7 +25,10 @@ public class home extends Application
 	ImageView leftChar = new ImageView();
 	ImageView rightChar = new ImageView();
 
-    public static void main(String[] args) { launch(args); }
+    public static void main(String[] args) 
+    {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception 
