@@ -228,13 +228,10 @@ public class Home extends Application
             }
         });
 
-        Button colorPalette = new Button();
-        buttonCommonStyles(colorPalette);
-        colorPalette.setGraphic(setButtonImg(40, "colorPalette.png"));
+        ColorPicker colorPalette = new ColorPicker();
         colorPalette.setOnAction(event ->{
 
-            colorPalette.setOnMouseClicked(new PopupOpenEvent());
-
+            Color c = colorPalette.getValue();
         });
         
         Button btn7 = new Button();
@@ -258,26 +255,6 @@ public class Home extends Application
         vbox.getChildren().addAll(importLftChar, importRightChar, flip, rotateLeft, rotateRight, colorPalette, btn7, btn8, btn9, btn10, btn11, b112);
 
         layout.setLeft(scrollPane);
-    }
-
-    // Color Palette Button popup window :
-    class PopupOpenEvent implements EventHandler<MouseEvent> {
-
-        @Override
-        public void handle(MouseEvent e) {
-            Popup popup = new Popup();
-            ColorPicker cp = new ColorPicker();
-
-            HBox hbox = new HBox();
-            hbox.setSpacing(20);
-            hbox.setPadding(new Insets(25, 50, 50, 60));
-            hbox.getChildren().addAll(cp);
-
-            popup.getContent().add(hbox);
-            popup.setX(e.getScreenX());
-            popup.setY(e.getScreenY());
-            popup.show(stage);
-        }
     }
 
     private void insertModel(ImageView imgv){
