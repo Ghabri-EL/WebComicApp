@@ -3,12 +3,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
@@ -172,8 +167,8 @@ public class Home extends Application
     	ScrollPane scrollPane = new ScrollPane(vbox);
     	scrollPane.setFitToHeight(true);
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-    	
-    	Button importLftChar = new Button();
+
+        Button importLftChar = new Button();
         buttonCommonStyles(importLftChar);
         importLftChar.setGraphic(setButtonImg(40, "importLeftChar.png"));
         importLftChar.setOnAction(event -> insertModel(leftChar));
@@ -233,8 +228,7 @@ public class Home extends Application
 
         Button btn6 = new Button();
         btn6.setText("BTN6");
-        btn6.setOnAction(event ->{ });
-        
+
         Button btn7 = new Button();
         btn7.setText("BTN7");
         
