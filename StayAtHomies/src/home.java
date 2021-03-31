@@ -2,22 +2,21 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
+import javax.swing.event.PopupMenuEvent;
 import java.io.File;
 
 public class home extends Application 
@@ -29,10 +28,7 @@ public class home extends Application
 	ImageView leftChar = new ImageView();
 	ImageView rightChar = new ImageView();
 
-    public static void main(String[] args) 
-    {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
 
     @Override
     public void start(Stage primaryStage) throws Exception 
@@ -232,9 +228,14 @@ public class home extends Application
             }
         });
 
-        Button btn6 = new Button();
-        btn6.setText("BTN6");
-        btn6.setOnAction(event ->{ });
+        Button colorPalette = new Button();
+        buttonCommonStyles(colorPalette);
+        colorPalette.setGraphic(setButtonImg(40, "colorPalette.png"));
+        colorPalette.setOnAction(event ->{
+
+            colorPalette.setOnMouseClicked(new PopupOpenEvent());
+
+        });
         
         Button btn7 = new Button();
         btn7.setText("BTN7");
@@ -254,9 +255,29 @@ public class home extends Application
         Button b112 = new Button();
         b112.setText("BTN8");
         
-        vbox.getChildren().addAll(importLftChar, importRightChar, flip, rotateLeft, rotateRight, btn6, btn7, btn8, btn9, btn10, btn11, b112);
+        vbox.getChildren().addAll(importLftChar, importRightChar, flip, rotateLeft, rotateRight, colorPalette, btn7, btn8, btn9, btn10, btn11, b112);
 
         layout.setLeft(scrollPane);
+    }
+
+    // Color Palette Button popup window :
+    class PopupOpenEvent implements EventHandler<MouseEvent> {
+
+        @Override
+        public void handle(MouseEvent e) {
+            Popup popup = new Popup();
+            ColorPicker cp = new ColorPicker();
+
+            HBox hbox = new HBox();
+            hbox.setSpacing(20);
+            hbox.setPadding(new Insets(25, 50, 50, 60));
+            hbox.getChildren().addAll(cp);
+
+            popup.getContent().add(hbox);
+            popup.setX(e.getScreenX());
+            popup.setY(e.getScreenY());
+            popup.show(stage);
+        }
     }
 
     private void insertModel(ImageView imgv){
