@@ -15,11 +15,11 @@ If there isn't enough space for the buttons on screen, a scroll wheel appears. I
 === Story 2 & 3 ====
 
 How to execute:
--Open cmd in the directory the jar is located
--Use the command : java --module-path [paste the path to java fx lib here] --add-modules javafx.controls,javafx.fxml --add-exports javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED -jar StayAtHomies.jar
+-Command to execute : java -jar StayAtHomies.jar
+-Required to execute: JDK version 13 or above
 
 Story2:
-First button on the left opens up a windows for you to search and select the image character that is to be placed on the left side of the panel.
+First button on the left bar opens up a window for you to search and select the image character that is to be placed on the left side of the panel.
 The second button does the same thing, it lets you import a character for the right side of the panel.
 
 Story 3:
