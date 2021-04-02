@@ -304,7 +304,6 @@ public class createGUI extends Application
         return imgV;
     }
 
-
     private Image colourChange(Image image)
     {
         int width = (int) image.getWidth();
@@ -314,19 +313,15 @@ public class createGUI extends Application
         WritableImage img = new WritableImage(width,  height);
         PixelWriter pw = img.getPixelWriter();
 
-
-        Color rgba;
-        Color temp = Color.BLACK;
         for(int i = 0; i < height; i++)
         {
             for(int j = 0; j < width; j++)
             {
-                rgba = pr.getColor(j,i);
+                Color rgba = pr.getColor(j,i);
 
                 if(rgba.equals(skinColour))
                 {
                     pw.setColor(j, i, newSkinColour);
-                    temp = rgba;
                 }
                 else
                 {
@@ -334,7 +329,7 @@ public class createGUI extends Application
                 }
             }
         }
-        skinColour = temp;
+        skinColour = newSkinColour;
         return img;
     }
     private void buttonCommonStyles(Button btn){
