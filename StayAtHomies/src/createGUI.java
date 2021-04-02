@@ -22,6 +22,9 @@ public class createGUI extends Application
     private ImageView selectedCharacter = null;
     ImageView leftChar = new ImageView();
     ImageView rightChar = new ImageView();
+    Color skinColour = Color.web("0xffe8d8ff");
+    Color newSkinColour;
+
 
     public static void main(String[] args)
     {
@@ -37,7 +40,6 @@ public class createGUI extends Application
     public void createUI()
     {
         layout = new BorderPane();
-
         createTopMenuBar();
         createButtons();
         createMainPane();
@@ -230,11 +232,21 @@ public class createGUI extends Application
         colorPalette.setPrefHeight(40);
         colorPalette.setStyle("-fx-background-insets: 0 2 0 2; -fx-background-color: rgba(0, 0, 0, 1); -fx-background-radius: 2; -fx-cursor: hand");
         colorPalette.setOnAction(event ->{
-            Color c = colorPalette.getValue();
+            newSkinColour = colorPalette.getValue();
         });
 
-        Button btn7 = new Button();
-        btn7.setText("BTN7");
+
+        Button colour = new Button();
+       // buttonCommonStyles(colour);
+        colour.setText("Change color");
+        colour.setOnAction(event ->{
+            if(selectedCharacter != null){
+                selectedCharacter.setImage(colourChange(selectedCharacter.getImage()));
+            }
+            else{
+                System.out.println("Select one of the characters on which you want to perform the operation");
+            }
+        });
 
         Button btn8 = new Button();
         btn8.setText("BTN8");
@@ -251,12 +263,13 @@ public class createGUI extends Application
         Button b112 = new Button();
         b112.setText("BTN8");
 
-        vbox.getChildren().addAll(importLftChar, importRightChar, flip, rotateLeft, rotateRight, colorPalette, btn7, btn8, btn9, btn10, btn11, b112);
+        vbox.getChildren().addAll(importLftChar, importRightChar, flip, rotateLeft, rotateRight, colorPalette, colour, btn8, btn9, btn10, btn11, b112);
 
         layout.setLeft(scrollPane);
     }
 
-    private void insertModel(ImageView imgv){
+    private void insertModel(ImageView imgv)    //Uploads images to comix strip
+    {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png"));
         File file = fileChooser.showOpenDialog(stage);
@@ -267,7 +280,8 @@ public class createGUI extends Application
         }
     }
 
-    private Image flipImage(Image image){
+    private Image flipImage(Image image)
+    {
         int width = (int) image.getWidth();
         int height = (int)image.getHeight();
 
@@ -290,6 +304,39 @@ public class createGUI extends Application
         return imgV;
     }
 
+
+    private Image colourChange(Image image)
+    {
+        int width = (int) image.getWidth();
+        int height = (int)image.getHeight();
+
+        PixelReader pr = image.getPixelReader();
+        WritableImage img = new WritableImage(width,  height);
+        PixelWriter pw = img.getPixelWriter();
+
+
+        Color rgba;
+        Color temp = Color.BLACK;
+        for(int i = 0; i < height; i++)
+        {
+            for(int j = 0; j < width; j++)
+            {
+                rgba = pr.getColor(j,i);
+
+                if(rgba.equals(skinColour))
+                {
+                    pw.setColor(j, i, newSkinColour);
+                    temp = rgba;
+                }
+                else
+                {
+                    pw.setColor(j, i, rgba);
+                }
+            }
+        }
+        skinColour = temp;
+        return img;
+    }
     private void buttonCommonStyles(Button btn){
         btn.setStyle("-fx-background-color: transparent; -fx-cursor: hand");
     }
