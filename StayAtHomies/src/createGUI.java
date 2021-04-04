@@ -23,7 +23,13 @@ public class createGUI extends Application
     ImageView leftChar = new ImageView();
     ImageView rightChar = new ImageView();
     Color skinColour = Color.web("0xffe8d8ff");
-    Color newSkinColour;
+    Color newSkinColour = Color.WHITE;
+    Color newHairColour = Color.WHITE;
+    Color hairColour = Color.web("0xf9ff00ff");
+    Color femaleLongHair1 = Color.web("0xf0ff00ff");
+    Color femaleLips = Color.web("0xff0000ff");
+    Color ribbon = Color.web("0xecb4b5ff");
+    int genderCounter = 0;
 
 
     public static void main(String[] args)
@@ -233,23 +239,41 @@ public class createGUI extends Application
         colorPalette.setStyle("-fx-background-insets: 0 2 0 2; -fx-background-color: rgba(0, 0, 0, 1); -fx-background-radius: 2; -fx-cursor: hand");
         colorPalette.setOnAction(event ->{
             newSkinColour = colorPalette.getValue();
+            newHairColour = colorPalette.getValue();
         });
 
-
-        Button colour = new Button();
-       // buttonCommonStyles(colour);
-        colour.setText("Change color");
-        colour.setOnAction(event ->{
+        Button genderSwap = new Button();
+        genderSwap.setText("M/F");
+        genderSwap.setOnAction(event ->{
             if(selectedCharacter != null){
-                selectedCharacter.setImage(colourChange(selectedCharacter.getImage()));
+                selectedCharacter.setImage(removeFemaleHair(selectedCharacter.getImage()));
             }
             else{
                 System.out.println("Select one of the characters on which you want to perform the operation");
             }
         });
 
-        Button btn8 = new Button();
-        btn8.setText("BTN8");
+        Button skin = new Button();
+        skin.setText("SKIN");
+        skin.setOnAction(event ->{
+            if(selectedCharacter != null){
+                selectedCharacter.setImage(skinChange(selectedCharacter.getImage()));
+            }
+            else{
+                System.out.println("Select one of the characters on which you want to perform the operation");
+            }
+        });
+
+        Button hair = new Button();
+        hair.setText("HAIR");
+        hair.setOnAction(event ->{
+            if(selectedCharacter != null){
+                selectedCharacter.setImage(hairChange(selectedCharacter.getImage()));
+            }
+            else{
+                System.out.println("Select one of the characters on which you want to perform the operation");
+            }
+        });
 
         Button btn9 = new Button();
         btn9.setText("BTN8");
@@ -263,7 +287,7 @@ public class createGUI extends Application
         Button b112 = new Button();
         b112.setText("BTN8");
 
-        vbox.getChildren().addAll(importLftChar, importRightChar, flip, rotateLeft, rotateRight, colorPalette, colour, btn8, btn9, btn10, btn11, b112);
+        vbox.getChildren().addAll(importLftChar, importRightChar, flip, rotateLeft, rotateRight, colorPalette, genderSwap, skin, hair, btn9, btn10, btn11, b112);
 
         layout.setLeft(scrollPane);
     }
@@ -304,7 +328,7 @@ public class createGUI extends Application
         return imgV;
     }
 
-    private Image colourChange(Image image)
+    private Image skinChange(Image image)
     {
         int width = (int) image.getWidth();
         int height = (int)image.getHeight();
@@ -321,7 +345,7 @@ public class createGUI extends Application
 
                 if(rgba.equals(skinColour))
                 {
-                    pw.setColor(j, i, newSkinColour);
+                    pw.setColor(j,i,newSkinColour);
                 }
                 else
                 {
@@ -330,6 +354,63 @@ public class createGUI extends Application
             }
         }
         skinColour = newSkinColour;
+        return img;
+    }
+
+    private Image hairChange(Image image)
+    {
+        int width = (int) image.getWidth();
+        int height = (int)image.getHeight();
+
+        PixelReader pr = image.getPixelReader();
+        WritableImage img = new WritableImage(width,  height);
+        PixelWriter pw = img.getPixelWriter();
+
+        for(int i = 0; i < height; i++)
+        {
+            for(int j = 0; j < width; j++)
+            {
+                Color rgba = pr.getColor(j,i);
+
+                if(rgba.equals(hairColour))
+                {
+                    pw.setColor(j,i,newHairColour);
+                }
+                else
+                {
+                    pw.setColor(j, i, rgba);
+                }
+            }
+        }
+        hairColour = newHairColour;
+        return img;
+    }
+    private Image removeFemaleHair(Image image)
+    {
+        int width = (int) image.getWidth();
+        int height = (int)image.getHeight();
+        genderCounter = 1;
+        PixelReader pr = image.getPixelReader();
+        WritableImage img = new WritableImage(width,  height);
+        PixelWriter pw = img.getPixelWriter();
+
+        for(int i = 0; i < height; i++)
+        {
+            for(int j = 0; j < width; j++)
+            {
+                Color rgba = pr.getColor(j,i);
+
+                if(rgba.equals(femaleLongHair1) || rgba.equals(ribbon) || rgba.equals(femaleLips))
+                {
+                    pw.setColor(j,i,newHairColour);
+                }
+                else
+                {
+                    pw.setColor(j, i, rgba);
+                }
+            }
+        }
+        hairColour = newHairColour;
         return img;
     }
     private void buttonCommonStyles(Button btn){
