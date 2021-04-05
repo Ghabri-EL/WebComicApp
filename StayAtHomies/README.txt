@@ -1,4 +1,7 @@
-Team Name: StayAtHomies - User Report 1
+Team Name: StayAtHomies
+Team Members : Daiana Morjolic , Ryan Daly , Niall McG , Vasile Gabriel Gherasim
+
+=== Story 1 ===
 
 The code submitted displays our wireframe for the project and future features.
 
@@ -27,3 +30,20 @@ The third button flips the character image horizontally. Image has to be selecte
 
 Additional functionality:
 Buttons 4 & 5 rotate the characters 90 degrees left and right respectively
+
+=== Story 4 , 5 , 6 ===
+
+How to execute :
+-Command to execute : java -jar StayAtHomies.jar
+-Required to execute: JDK version 13 or above
+
+Story 4 :
+The 7th button from the left hand side bar switches the gender of characters . Character has to be selected in order for the operation to work .
+
+Story 5 :
+In order to change skin colour , first use the first button on the left hand side bar which will open the color palette . Once the preferred color
+is selected , press the 8th button down which will change the skin color . Character has to be selected in order for the operation to work .
+
+Story 6 :
+To change hair color again select a color from the color palette (first button on left hand side bar) . Then use the 9th button down to change
+the hair color to the selected color . Character has to be selected in order for the operation to work .
