@@ -11,11 +11,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 
 public class createGUI extends Application
 {
+    private enum Gender{FEMALE, MALE}
+    private enum Frame{LEFT, RIGHT}
+    private enum Direction{LEFT, RIGHT}
     private Stage stage;
     private BorderPane layout;
     private Scene scene;
@@ -29,8 +31,18 @@ public class createGUI extends Application
     Color femaleLongHair1 = Color.web("0xf0ff00ff");
     Color femaleLips = Color.web("0xff0000ff");
     Color ribbon = Color.web("0xecb4b5ff");
-    int genderCounter = 0;
-
+    Gender leftCharGender = Gender.FEMALE;
+    Gender rightCharGender = Gender.FEMALE;
+    Image leftFemaleHairMask = null;
+    Image leftMaleHairMask = null;
+    Image rightFemaleHairMask = null;
+    Image rightMaleHairMask = null;
+    Image leftLipsMask = null;
+    Image rightLipsMask = null;
+    Image leftBodyMask = null;
+    Image rightBodyMask = null;
+    Direction leftCharDirection;
+    Direction righCharDirection;
 
     public static void main(String[] args)
     {
@@ -179,12 +191,18 @@ public class createGUI extends Application
         Button importLftChar = new Button();
         buttonCommonStyles(importLftChar);
         importLftChar.setGraphic(setButtonImg(40, "importLeftChar.png"));
-        importLftChar.setOnAction(event -> insertModel(leftChar));
+        importLftChar.setOnAction(event -> {
+            insertModel(Frame.LEFT ,leftChar);
+            leftCharDirection = Direction.RIGHT;
+        });
 
         Button importRightChar = new Button();
         buttonCommonStyles(importRightChar);
         importRightChar.setGraphic(setButtonImg(40, "importRightChar.png"));
-        importRightChar.setOnAction(event -> insertModel(rightChar));
+        importRightChar.setOnAction(event -> {
+            insertModel(Frame.RIGHT, rightChar);
+            righCharDirection = Direction.RIGHT;
+        });
 
         Button flip = new Button();
         buttonCommonStyles(flip);
@@ -192,6 +210,21 @@ public class createGUI extends Application
         flip.setOnAction(event ->{
             if(selectedCharacter != null){
                 selectedCharacter.setImage(flipImage(selectedCharacter.getImage()));
+
+                //code required to flip the masks along with the image
+                //otherwise we wont be able to maintain a one to one pixel relationship with the mask
+                if(selectedCharacter.equals(leftChar)){
+                    leftFemaleHairMask = flipImage(leftFemaleHairMask);
+                    leftMaleHairMask = flipImage(leftMaleHairMask);
+                    leftLipsMask = flipImage(leftLipsMask);
+                    leftBodyMask = flipImage(leftBodyMask);
+                }
+                else{
+                    rightFemaleHairMask = flipImage(rightFemaleHairMask);
+                    rightMaleHairMask = flipImage(rightMaleHairMask);
+                    rightLipsMask = flipImage(rightLipsMask);
+                    rightBodyMask = flipImage(rightBodyMask);
+                }
             }
             else{
                 System.out.println("Select one of the characters on which you want to perform the operation");
@@ -243,32 +276,63 @@ public class createGUI extends Application
         });
 
         Button genderSwap = new Button();
-        genderSwap.setText("M/F");
+        buttonCommonStyles(genderSwap);
+        genderSwap.setGraphic(setButtonImg(40, "changeGender.png"));
         genderSwap.setOnAction(event ->{
             if(selectedCharacter != null){
-                selectedCharacter.setImage(removeFemaleHair(selectedCharacter.getImage()));
+                Image changeCharacter = null;
+                if(selectedCharacter.equals(leftChar)){
+                    changeCharacter = switchGenders(selectedCharacter.getImage(), leftFemaleHairMask, leftMaleHairMask, leftLipsMask, leftCharGender);
+                    leftCharGender = (leftCharGender == Gender.FEMALE ? Gender.MALE : Gender.FEMALE);
+                }
+                else{
+                    changeCharacter = switchGenders(selectedCharacter.getImage(), rightFemaleHairMask, rightMaleHairMask, rightLipsMask, rightCharGender);
+                    rightCharGender = (rightCharGender == Gender.FEMALE ? Gender.MALE : Gender.FEMALE);
+                }
+                selectedCharacter.setImage(changeCharacter);
             }
             else{
                 System.out.println("Select one of the characters on which you want to perform the operation");
             }
         });
 
-        Button skin = new Button();
-        skin.setText("SKIN");
-        skin.setOnAction(event ->{
+        Button changeSkinTone = new Button();
+        buttonCommonStyles(changeSkinTone);
+        changeSkinTone.setGraphic(setButtonImg(40, "bodyColor.png"));
+        changeSkinTone.setOnAction(event ->{
             if(selectedCharacter != null){
-                selectedCharacter.setImage(skinChange(selectedCharacter.getImage()));
+                if(selectedCharacter.equals(leftChar)){
+                    selectedCharacter.setImage(skinChange(selectedCharacter.getImage(), leftBodyMask, leftLipsMask, leftCharGender));
+                }
+                else{
+                    selectedCharacter.setImage(skinChange(selectedCharacter.getImage(), rightBodyMask, rightLipsMask, rightCharGender));
+                }
             }
             else{
                 System.out.println("Select one of the characters on which you want to perform the operation");
             }
         });
 
-        Button hair = new Button();
-        hair.setText("HAIR");
-        hair.setOnAction(event ->{
+        Button changeHairColor = new Button();
+        buttonCommonStyles(changeHairColor);
+        changeHairColor.setGraphic(setButtonImg(40, "hairColor.png"));
+        changeHairColor.setOnAction(event ->{
             if(selectedCharacter != null){
-                selectedCharacter.setImage(hairChange(selectedCharacter.getImage()));
+                Image mask = null;
+
+                if(selectedCharacter.equals(leftChar)){
+                    mask = leftMaleHairMask;
+                    if(leftCharGender == Gender.FEMALE){
+                        mask = leftFemaleHairMask;
+                    }
+                }
+                else{
+                    mask = rightMaleHairMask;
+                    if(rightCharGender == Gender.FEMALE){
+                        mask = rightFemaleHairMask;
+                    }
+                }
+                selectedCharacter.setImage(hairChange(selectedCharacter.getImage(), mask));
             }
             else{
                 System.out.println("Select one of the characters on which you want to perform the operation");
@@ -287,20 +351,22 @@ public class createGUI extends Application
         Button b112 = new Button();
         b112.setText("BTN8");
 
-        vbox.getChildren().addAll(importLftChar, importRightChar, flip, rotateLeft, rotateRight, colorPalette, genderSwap, skin, hair, btn9, btn10, btn11, b112);
+        vbox.getChildren().addAll(colorPalette, importLftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, btn9, btn10, btn11, b112);
 
         layout.setLeft(scrollPane);
     }
 
-    private void insertModel(ImageView imgv)    //Uploads images to comix strip
+    //frame refers to the right side or left side of workspace pane
+    private void insertModel(Frame frame,ImageView imgv)    //Uploads images to comix strip
     {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png"));
         File file = fileChooser.showOpenDialog(stage);
 
         if(file != null){
-            Image img = new Image(file.toURI().toString());
-            imgv.setImage(img);
+            Image image = new Image(file.toURI().toString());
+            setMasks(frame, image);
+            imgv.setImage(image);
         }
     }
 
@@ -309,16 +375,17 @@ public class createGUI extends Application
         int width = (int) image.getWidth();
         int height = (int)image.getHeight();
 
-        PixelReader pr = image.getPixelReader();
-        WritableImage img = new WritableImage(width,  height);
-        PixelWriter pw = img.getPixelWriter();
+        PixelReader pixelReader = image.getPixelReader();
+        WritableImage flippedImage = new WritableImage(width,  height);
+        PixelWriter pixelWriter = flippedImage.getPixelWriter();
 
-        for(int i = 0; i < height; i++){
-            for(int j = 0; j < width; j++){
-                pw.setArgb(j, i, pr.getArgb((width - 1) - j, i));
+        // x y axis of the image
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                pixelWriter.setArgb(x, y, pixelReader.getArgb((width - 1) - x, y));
             }
         }
-        return img;
+        return flippedImage;
     }
 
     private ImageView setButtonImg(int size, String filename){
@@ -328,92 +395,163 @@ public class createGUI extends Application
         return imgV;
     }
 
-    private Image skinChange(Image image)
-    {
+    private Image skinChange(Image image, Image skinMask, Image lipMask, Gender gender){
         int width = (int) image.getWidth();
         int height = (int)image.getHeight();
 
-        PixelReader pr = image.getPixelReader();
-        WritableImage img = new WritableImage(width,  height);
-        PixelWriter pw = img.getPixelWriter();
+        PixelReader pixelReaderImage = image.getPixelReader();
+        WritableImage newImage = new WritableImage(pixelReaderImage, width, height);
 
-        for(int i = 0; i < height; i++)
-        {
-            for(int j = 0; j < width; j++)
-            {
-                Color rgba = pr.getColor(j,i);
+        PixelReader pixelReaderSkinMask = skinMask.getPixelReader();
+        PixelReader pixelReaderLipsMask = lipMask.getPixelReader();
+        PixelWriter pixelWriterImage = newImage.getPixelWriter();
 
-                if(rgba.equals(skinColour))
-                {
-                    pw.setColor(j,i,newSkinColour);
-                }
-                else
-                {
-                    pw.setColor(j, i, rgba);
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                Color pixel = pixelReaderSkinMask.getColor(x,y);
+                Color lipPixel = pixelReaderLipsMask.getColor(x, y);
+
+                if(!pixel.equals(Color.TRANSPARENT) || (!lipPixel.equals(Color.TRANSPARENT) && gender != Gender.FEMALE)){
+                    pixelWriterImage.setColor(x, y, newSkinColour);
                 }
             }
         }
         skinColour = newSkinColour;
-        return img;
+        return newImage;
     }
 
-    private Image hairChange(Image image)
-    {
-        int width = (int) image.getWidth();
+    private Image hairChange(Image image, Image mask){
+        int width = (int)image.getWidth();
         int height = (int)image.getHeight();
 
-        PixelReader pr = image.getPixelReader();
-        WritableImage img = new WritableImage(width,  height);
-        PixelWriter pw = img.getPixelWriter();
+        PixelReader pixelReaderImage = image.getPixelReader();
+        WritableImage newImage = new WritableImage(pixelReaderImage, width, height);
 
-        for(int i = 0; i < height; i++)
-        {
-            for(int j = 0; j < width; j++)
-            {
-                Color rgba = pr.getColor(j,i);
+        PixelReader pixelReaderMask = mask.getPixelReader();
+        PixelWriter pixelWriterImage = newImage.getPixelWriter();
 
-                if(rgba.equals(hairColour))
-                {
-                    pw.setColor(j,i,newHairColour);
-                }
-                else
-                {
-                    pw.setColor(j, i, rgba);
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                Color pixel = pixelReaderMask.getColor(x,y);
+
+                if(!pixel.equals(Color.TRANSPARENT) && !pixel.equals(ribbon)){
+                    pixelWriterImage.setColor(x, y, newSkinColour);
                 }
             }
         }
         hairColour = newHairColour;
-        return img;
+        return newImage;
     }
-    private Image removeFemaleHair(Image image)
-    {
-        int width = (int) image.getWidth();
+
+    private Image switchGenders(Image image, Image femaleHairMask, Image maleHairMask, Image lipsMask, Gender gender){
+        int width = (int)image.getWidth();
         int height = (int)image.getHeight();
-        genderCounter = 1;
-        PixelReader pr = image.getPixelReader();
-        WritableImage img = new WritableImage(width,  height);
-        PixelWriter pw = img.getPixelWriter();
 
-        for(int i = 0; i < height; i++)
-        {
-            for(int j = 0; j < width; j++)
-            {
-                Color rgba = pr.getColor(j,i);
+        PixelReader pixelReaderImage = image.getPixelReader();
+        WritableImage newImage = new WritableImage(pixelReaderImage, width, height);
 
-                if(rgba.equals(femaleLongHair1) || rgba.equals(ribbon) || rgba.equals(femaleLips))
-                {
-                    pw.setColor(j,i,newHairColour);
+        PixelReader pixelReaderFemHairMask = femaleHairMask.getPixelReader();
+        PixelReader pixelReaderMaleHairMask = maleHairMask.getPixelReader();
+        PixelReader pixelReaderLipsMask = lipsMask.getPixelReader();
+        PixelWriter pixelWriterImage = newImage.getPixelWriter();
+
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                Color femHairPixel = pixelReaderFemHairMask.getColor(x,y);
+                Color maleHairPixel = pixelReaderMaleHairMask.getColor(x,y);
+                Color lipsPixel = pixelReaderLipsMask.getColor(x,y);
+
+                if(gender == Gender.FEMALE){
+                    if(!femHairPixel.equals(Color.TRANSPARENT) && maleHairPixel.equals(Color.TRANSPARENT)){
+                        pixelWriterImage.setColor(x, y, Color.WHITE);
+                    }
+
+                    if(!lipsPixel.equals(Color.TRANSPARENT)){
+                        pixelWriterImage.setColor(x, y, skinColour);
+                    }
                 }
-                else
-                {
-                    pw.setColor(j, i, rgba);
+                else{
+                    if(!femHairPixel.equals(Color.TRANSPARENT)){
+                        if(femHairPixel.equals(ribbon)){
+                            pixelWriterImage.setColor(x, y, ribbon);
+                        }
+                        else{
+                            pixelWriterImage.setColor(x, y, hairColour);
+                        }
+                    }
+
+                    if(!lipsPixel.equals(Color.TRANSPARENT)){
+                        pixelWriterImage.setColor(x, y, femaleLips);
+                    }
                 }
             }
         }
-        hairColour = newHairColour;
-        return img;
+        return newImage;
     }
+
     private void buttonCommonStyles(Button btn){
         btn.setStyle("-fx-background-color: transparent; -fx-cursor: hand");
+    }
+
+    private void setMasks(Frame frame, Image image){
+        int width = (int) image.getWidth();
+        int height = (int)image.getHeight();
+        PixelReader pixelReader = image.getPixelReader();
+        WritableImage femaleHairMask = new WritableImage(width,  height);
+        PixelWriter pixelWriterFHM = femaleHairMask.getPixelWriter();
+
+        WritableImage maleHairMask = new WritableImage(width,  height);
+        PixelWriter pixelWriterMHM = maleHairMask.getPixelWriter();
+
+        WritableImage lipsMask = new WritableImage(width,  height);
+        PixelWriter pixelWriterLM = lipsMask.getPixelWriter();
+
+        WritableImage bodyMask = new WritableImage(width,  height);
+        PixelWriter pixelWriterBM = bodyMask.getPixelWriter();
+
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                Color pixel = pixelReader.getColor(x, y);
+                if(pixel.equals(femaleLongHair1) || pixel.equals(ribbon) || pixel.equals(hairColour)){
+                    pixelWriterFHM.setColor(x, y, pixel);
+                }
+                else{
+                    pixelWriterFHM.setColor(x, y, Color.TRANSPARENT);
+                }
+
+                if(pixel.equals(hairColour)){
+                    pixelWriterMHM.setColor(x, y, pixel);
+                }
+                else{
+                    pixelWriterMHM.setColor(x, y, Color.TRANSPARENT);
+                }
+
+                if(pixel.equals(femaleLips)){
+                    pixelWriterLM.setColor(x, y, pixel);
+                }
+                else{
+                    pixelWriterLM.setColor(x, y, Color.TRANSPARENT);
+                }
+
+                if(pixel.equals(skinColour)){
+                    pixelWriterBM.setColor(x, y, pixel);
+                }
+                else{
+                    pixelWriterBM.setColor(x, y, Color.TRANSPARENT);
+                }
+            }
+        }
+
+        if(frame == Frame.LEFT){
+            leftFemaleHairMask = femaleHairMask;
+            leftMaleHairMask = maleHairMask;
+            leftLipsMask = lipsMask;
+            leftBodyMask = bodyMask;
+        }else{
+            rightFemaleHairMask = femaleHairMask;
+            rightMaleHairMask = maleHairMask;
+            rightLipsMask = lipsMask;
+            rightBodyMask = bodyMask;
+        }
     }
 }
