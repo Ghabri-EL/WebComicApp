@@ -24,13 +24,17 @@ public class createGUI extends Application
     private ImageView selectedCharacter = null;
     ImageView leftChar = new ImageView();
     ImageView rightChar = new ImageView();
-    Color skinColour = Color.web("0xffe8d8ff");
+    private static final Color DEFAULT_FEMALE_HAIR_COLOR = Color.web("0xf0ff00ff");
+    private static final Color DEFAULT_MALE_HAIR_COLOR = Color.web("0xf9ff00ff");
+    private static final Color DEFAULT_SKIN_COLOR = Color.web("0xffe8d8ff");
+    private static final Color DEFAULT_LIPS_COLOR = Color.web("0xff0000ff");
+    private static final Color DEFAULT_RIBBON_COLOR = Color.web("0xecb4b5ff");
+    Color skinColour = DEFAULT_SKIN_COLOR;
     Color newSkinColour = Color.WHITE;
     Color newHairColour = Color.WHITE;
     Color hairColour = Color.web("0xf9ff00ff");
-    Color femaleLongHair1 = Color.web("0xf0ff00ff");
-    Color femaleLips = Color.web("0xff0000ff");
-    Color ribbon = Color.web("0xecb4b5ff");
+    Color femaleLips = DEFAULT_LIPS_COLOR;
+    Color ribbon = DEFAULT_RIBBON_COLOR;
     Gender leftCharGender = Gender.FEMALE;
     Gender rightCharGender = Gender.FEMALE;
     Image leftFemaleHairMask = null;
@@ -512,28 +516,28 @@ public class createGUI extends Application
         for(int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
                 Color pixel = pixelReader.getColor(x, y);
-                if(pixel.equals(femaleLongHair1) || pixel.equals(ribbon) || pixel.equals(hairColour)){
+                if(pixel.equals(DEFAULT_FEMALE_HAIR_COLOR) || pixel.equals(ribbon) || pixel.equals(DEFAULT_MALE_HAIR_COLOR)){
                     pixelWriterFHM.setColor(x, y, pixel);
                 }
                 else{
                     pixelWriterFHM.setColor(x, y, Color.TRANSPARENT);
                 }
 
-                if(pixel.equals(hairColour)){
+                if(pixel.equals(DEFAULT_MALE_HAIR_COLOR)){
                     pixelWriterMHM.setColor(x, y, pixel);
                 }
                 else{
                     pixelWriterMHM.setColor(x, y, Color.TRANSPARENT);
                 }
 
-                if(pixel.equals(femaleLips)){
+                if(pixel.equals(DEFAULT_LIPS_COLOR)){
                     pixelWriterLM.setColor(x, y, pixel);
                 }
                 else{
                     pixelWriterLM.setColor(x, y, Color.TRANSPARENT);
                 }
 
-                if(pixel.equals(skinColour)){
+                if(pixel.equals(DEFAULT_SKIN_COLOR)){
                     pixelWriterBM.setColor(x, y, pixel);
                 }
                 else{
