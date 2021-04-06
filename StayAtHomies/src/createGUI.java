@@ -23,25 +23,31 @@ public class createGUI extends Application
     private enum Gender{FEMALE, MALE}
     private enum Frame{LEFT, RIGHT}
     private enum Direction{LEFT, RIGHT}
+
     private Stage stage;
     private BorderPane layout;
     private Scene scene;
+
     private ImageView selectedCharacter = null;
     ImageView leftChar = new ImageView();
     ImageView rightChar = new ImageView();
+
     private static final Color DEFAULT_FEMALE_HAIR_COLOR = Color.web("0xf0ff00ff");
     private static final Color DEFAULT_MALE_HAIR_COLOR = Color.web("0xf9ff00ff");
     private static final Color DEFAULT_SKIN_COLOR = Color.web("0xffe8d8ff");
     private static final Color DEFAULT_LIPS_COLOR = Color.web("0xff0000ff");
     private static final Color DEFAULT_RIBBON_COLOR = Color.web("0xecb4b5ff");
+
     Color skinColour = DEFAULT_SKIN_COLOR;
     Color newSkinColour = Color.WHITE;
     Color newHairColour = Color.WHITE;
-    Color hairColour = Color.web("0xf9ff00ff");
+    Color hairColour = DEFAULT_MALE_HAIR_COLOR;
     Color femaleLips = DEFAULT_LIPS_COLOR;
     Color ribbon = DEFAULT_RIBBON_COLOR;
-    Gender leftCharGender = Gender.FEMALE;
+
+    Gender leftCharGender = Gender.FEMALE;  //Images start as Female
     Gender rightCharGender = Gender.FEMALE;
+
     Image leftFemaleHairMask = null;
     Image leftMaleHairMask = null;
     Image rightFemaleHairMask = null;
@@ -50,8 +56,9 @@ public class createGUI extends Application
     Image rightLipsMask = null;
     Image leftBodyMask = null;
     Image rightBodyMask = null;
+
     Direction leftCharDirection;
-    Direction righCharDirection;
+    Direction rightCharDirection;
 
     public static void main(String[] args)
     {
@@ -210,7 +217,7 @@ public class createGUI extends Application
         importRightChar.setGraphic(setButtonImg(40, "importRightChar.png"));
         importRightChar.setOnAction(event -> {
             insertModel(Frame.RIGHT, rightChar);
-            righCharDirection = Direction.RIGHT;
+            rightCharDirection = Direction.RIGHT;
         });
 
         Button flip = new Button();
@@ -609,7 +616,6 @@ public class createGUI extends Application
                 }
             }
         }
-
         return newMask;
     }
 
