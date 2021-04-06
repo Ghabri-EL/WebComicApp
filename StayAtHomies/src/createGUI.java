@@ -12,7 +12,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,6 +22,10 @@ public class createGUI extends Application
     private enum Gender{FEMALE, MALE}
     private enum Frame{LEFT, RIGHT}
     private enum Direction{LEFT, RIGHT}
+
+    Character characterLeft = new Character();
+    Character characterRight = new Character();
+
 
     private Stage stage;
     private BorderPane layout;
@@ -140,6 +143,25 @@ public class createGUI extends Application
         BorderPane.setMargin(mainPane, new Insets(10, 10, 10, 10));
         layout.setCenter(mainPane);
     }
+
+    public void createDefaultCharacter(int position)
+    {
+        if(position==1)
+        {
+            characterRight.setLips(DEFAULT_LIPS_COLOR);
+            characterRight.setMaleHair(DEFAULT_MALE_HAIR_COLOR);
+            characterRight.setFemaleHair(DEFAULT_FEMALE_HAIR_COLOR);
+            characterRight.setSkin(DEFAULT_SKIN_COLOR);
+        }
+        else
+        {
+            characterLeft.setLips(DEFAULT_LIPS_COLOR);
+            characterLeft.setMaleHair(DEFAULT_MALE_HAIR_COLOR);
+            characterLeft.setFemaleHair(DEFAULT_FEMALE_HAIR_COLOR);
+            characterLeft.setSkin(DEFAULT_SKIN_COLOR);
+        }
+
+    }
     public void createBottomPane()
     {
         //Hbox
@@ -204,20 +226,27 @@ public class createGUI extends Application
         scrollPane.setFitToHeight(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        Button importLftChar = new Button();
-        buttonCommonStyles(importLftChar);
-        importLftChar.setGraphic(setButtonImg(40, "importLeftChar.png"));
-        importLftChar.setOnAction(event -> {
-            insertModel(Frame.LEFT ,leftChar);
+        Button importLeftChar = new Button();
+        buttonCommonStyles(importLeftChar);
+        importLeftChar.setGraphic(setButtonImg(40, "importLeftChar.png"));
+        importLeftChar.setOnAction(event -> {
+            insertModel(Frame.LEFT ,leftChar, 0);
             leftCharDirection = Direction.RIGHT;
+            //characterLeft.setDirection(leftCharDirection);
+            //characterLeft.setGender(Gender.FEMALE);
+
         });
 
         Button importRightChar = new Button();
         buttonCommonStyles(importRightChar);
         importRightChar.setGraphic(setButtonImg(40, "importRightChar.png"));
         importRightChar.setOnAction(event -> {
-            insertModel(Frame.RIGHT, rightChar);
+            insertModel(Frame.RIGHT, rightChar, 1);
+
+
             rightCharDirection = Direction.RIGHT;
+            //characterLeft.setDirection(rightCharDirection);
+            //characterLeft.setGender(Gender.FEMALE);
         });
 
         Button flip = new Button();
@@ -369,22 +398,34 @@ public class createGUI extends Application
         Button b112 = new Button();
         b112.setText("BTN8");
 
-        vbox.getChildren().addAll(colorPalette, importLftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, btn9, btn10, btn11, b112);
+        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, btn9, btn10, btn11, b112);
 
         layout.setLeft(scrollPane);
     }
 
     //frame refers to the right side or left side of workspace pane
-    private void insertModel(Frame frame,ImageView imgv)    //Uploads images to comix strip
+    private void insertModel(Frame frame,ImageView imgv, int position)    //Uploads images to comix strip
     {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png"));
         File file = fileChooser.showOpenDialog(stage);
 
-        if(file != null){
-            Image image = new Image(file.toURI().toString());
-            setMasks(frame, image);
-            imgv.setImage(image);
+        if(file != null)
+        {
+            Image image = new Image(file.toURI().toString());   //image
+            if(position==1)
+            {
+                characterRight.setImage(image);
+            }
+            else
+            {
+                characterLeft.setImage(image);
+            }
+
+            setMasks(frame, image, position);                   //mask method
+            imgv.setImage(image);                               //ImageView
+
+
         }
     }
 
@@ -511,20 +552,21 @@ public class createGUI extends Application
         btn.setStyle("-fx-background-color: transparent; -fx-cursor: hand");
     }
 
-    private void setMasks(Frame frame, Image image){
+    private void setMasks(Frame frame, Image image, int position)
+    {
         int width = (int) image.getWidth();
         int height = (int)image.getHeight();
         PixelReader pixelReader = image.getPixelReader();
-        WritableImage femaleHairMask = new WritableImage(width,  height);
+        WritableImage femaleHairMask = new WritableImage(width,  height);   //female hair mask
         PixelWriter pixelWriterFHM = femaleHairMask.getPixelWriter();
 
-        WritableImage maleHairMask = new WritableImage(width,  height);
+        WritableImage maleHairMask = new WritableImage(width,  height);     //male hair mask
         PixelWriter pixelWriterMHM = maleHairMask.getPixelWriter();
 
-        WritableImage lipsMask = new WritableImage(width,  height);
+        WritableImage lipsMask = new WritableImage(width,  height);         //lip mask
         PixelWriter pixelWriterLM = lipsMask.getPixelWriter();
 
-        WritableImage bodyMask = new WritableImage(width,  height);
+        WritableImage bodyMask = new WritableImage(width,  height);         //skin mask
         PixelWriter pixelWriterBM = bodyMask.getPixelWriter();
 
         for(int y = 0; y < height; y++){
@@ -532,6 +574,7 @@ public class createGUI extends Application
                 Color pixel = pixelReader.getColor(x, y);
                 if(pixel.equals(DEFAULT_FEMALE_HAIR_COLOR) || pixel.equals(ribbon) || pixel.equals(DEFAULT_MALE_HAIR_COLOR)){
                     pixelWriterFHM.setColor(x, y, pixel);
+
                 }
                 else{
                     pixelWriterFHM.setColor(x, y, Color.TRANSPARENT);
@@ -568,11 +611,21 @@ public class createGUI extends Application
             leftMaleHairMask = correctMaskEdges(maleHairMask, 3);
             leftLipsMask = correctMaskEdges(lipsMask, 3);
             leftBodyMask = correctMaskEdges(bodyMask, 2);
+
+            characterLeft.setFemaleHairMask(leftFemaleHairMask);
+            characterLeft.setMaleHairMask(leftMaleHairMask);
+            characterLeft.setLipsMask(leftLipsMask);
+            characterLeft.setSkinMask(leftBodyMask);
         }else{
             rightFemaleHairMask = correctMaskEdges(femaleHairMask, 3);
             rightMaleHairMask = correctMaskEdges(maleHairMask, 3);
             rightLipsMask = correctMaskEdges(lipsMask, 3);
             rightBodyMask = correctMaskEdges(bodyMask, 2);
+
+            characterRight.setFemaleHairMask(rightFemaleHairMask);
+            characterRight.setMaleHairMask(rightMaleHairMask);
+            characterRight.setLipsMask(rightLipsMask);
+            characterRight.setSkinMask(rightBodyMask);
         }
     }
 

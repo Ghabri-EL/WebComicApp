@@ -22,11 +22,11 @@ How to execute:
 -Required to execute: JDK version 13 or above
 
 Story2:
-First button on the left bar opens up a window for you to search and select the image character that is to be placed on the left side of the panel.
-The second button does the same thing, it lets you import a character for the right side of the panel.
+First button on the left bar opens up a window for you to search and select the image Character that is to be placed on the left side of the panel.
+The second button does the same thing, it lets you import a Character for the right side of the panel.
 
 Story 3:
-The third button flips the character image horizontally. Image has to be selected in order for the operation to work.
+The third button flips the Character image horizontally. Image has to be selected in order for the operation to work.
 
 Additional functionality:
 Buttons 4 & 5 rotate the characters 90 degrees left and right respectively
