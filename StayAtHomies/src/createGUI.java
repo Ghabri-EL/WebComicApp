@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,7 +12,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 public class createGUI extends Application
 {
@@ -345,9 +350,11 @@ public class createGUI extends Application
 
         Button btn9 = new Button();
         btn9.setText("BTN8");
+        btn9.setOnAction(actionEvent -> saveToFile(selectedCharacter.getImage()));
 
         Button btn10 = new Button();
         btn10.setText("BTN8");
+        btn10.setOnAction(actionEvent -> rightChar.setImage(leftMaleHairMask));
 
         Button btn11 = new Button();
         btn11.setText("BTN8");
@@ -538,6 +545,9 @@ public class createGUI extends Application
                 }
 
                 if(pixel.equals(DEFAULT_SKIN_COLOR)){
+                    for(int i = 0; i < 4; i++){
+                        pixelWriterBM.setColor(x, y, pixel);
+                    }
                     pixelWriterBM.setColor(x, y, pixel);
                 }
                 else{
@@ -547,15 +557,69 @@ public class createGUI extends Application
         }
 
         if(frame == Frame.LEFT){
-            leftFemaleHairMask = femaleHairMask;
-            leftMaleHairMask = maleHairMask;
-            leftLipsMask = lipsMask;
-            leftBodyMask = bodyMask;
+            leftFemaleHairMask = correctMaskEdges(femaleHairMask, 3);
+            leftMaleHairMask = correctMaskEdges(maleHairMask, 3);
+            leftLipsMask = correctMaskEdges(lipsMask, 3);
+            leftBodyMask = correctMaskEdges(bodyMask, 2);
         }else{
-            rightFemaleHairMask = femaleHairMask;
-            rightMaleHairMask = maleHairMask;
-            rightLipsMask = lipsMask;
-            rightBodyMask = bodyMask;
+            rightFemaleHairMask = correctMaskEdges(femaleHairMask, 3);
+            rightMaleHairMask = correctMaskEdges(maleHairMask, 3);
+            rightLipsMask = correctMaskEdges(lipsMask, 3);
+            rightBodyMask = correctMaskEdges(bodyMask, 2);
+        }
+    }
+
+    //nPixels is the number of pixels by which the edge of the mask will be extended
+    private Image correctMaskEdges(Image mask, int nPixels){
+        int width = (int)mask.getWidth();
+        int height = (int)mask.getHeight();
+
+        PixelReader pixelReaderMask = mask.getPixelReader();
+        WritableImage newMask = new WritableImage(pixelReaderMask, width, height);
+        PixelWriter pixelWriterMask = newMask.getPixelWriter();
+
+        if(nPixels > 5){
+            nPixels = 5;
+        }
+        //the for loop start with n pixels to avoid out of bounds (to be improved...)
+        for(int y = nPixels; y < height - nPixels; y++){
+            for(int x = nPixels; x < width - nPixels; x++){
+                Color pixel = pixelReaderMask.getColor(x, y);
+                if(!pixel.equals(Color.TRANSPARENT)){
+
+                    //this for loop iterates to find an edge pixel and add n pixels to the edge
+                    //the x-3-i condition is to retain any transparent lines which are outlines of body characteristics like the chin or an arm
+                    for(int i = 1; i < nPixels; i++){
+                        if(pixelReaderMask.getColor(x-i, y).equals(Color.TRANSPARENT) && pixelReaderMask.getColor(x-3-i, y).equals(Color.TRANSPARENT)){
+                            pixelWriterMask.setColor(x-i, y, pixel);
+                        }
+
+                        if(pixelReaderMask.getColor(x+i, y).equals(Color.TRANSPARENT) && pixelReaderMask.getColor(x+3+i, y).equals(Color.TRANSPARENT)){
+                            pixelWriterMask.setColor(x+i, y, pixel);
+                        }
+
+                        if(pixelReaderMask.getColor(x, y-i).equals(Color.TRANSPARENT) && pixelReaderMask.getColor(x, y-3-i).equals(Color.TRANSPARENT)){
+                            pixelWriterMask.setColor(x, y-i, pixel);
+                        }
+
+                        if(pixelReaderMask.getColor(x, y+i).equals(Color.TRANSPARENT) && pixelReaderMask.getColor(x, y+3+i).equals(Color.TRANSPARENT)){
+                            pixelWriterMask.setColor(x, y+i, pixel);
+                        }
+                    }
+                }
+            }
+        }
+
+        return newMask;
+    }
+
+    public static void saveToFile(Image image) {
+        File outputFile = new File("../image.png");
+        BufferedImage buffImage = SwingFXUtils.fromFXImage(image, null);
+        try {
+            ImageIO.write(buffImage, "png", outputFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
