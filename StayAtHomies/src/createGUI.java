@@ -309,7 +309,9 @@ public class createGUI extends Application
         {
             if(selectedCharacterView==leftCharView)
             {
-                leftBubble.setImage(speechImage);
+                //leftBubble.setImage(speechImage);
+                TextField txtField = new TextField();
+                StackPane sb = new StackPane(leftBubble, txtField);
             }
             else if(selectedCharacterView==rightCharView)
             {
