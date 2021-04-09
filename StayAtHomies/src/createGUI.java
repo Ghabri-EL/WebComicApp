@@ -17,12 +17,18 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class createGUI extends Application{
+public class createGUI extends Application
+{
     private Stage stage;
     private BorderPane layout;
     private Scene scene;
+    ImageView leftBubble = new ImageView();
+    ImageView rightBubble = new ImageView();
     ImageView leftCharView = new ImageView();
     ImageView rightCharView = new ImageView();
+
+    Image thoughtImage = new Image("/resources/thoughtBubble.png");
+    Image speechImage = new Image("/resources/speechBubble.png");
     private ImageView selectedCharacterView = null;
     private Character selectedCharacter = null;
     Color selectedColor = Color.WHITE;
@@ -56,6 +62,16 @@ public class createGUI extends Application{
     }
     public void createMainPane()
     {
+        leftBubble.setFitHeight(300);
+        leftBubble.setFitWidth(300);
+        leftBubble.setPreserveRatio(true);
+        //leftSpeechView.setImage(thoughtImage);
+
+        rightBubble.setFitHeight(300);
+        rightBubble.setFitWidth(300);
+        rightBubble.setPreserveRatio(true);
+        //rightSpeechView.setImage(speechImage);
+
         leftCharView.setFitHeight(300);
         leftCharView.setFitWidth(300);
         leftCharView.setPreserveRatio(true);
@@ -82,11 +98,16 @@ public class createGUI extends Application{
 
         GridPane mainPane = new GridPane();
         //(Node, colIndex, rowIndex, colSpan, rowSpan)
+        mainPane.add(leftBubble, 0,0,1,1);
+        mainPane.add(rightBubble, 1,0,1,1);
         mainPane.add(leftCharView, 0, 1, 1, 1);
         mainPane.add(rightCharView, 1, 1, 1, 1);
+
+
         mainPane.setStyle("-fx-cursor: hand; -fx-background-color: white");
         mainPane.setMaxSize(600, 600);
         mainPane.setHgap(2);
+        mainPane.setVgap(2);
         //mainPane.setGridLinesVisible(true);
 
         RowConstraints row0 = new RowConstraints();
@@ -281,18 +302,79 @@ public class createGUI extends Application{
             selectedCharacterView.setImage(selectedCharacter.getCharacterImage());
         });
 
-        Button btn10 = new Button();
-        btn10.setText("BTN8");
+        Button speechBubble = new Button();
+        buttonCommonStyles(speechBubble);
+        speechBubble.setGraphic(setButtonImg(40, "speechBubble.png"));
+        speechBubble.setOnAction(actionEvent ->
+        {
+            if(selectedCharacterView==leftCharView)
+            {
+                leftBubble.setImage(speechImage);
+            }
+            else if(selectedCharacterView==rightCharView)
+            {
+                Image tempBubble = flipBubble(speechImage);
+                rightBubble.setImage(tempBubble);
+            }
+            else
+            {
+                leftBubble.setImage(null);
+            }
+        });
 
-        Button btn11 = new Button();
-        btn11.setText("BTN8");
+        Button thoughtBubble = new Button();
+        buttonCommonStyles(thoughtBubble);
+        thoughtBubble.setGraphic(setButtonImg(40, "thoughtBubble.png"));
+        thoughtBubble.setOnAction(actionEvent ->
+        {
 
-        Button b112 = new Button();
-        b112.setText("BTN8");
+            if(selectedCharacterView==leftCharView)
+            {
+                Image tempBubble = flipBubble(thoughtImage);
+                leftBubble.setImage(tempBubble);
+            }
+            else if(selectedCharacterView==rightCharView)
+            {
+                rightBubble.setImage(thoughtImage);
+            }
+        });
 
-        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, lipsColor, btn10, btn11, b112);
+        Button removeBubble = new Button();
+        buttonCommonStyles(removeBubble);
+        removeBubble.setGraphic(setButtonImg(40, "removeBubble.png"));
+        removeBubble.setOnAction(actionEvent ->
+        {
+            if(selectedCharacterView==leftCharView)
+            {
+                leftBubble.setImage(null);
+            }
+            else if(selectedCharacterView==rightCharView)
+            {
+                rightBubble.setImage(null);
+            }
+        });
+
+        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, lipsColor, speechBubble, thoughtBubble, removeBubble);
 
         layout.setLeft(scrollPane);
+    }
+
+    private Image flipBubble(Image image)
+    {
+        int width = (int) image.getWidth();
+        int height = (int)image.getHeight();
+
+        PixelReader pixelReader = image.getPixelReader();
+        WritableImage flippedImage = new WritableImage(width,  height);
+        PixelWriter pixelWriter = flippedImage.getPixelWriter();
+
+        // x y axis of the image
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                pixelWriter.setArgb(x, y, pixelReader.getArgb((width - 1) - x, y));
+            }
+        }
+        return flippedImage;
     }
 
     private Character insertModel(ImageView imgView)    //Uploads character to workspace pane
@@ -334,11 +416,11 @@ public class createGUI extends Application{
         if(selectedCharacterView == leftCharView){
             System.out.println("LEFT CHARACTER SELECTED");
         }
-        else{
+        else if(selectedCharacterView == rightCharView){
             System.out.println("RIGHT CHARACTER SELECTED");
         }
-    }
 
+    }
 //    public static void saveToFile(Image image) {
 //        File outputFile = new File("../image.png");
 //        BufferedImage buffImage = SwingFXUtils.fromFXImage(image, null);
