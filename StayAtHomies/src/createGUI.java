@@ -35,6 +35,8 @@ public class createGUI extends Application
     Character characterLeft = null;
     Character characterRight = null;
 
+    private StackPane bubbleStackPane;
+
     public static void main(String[] args)
     {
         launch(args);
@@ -98,7 +100,7 @@ public class createGUI extends Application
 
         GridPane mainPane = new GridPane();
         //(Node, colIndex, rowIndex, colSpan, rowSpan)
-        mainPane.add(leftBubble, 0,0,1,1);
+        mainPane.add(bubbleStackPane, 0,0,1,1);
         mainPane.add(rightBubble, 1,0,1,1);
         mainPane.add(leftCharView, 0, 1, 1, 1);
         mainPane.add(rightCharView, 1, 1, 1, 1);
@@ -307,11 +309,12 @@ public class createGUI extends Application
         speechBubble.setGraphic(setButtonImg(40, "speechBubble.png"));
         speechBubble.setOnAction(actionEvent ->
         {
+            TextField txtField = new TextField();
+
             if(selectedCharacterView==leftCharView)
             {
                 //leftBubble.setImage(speechImage);
-                TextField txtField = new TextField();
-                StackPane sb = new StackPane(leftBubble, txtField);
+                bubbleStackPane = new StackPane(leftBubble, txtField);
             }
             else if(selectedCharacterView==rightCharView)
             {
