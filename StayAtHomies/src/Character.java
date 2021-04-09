@@ -330,7 +330,7 @@ public class Character implements CharacterInterface
                     // of body characteristics like the chin or an arm, retains at least 3 pixels
                     for(int i = 1; i < nPixels; i++){
 
-                        if( !(x-retain-i < 0 && x+retain+i >= width && y-retain-i < 0 && y+retain+i >= height)){
+                        if( !(x-retain-i < 0 || x+retain+i >= width || y-retain-i < 0 || y+retain+i >= height)){
                             if(pixelReaderMask.getColor(x-i, y).equals(Color.TRANSPARENT) && pixelReaderMask.getColor(x-retain-i, y).equals(Color.TRANSPARENT)){
                                 pixelWriterMask.setColor(x-i, y, pixel);
                             }
