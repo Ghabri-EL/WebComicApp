@@ -17,12 +17,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class createGUI extends Application{
+public class createGUI extends Application
+{
     private Stage stage;
     private BorderPane layout;
     private Scene scene;
-    ImageView leftSpeechView = new ImageView();
-    ImageView rightSpeechView = new ImageView();
+    ImageView leftBubble = new ImageView();
+    ImageView rightBubble = new ImageView();
     ImageView leftCharView = new ImageView();
     ImageView rightCharView = new ImageView();
 
@@ -61,14 +62,14 @@ public class createGUI extends Application{
     }
     public void createMainPane()
     {
-        leftSpeechView.setFitHeight(300);
-        leftSpeechView.setFitWidth(300);
-        leftSpeechView.setPreserveRatio(true);
+        leftBubble.setFitHeight(300);
+        leftBubble.setFitWidth(300);
+        leftBubble.setPreserveRatio(true);
         //leftSpeechView.setImage(thoughtImage);
 
-        rightSpeechView.setFitHeight(300);
-        rightSpeechView.setFitWidth(300);
-        rightSpeechView.setPreserveRatio(true);
+        rightBubble.setFitHeight(300);
+        rightBubble.setFitWidth(300);
+        rightBubble.setPreserveRatio(true);
         //rightSpeechView.setImage(speechImage);
 
         leftCharView.setFitHeight(300);
@@ -94,25 +95,11 @@ public class createGUI extends Application{
                 event.consume();
             }
         });
-        /*leftSpeechView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event)
-            {
-                event.consume();
-            }
-        });
-        rightCharView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                selectFrame(rightSpeechView, null);
-                event.consume();
-            }
-        });*/
 
         GridPane mainPane = new GridPane();
         //(Node, colIndex, rowIndex, colSpan, rowSpan)
-        mainPane.add(leftSpeechView, 0,0,1,1);
-        mainPane.add(rightSpeechView, 1,0,1,1);
+        mainPane.add(leftBubble, 0,0,1,1);
+        mainPane.add(rightBubble, 1,0,1,1);
         mainPane.add(leftCharView, 0, 1, 1, 1);
         mainPane.add(rightCharView, 1, 1, 1, 1);
 
@@ -120,7 +107,7 @@ public class createGUI extends Application{
         mainPane.setStyle("-fx-cursor: hand; -fx-background-color: white");
         mainPane.setMaxSize(600, 600);
         mainPane.setHgap(2);
-        mainPane.setVgap(50);
+        mainPane.setVgap(2);
         //mainPane.setGridLinesVisible(true);
 
         RowConstraints row0 = new RowConstraints();
@@ -318,30 +305,76 @@ public class createGUI extends Application{
         Button speechBubble = new Button();
         buttonCommonStyles(speechBubble);
         speechBubble.setGraphic(setButtonImg(40, "speechBubble.png"));
-        speechBubble.setOnAction(actionEvent -> {
-            leftSpeechView.setImage(speechImage);
-
-            TextField txtField = new TextField();
-            StackPane sp = new StackPane();
-
-            //sp.getChildren().add(leftSpeechView);
-            sp.getChildren().addAll(leftCharView, txtField);
-            sp.setAlignment(Pos.CENTER);
+        speechBubble.setOnAction(actionEvent ->
+        {
+            if(selectedCharacterView==leftCharView)
+            {
+                leftBubble.setImage(speechImage);
+            }
+            else if(selectedCharacterView==rightCharView)
+            {
+                Image tempBubble = flipBubble(speechImage);
+                rightBubble.setImage(tempBubble);
+            }
+            else
+            {
+                leftBubble.setImage(null);
+            }
         });
 
         Button thoughtBubble = new Button();
         buttonCommonStyles(thoughtBubble);
         thoughtBubble.setGraphic(setButtonImg(40, "thoughtBubble.png"));
-        thoughtBubble.setOnAction(actionEvent -> {
-            leftSpeechView.setImage(thoughtImage);
+        thoughtBubble.setOnAction(actionEvent ->
+        {
+
+            if(selectedCharacterView==leftCharView)
+            {
+                Image tempBubble = flipBubble(thoughtImage);
+                leftBubble.setImage(tempBubble);
+            }
+            else if(selectedCharacterView==rightCharView)
+            {
+                rightBubble.setImage(thoughtImage);
+            }
         });
 
-        Button b112 = new Button();
-        b112.setText("BTN8");
+        Button removeBubble = new Button();
+        buttonCommonStyles(removeBubble);
+        removeBubble.setGraphic(setButtonImg(40, "removeBubble.png"));
+        removeBubble.setOnAction(actionEvent ->
+        {
+            if(selectedCharacterView==leftCharView)
+            {
+                leftBubble.setImage(null);
+            }
+            else if(selectedCharacterView==rightCharView)
+            {
+                rightBubble.setImage(null);
+            }
+        });
 
-        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, lipsColor, speechBubble, thoughtBubble, b112);
+        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, lipsColor, speechBubble, thoughtBubble, removeBubble);
 
         layout.setLeft(scrollPane);
+    }
+
+    private Image flipBubble(Image image)
+    {
+        int width = (int) image.getWidth();
+        int height = (int)image.getHeight();
+
+        PixelReader pixelReader = image.getPixelReader();
+        WritableImage flippedImage = new WritableImage(width,  height);
+        PixelWriter pixelWriter = flippedImage.getPixelWriter();
+
+        // x y axis of the image
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                pixelWriter.setArgb(x, y, pixelReader.getArgb((width - 1) - x, y));
+            }
+        }
+        return flippedImage;
     }
 
     private Character insertModel(ImageView imgView)    //Uploads character to workspace pane
@@ -386,16 +419,8 @@ public class createGUI extends Application{
         else if(selectedCharacterView == rightCharView){
             System.out.println("RIGHT CHARACTER SELECTED");
         }
-        /*else if(selectedCharacterView == leftSpeechView)
-        {
-            System.out.println("LEFT SPEECH SELECTED");
-        }
-        else if(selectedCharacterView == rightSpeechView)
-        {
-            System.out.println("RIGHT SPEECH SELECTED");
-        }*/
-    }
 
+    }
 //    public static void saveToFile(Image image) {
 //        File outputFile = new File("../image.png");
 //        BufferedImage buffImage = SwingFXUtils.fromFXImage(image, null);
