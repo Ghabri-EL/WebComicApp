@@ -318,16 +318,21 @@ public class createGUI extends Application{
         Button speechBubble = new Button();
         buttonCommonStyles(speechBubble);
         speechBubble.setGraphic(setButtonImg(40, "speechBubble.png"));
-        speechBubble.setOnAction(actionEvent ->
-        {
+        speechBubble.setOnAction(actionEvent -> {
             leftSpeechView.setImage(speechImage);
+
+            TextField txtField = new TextField();
+            StackPane sp = new StackPane();
+
+            //sp.getChildren().add(leftSpeechView);
+            sp.getChildren().addAll(leftCharView, txtField);
+            sp.setAlignment(Pos.CENTER);
         });
 
         Button thoughtBubble = new Button();
         buttonCommonStyles(thoughtBubble);
         thoughtBubble.setGraphic(setButtonImg(40, "thoughtBubble.png"));
-        thoughtBubble.setOnAction(actionEvent ->
-        {
+        thoughtBubble.setOnAction(actionEvent -> {
             leftSpeechView.setImage(thoughtImage);
         });
 
