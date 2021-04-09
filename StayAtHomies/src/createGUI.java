@@ -21,8 +21,13 @@ public class createGUI extends Application{
     private Stage stage;
     private BorderPane layout;
     private Scene scene;
+    ImageView leftSpeechView = new ImageView();
+    ImageView rightSpeechView = new ImageView();
     ImageView leftCharView = new ImageView();
     ImageView rightCharView = new ImageView();
+
+    Image thoughtImage = new Image("/resources/thoughtBubble.png");
+    Image speechImage = new Image("/resources/speechBubble.png");
     private ImageView selectedCharacterView = null;
     private Character selectedCharacter = null;
     Color selectedColor = Color.WHITE;
@@ -56,6 +61,16 @@ public class createGUI extends Application{
     }
     public void createMainPane()
     {
+        leftSpeechView.setFitHeight(300);
+        leftSpeechView.setFitWidth(300);
+        leftSpeechView.setPreserveRatio(true);
+        //leftSpeechView.setImage(thoughtImage);
+
+        rightSpeechView.setFitHeight(300);
+        rightSpeechView.setFitWidth(300);
+        rightSpeechView.setPreserveRatio(true);
+        //rightSpeechView.setImage(speechImage);
+
         leftCharView.setFitHeight(300);
         leftCharView.setFitWidth(300);
         leftCharView.setPreserveRatio(true);
@@ -79,14 +94,33 @@ public class createGUI extends Application{
                 event.consume();
             }
         });
+        /*leftSpeechView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                event.consume();
+            }
+        });
+        rightCharView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                selectFrame(rightSpeechView, null);
+                event.consume();
+            }
+        });*/
 
         GridPane mainPane = new GridPane();
         //(Node, colIndex, rowIndex, colSpan, rowSpan)
+        mainPane.add(leftSpeechView, 0,0,1,1);
+        mainPane.add(rightSpeechView, 1,0,1,1);
         mainPane.add(leftCharView, 0, 1, 1, 1);
         mainPane.add(rightCharView, 1, 1, 1, 1);
+
+
         mainPane.setStyle("-fx-cursor: hand; -fx-background-color: white");
         mainPane.setMaxSize(600, 600);
         mainPane.setHgap(2);
+        mainPane.setVgap(50);
         //mainPane.setGridLinesVisible(true);
 
         RowConstraints row0 = new RowConstraints();
@@ -281,16 +315,26 @@ public class createGUI extends Application{
             selectedCharacterView.setImage(selectedCharacter.getCharacterImage());
         });
 
-        Button btn10 = new Button();
-        btn10.setText("BTN8");
+        Button speechBubble = new Button();
+        buttonCommonStyles(speechBubble);
+        speechBubble.setGraphic(setButtonImg(40, "speechBubble.png"));
+        speechBubble.setOnAction(actionEvent ->
+        {
+            leftSpeechView.setImage(speechImage);
+        });
 
-        Button btn11 = new Button();
-        btn11.setText("BTN8");
+        Button thoughtBubble = new Button();
+        buttonCommonStyles(thoughtBubble);
+        thoughtBubble.setGraphic(setButtonImg(40, "thoughtBubble.png"));
+        thoughtBubble.setOnAction(actionEvent ->
+        {
+            leftSpeechView.setImage(thoughtImage);
+        });
 
         Button b112 = new Button();
         b112.setText("BTN8");
 
-        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, lipsColor, btn10, btn11, b112);
+        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, lipsColor, speechBubble, thoughtBubble, b112);
 
         layout.setLeft(scrollPane);
     }
@@ -334,9 +378,17 @@ public class createGUI extends Application{
         if(selectedCharacterView == leftCharView){
             System.out.println("LEFT CHARACTER SELECTED");
         }
-        else{
+        else if(selectedCharacterView == rightCharView){
             System.out.println("RIGHT CHARACTER SELECTED");
         }
+        /*else if(selectedCharacterView == leftSpeechView)
+        {
+            System.out.println("LEFT SPEECH SELECTED");
+        }
+        else if(selectedCharacterView == rightSpeechView)
+        {
+            System.out.println("RIGHT SPEECH SELECTED");
+        }*/
     }
 
 //    public static void saveToFile(Image image) {
