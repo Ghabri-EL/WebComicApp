@@ -12,10 +12,11 @@ public class Character implements CharacterInterface
     private Gender gender;
     private Direction direction;
     private Image characterImage;
-     Image femaleHairMask;
+    private Image femaleHairMask;
     private Image maleHairMask;
     private Image lipsMask;
     private Image skinMask;
+    private String bubbleText = "";
 
     public Character(Image characterImage){
         this.skin = DEFAULT_SKIN_COLOR;
@@ -72,6 +73,14 @@ public class Character implements CharacterInterface
     public void setCharacterImage(Image image) {
         this.characterImage = image;
         setMasks();
+    }
+
+    public String getBubbleText(){
+        return bubbleText;
+    }
+
+    public void setBubbleText(String bubbleText){
+        this.bubbleText = bubbleText;
     }
 
     public void flipImage(){
