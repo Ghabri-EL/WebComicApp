@@ -328,14 +328,18 @@ public class createGUI extends Application
         buttonCommonStyles(speechBubble);
         speechBubble.setGraphic(setButtonImg(40, "speechBubbleButton.png"));
         speechBubble.setOnAction(actionEvent -> {
-            importBubble("speechBubble.png");
+            if(selectedCharacter != null){
+                importBubble("speechBubble.png");
+            }
         });
 
         Button thoughtBubble = new Button();
         buttonCommonStyles(thoughtBubble);
         thoughtBubble.setGraphic(setButtonImg(40, "thoughtBubbleButton.png"));
         thoughtBubble.setOnAction(actionEvent -> {
-            importBubble("thoughtBubble.png");
+            if(selectedCharacter != null){
+                importBubble("thoughtBubble.png");
+            }
         });
 
         Button removeBubble = new Button();
