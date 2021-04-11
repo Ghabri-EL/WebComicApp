@@ -47,3 +47,23 @@ is selected , press the 8th button down which will change the skin color . Chara
 Story 6 :
 To change hair color again select a color from the color palette (first button on left hand side bar) . Then use the 9th button down to change
 the hair color to the selected color . Character has to be selected in order for the operation to work .
+
+=== Story 7 & 8 ===
+
+How to execute :
+-Command to execute : java -jar StayAtHomies.jar
+-Required to execute: JDK version 13 or above
+
+Story 7 :
+First insert a character by pressing the second button on the left hand side bar , then selecting the image of the desired character . Once
+thats done , select the speech button which is 11th button down on the left hand side bar . A window will pop up where you can introduce the
+desired text , and press ok . A speech bubble will appear above the character with the desired text . Make sure the character is selected before
+inserting the speech bubble .
+
+Story 8 :
+Follow the same steps as described above in "Story 7" in order to insert a thought bubble by using the 12th button down from the left hand side bar .
+Make sure character is selected before inserting the thought bubble .
+
+Extra :
+If you wish to delete a speech bubble or a thought bubble , use the 13th button down from the left hand side bar . In order for the operation to work ,
+make sure you select the character of which you want to delete the speech bubble .
