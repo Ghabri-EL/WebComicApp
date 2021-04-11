@@ -67,3 +67,8 @@ Make sure character is selected before inserting the thought bubble .
 Extra :
 If you wish to delete a speech bubble or a thought bubble , use the 13th button down from the left hand side bar . In order for the operation to work ,
 make sure you select the character of which you want to delete the speech bubble .
+Niall McGurk: 33%
+Gabriel: 34%
+Daiana: 33%
+Ryan: 0%
+
