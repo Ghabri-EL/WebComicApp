@@ -383,7 +383,7 @@ public class createGUI extends Application
         textTop.setGraphic(setButtonImg(40, "text.png"));
         textTop.setOnAction(actionEvent -> {
             if(selectedCharacter != null){
-                
+
                 importText();
             }
         });
@@ -486,6 +486,11 @@ public class createGUI extends Application
         textInput.setTitle("Narrative Text");
         textInput.setHeaderText("Enter narrative text...");
         textInput.showAndWait();
+
+        if(textInput.getResult() != null){
+            String text = textInput.getResult();
+            topText = new Label(text);
+        }
     }
 //    public static void saveToFile(Image image) {
 //        File outputFile = new File("../image.png");
