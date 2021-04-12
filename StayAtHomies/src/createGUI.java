@@ -22,19 +22,21 @@ import java.io.IOException;
 
 public class createGUI extends Application
 {
+    private final double WORKING_PANE_WIDTH = 610;
+    private final double WORKING_PANE_HEIGHT = 610;
     private Stage stage;
     private BorderPane layout;
     private Scene scene;
+    private GridPane mainPane = new GridPane();
     private ImageView leftBubble = new ImageView();
     private ImageView rightBubble = new ImageView();
     private ImageView leftCharView = new ImageView();
     private ImageView rightCharView = new ImageView();
-    private Image thoughtImage = new Image("/resources/thoughtBubble.png");
-    private Image speechImage = new Image("/resources/speechBubble.png");
+    private final Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
+    private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
     private Label leftBubbleText = new Label();
     private Label rightBubbleText = new Label();
-    private Label topText = new Label();
-    private Label bottomText = new Label();
+    private Label narrativeText = new Label();
     private ImageView selectedCharacterView = null;
     private Character selectedCharacter = null;
     Color selectedColor = Color.WHITE;
@@ -68,13 +70,11 @@ public class createGUI extends Application
     }
     public void createMainPane()
     {
-        leftBubble.setFitHeight(250);
+        leftBubble.setFitHeight(220);
         leftBubble.setFitWidth(290);
-        leftBubble.setPreserveRatio(true);
 
-        rightBubble.setFitWidth(250);
+        rightBubble.setFitHeight(220);
         rightBubble.setFitWidth(290);
-        rightBubble.setPreserveRatio(true);
 
         leftCharView.setFitHeight(300);
         leftCharView.setFitWidth(300);
@@ -106,9 +106,9 @@ public class createGUI extends Application
         StackPane leftBubbleWrapper = new StackPane(leftBubble, leftBubbleText);
         StackPane rightBubbleWrapper = new StackPane(rightBubble, rightBubbleText);
 
-        leftBubbleWrapper.setMaxSize(300, 250);
+        leftBubbleWrapper.setMaxSize(300, 220);
         leftBubbleWrapper.setAlignment(Pos.TOP_CENTER);
-        rightBubbleWrapper.setMaxSize(300, 250);
+        rightBubbleWrapper.setMaxSize(300, 220);
         rightBubbleWrapper.setAlignment(Pos.TOP_CENTER);
 
         StackPane.setMargin(leftBubbleText, new Insets(15, 0, 0,0));
@@ -117,41 +117,33 @@ public class createGUI extends Application
         bubbleTextStyle(leftBubbleText);
         bubbleTextStyle(rightBubbleText);
 
-        //Stack pane wrapper for top and bottom text
-        StackPane topTextBar = new StackPane(topText);
-        StackPane bottomTextBar = new StackPane(bottomText);
-
-        topTextBar.setMaxSize(300, 250);
-        topTextBar.setAlignment(Pos.TOP_CENTER);
-        bottomTextBar.setMaxSize(300, 250);
-        bottomTextBar.setAlignment(Pos.BOTTOM_CENTER);
-
-        GridPane mainPane = new GridPane();
         //(Node, colIndex, rowIndex, colSpan, rowSpan)
-        mainPane.add(topTextBar, 0, 0, 2, 1);
         mainPane.add(leftBubbleWrapper, 0,1,1,1);
         mainPane.add(rightBubbleWrapper, 2,1,1,1);
         mainPane.add(leftCharView, 0, 2, 1, 1);
         mainPane.add(rightCharView, 2, 2, 1, 1);
-        mainPane.add(bottomTextBar, 0, 3, 2, 1);
 
         GridPane.setValignment(leftBubbleWrapper, VPos.BOTTOM);
         GridPane.setValignment(rightBubbleWrapper, VPos.BOTTOM);
 
         mainPane.setStyle("-fx-background-color: white");
-        mainPane.setMaxSize(600, 600);
-        mainPane.setHgap(2);
-        mainPane.setVgap(2);
-        //mainPane.setGridLinesVisible(true);
+        mainPane.setPrefSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
+        mainPane.setMaxSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
+        mainPane.setHgap(5);
+        mainPane.setGridLinesVisible(true);
 
         RowConstraints row0 = new RowConstraints();
-        row0.setPercentHeight(10);
+        row0.setMaxHeight(40);
+        row0.setMinHeight(40);
         RowConstraints row1 = new RowConstraints();
-        row1.setPercentHeight(40);
+        //row1.setPercentHeight(35);
+        row1.setPrefHeight(220);
         RowConstraints row2 = new RowConstraints();
-        row2.setPercentHeight(40);
+        //row2.setPercentHeight(50);
+        row2.setPrefHeight(300);
         RowConstraints row3 = new RowConstraints();
-        row3.setPercentHeight(10);
+        row3.setMaxHeight(40);
+        row3.setMinHeight(40);
         mainPane.getRowConstraints().addAll(row0, row1, row2, row3);
 
         BorderPane.setAlignment(mainPane, Pos.CENTER);
@@ -166,6 +158,7 @@ public class createGUI extends Application
         hbox.setSpacing(15);
         hbox.setPadding(new Insets(5, 5, 5, 5));
         hbox.setStyle("-fx-background-color: #103859; -fx-border-color: #d4d4d4");
+        hbox.setMinHeight(160);
 
         ListView bottom1 = new ListView();
         bottom1.setStyle("-fx-border-color: black ;");
@@ -250,42 +243,6 @@ public class createGUI extends Application
             }
         });
 
-        Button rotateLeft = new Button();
-        buttonCommonStyles(rotateLeft);
-        rotateLeft.setGraphic(setButtonImg(40, "rotateLeft.png"));
-        rotateLeft.setOnAction(event ->{
-            if(selectedCharacter != null){
-                double rotate = selectedCharacterView.getRotate();
-                rotate -= 90;
-
-                if(rotate == 360.0 || rotate == -360.0){
-                    rotate = 0.0;
-                }
-                selectedCharacterView.setRotate(rotate);
-            }
-            else{
-                System.out.println("Select one of the characters on which you want to perform the operation");
-            }
-        });
-
-        Button rotateRight = new Button();
-        buttonCommonStyles(rotateRight);
-        rotateRight.setGraphic(setButtonImg(40, "rotateRight.png"));
-        rotateRight.setOnAction(event ->{
-            if(selectedCharacter != null){
-                double rotate = selectedCharacterView.getRotate();
-                rotate += 90;
-
-                if(rotate == 360.0 || rotate == -360.0){
-                    rotate = 0.0;
-                }
-                selectedCharacterView.setRotate(rotate);
-            }
-            else{
-                System.out.println("Select one of the characters on which you want to perform the operation");
-            }
-        });
-
         ColorPicker colorPalette = new ColorPicker();
         colorPalette.setMinHeight(40);
         colorPalette.setMinWidth(40);
@@ -346,7 +303,7 @@ public class createGUI extends Application
         speechBubble.setGraphic(setButtonImg(40, "speechBubbleButton.png"));
         speechBubble.setOnAction(actionEvent -> {
             if(selectedCharacter != null){
-                importBubble("speechBubble.png");
+                importBubble(SPEECH_BUBBLE_IMAGE);
             }
         });
 
@@ -355,7 +312,7 @@ public class createGUI extends Application
         thoughtBubble.setGraphic(setButtonImg(40, "thoughtBubbleButton.png"));
         thoughtBubble.setOnAction(actionEvent -> {
             if(selectedCharacter != null){
-                importBubble("thoughtBubble.png");
+                importBubble(THOUGHT_BUBBLE_IMAGE);
             }
         });
 
@@ -380,24 +337,21 @@ public class createGUI extends Application
 
         Button textTop = new Button();
         buttonCommonStyles(textTop);
-        textTop.setGraphic(setButtonImg(40, "text.png"));
+        textTop.setGraphic(setButtonImg(40, "narrativeTextTop.png"));
         textTop.setOnAction(actionEvent -> {
-            if(selectedCharacter != null){
-
-                importText();
-            }
+            System.out.println(mainPane.getWidth());
+            importText("TOP");
         });
 
         Button textBottom = new Button();
         buttonCommonStyles(textBottom);
-        textBottom.setGraphic(setButtonImg(40, "text.png"));
+        textBottom.setGraphic(setButtonImg(40, "narrativeTextBottom.png"));
         textBottom.setOnAction(actionEvent -> {
-            if(selectedCharacter != null){
-                importText();
-            }
+            importText("BOTTOM");
         });
 
-        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, lipsColor, speechBubble, thoughtBubble, removeBubble, textTop, textBottom);
+        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, genderSwap, changeSkinTone, changeHairColor,
+                lipsColor, speechBubble, thoughtBubble, removeBubble, textTop, textBottom);
 
         layout.setLeft(scrollPane);
     }
@@ -446,8 +400,8 @@ public class createGUI extends Application
         }
     }
 
-    private void importBubble(String type){
-        ImageView bubble = new ImageView("/resources/"+ type);
+    private void importBubble(Image bubbleImage){
+        ImageView bubble = new ImageView(bubbleImage);
         bubble.setFitWidth(30);
         bubble.setFitHeight(30);
         TextInputDialog textInput = new TextInputDialog();
@@ -474,14 +428,14 @@ public class createGUI extends Application
     }
 
     private void bubbleTextStyle(Label text){
+        text.setAlignment(Pos.CENTER);
         text.setWrapText(true);
         text.setPrefSize(250, 150);
-        text.setFont(Font.font("Arial", 20));
         text.setTextAlignment(TextAlignment.CENTER);
-        //text.setStyle("-fx-background-color: red");
+        text.setFont(Font.font("Arial", 18));
     }
 
-    private void importText() {
+    private void importText(String position) {
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Narrative Text");
         textInput.setHeaderText("Enter narrative text...");
@@ -489,7 +443,28 @@ public class createGUI extends Application
 
         if(textInput.getResult() != null){
             String text = textInput.getResult();
-            topText = new Label(text);
+            //text = (text.length() < 150 ? text : text.substring(0 , 150));
+            narrativeText.setText(text);
+            narrativeText.setAlignment(Pos.CENTER);
+            narrativeText.setWrapText(true);
+            narrativeText.setPrefSize(WORKING_PANE_WIDTH, 40);
+            narrativeText.setFont(Font.font("Arial", 18));
+
+            //if the given possition is bottom the the narrative text is placed at the bottom
+            //if there exists a narrative label in the grid then it is removed and the new one is added
+            //optional: set border top of bottom to improve aesthetics
+            if(position.toUpperCase() == "BOTTOM"){
+                //(Node, colIndex, rowIndex, colSpan, rowSpan)
+                mainPane.getChildren().remove(narrativeText);
+                narrativeText.setStyle("-fx-border-width: 1 0 0 0; -fx-border-color: black");
+                mainPane.add(narrativeText, 0, 3, 3, 1);
+            }
+            else{
+                //(Node, colIndex, rowIndex, colSpan, rowSpan)
+                mainPane.getChildren().remove(narrativeText);
+                narrativeText.setStyle("-fx-border-width: 0 0 1 0; -fx-border-color: black");
+                mainPane.add(narrativeText, 0, 0, 3, 1);
+            }
         }
     }
 //    public static void saveToFile(Image image) {

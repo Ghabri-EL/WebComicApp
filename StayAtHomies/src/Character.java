@@ -297,6 +297,7 @@ public class Character implements CharacterInterface
             }
         }
 
+        //the int parameters are used to optimize the anti aliasing correction
         this.maleHairMask = correctMaskEdges(maleHairMask, 4);
         //combined these two masks again as there were a lot of antialiasing artefacts in the female hair color
         // due to the difference in color and antialiasing
