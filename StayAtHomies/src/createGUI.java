@@ -33,6 +33,8 @@ public class createGUI extends Application
     private Image speechImage = new Image("/resources/speechBubble.png");
     private Label leftBubbleText = new Label();
     private Label rightBubbleText = new Label();
+    private Label topText = new Label();
+    private Label bottomText = new Label();
     private ImageView selectedCharacterView = null;
     private Character selectedCharacter = null;
     Color selectedColor = Color.WHITE;
@@ -115,12 +117,23 @@ public class createGUI extends Application
         bubbleTextStyle(leftBubbleText);
         bubbleTextStyle(rightBubbleText);
 
+        //Stack pane wrapper for top and bottom text
+        StackPane topTextBar = new StackPane(topText);
+        StackPane bottomTextBar = new StackPane(bottomText);
+
+        topTextBar.setMaxSize(300, 250);
+        topTextBar.setAlignment(Pos.TOP_CENTER);
+        bottomTextBar.setMaxSize(300, 250);
+        bottomTextBar.setAlignment(Pos.BOTTOM_CENTER);
+
         GridPane mainPane = new GridPane();
         //(Node, colIndex, rowIndex, colSpan, rowSpan)
-        mainPane.add(leftBubbleWrapper, 0,0,1,1);
-        mainPane.add(rightBubbleWrapper, 1,0,1,1);
-        mainPane.add(leftCharView, 0, 1, 1, 1);
-        mainPane.add(rightCharView, 1, 1, 1, 1);
+        mainPane.add(topTextBar, 0, 0, 2, 1);
+        mainPane.add(leftBubbleWrapper, 0,1,1,1);
+        mainPane.add(rightBubbleWrapper, 2,1,1,1);
+        mainPane.add(leftCharView, 0, 2, 1, 1);
+        mainPane.add(rightCharView, 2, 2, 1, 1);
+        mainPane.add(bottomTextBar, 0, 3, 2, 1);
 
         GridPane.setValignment(leftBubbleWrapper, VPos.BOTTOM);
         GridPane.setValignment(rightBubbleWrapper, VPos.BOTTOM);
@@ -132,10 +145,14 @@ public class createGUI extends Application
         //mainPane.setGridLinesVisible(true);
 
         RowConstraints row0 = new RowConstraints();
-        row0.setPercentHeight(50);
+        row0.setPercentHeight(10);
         RowConstraints row1 = new RowConstraints();
-        row1.setPercentHeight(50);
-        mainPane.getRowConstraints().addAll(row0, row1);
+        row1.setPercentHeight(40);
+        RowConstraints row2 = new RowConstraints();
+        row2.setPercentHeight(40);
+        RowConstraints row3 = new RowConstraints();
+        row3.setPercentHeight(10);
+        mainPane.getRowConstraints().addAll(row0, row1, row2, row3);
 
         BorderPane.setAlignment(mainPane, Pos.CENTER);
         BorderPane.setMargin(mainPane, new Insets(10, 10, 10, 10));
@@ -361,7 +378,26 @@ public class createGUI extends Application
             }
         });
 
-        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, lipsColor, speechBubble, thoughtBubble, removeBubble);
+        Button textTop = new Button();
+        buttonCommonStyles(textTop);
+        textTop.setGraphic(setButtonImg(40, "text.png"));
+        textTop.setOnAction(actionEvent -> {
+            if(selectedCharacter != null){
+                
+                importText();
+            }
+        });
+
+        Button textBottom = new Button();
+        buttonCommonStyles(textBottom);
+        textBottom.setGraphic(setButtonImg(40, "text.png"));
+        textBottom.setOnAction(actionEvent -> {
+            if(selectedCharacter != null){
+                importText();
+            }
+        });
+
+        vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, rotateLeft, rotateRight, genderSwap, changeSkinTone, changeHairColor, lipsColor, speechBubble, thoughtBubble, removeBubble, textTop, textBottom);
 
         layout.setLeft(scrollPane);
     }
@@ -443,6 +479,13 @@ public class createGUI extends Application
         text.setFont(Font.font("Arial", 20));
         text.setTextAlignment(TextAlignment.CENTER);
         //text.setStyle("-fx-background-color: red");
+    }
+
+    private void importText() {
+        TextInputDialog textInput = new TextInputDialog();
+        textInput.setTitle("Narrative Text");
+        textInput.setHeaderText("Enter narrative text...");
+        textInput.showAndWait();
     }
 //    public static void saveToFile(Image image) {
 //        File outputFile = new File("../image.png");
