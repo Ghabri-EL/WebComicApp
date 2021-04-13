@@ -6,6 +6,7 @@ public class Panels
     private Label narratorText;
     private Label leftBubbleText;
     private Label rightBubbleText;
+    private int id;
 
     public Character getLeft() {
         return left;
@@ -45,5 +46,13 @@ public class Panels
 
     public void setRightBubbleText(Label rightBubbleText) {
         this.rightBubbleText = rightBubbleText;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

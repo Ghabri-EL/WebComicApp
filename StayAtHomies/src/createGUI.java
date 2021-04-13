@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.*;
@@ -45,6 +46,7 @@ public class createGUI extends Application
     Character characterLeft = null;
     Character characterRight = null;
     private ArrayList<Panels> panelList = new ArrayList<Panels>();
+    ImageView bottom1 = new ImageView();
 
 
     public static void main(String[] args)
@@ -164,14 +166,15 @@ public class createGUI extends Application
         hbox.setStyle("-fx-background-color: #103859; -fx-border-color: #d4d4d4");
         hbox.setMinHeight(160);
 
-        ListView bottom1 = new ListView();
         bottom1.setStyle("-fx-border-color: black ;");
-        bottom1.setPrefWidth(150);
-        bottom1.setPrefHeight(150);
+        bottom1.setFitHeight(150);
+        bottom1.setFitWidth(150);
+
         ListView bottom2 = new ListView();
         bottom2.setStyle("-fx-border-color: black ;");
         bottom2.setPrefWidth(150);
         bottom2.setPrefHeight(150);
+
         ListView bottom3 = new ListView();
         bottom3.setStyle("-fx-border-color: black ;");
         bottom3.setPrefWidth(150);
@@ -358,6 +361,9 @@ public class createGUI extends Application
         buttonCommonStyles(panelSave);
         panelSave.setGraphic(setButtonImg(40, "panelSave.png"));
         panelSave.setOnAction(actionEvent -> {
+            WritableImage image = mainPane.snapshot(new SnapshotParameters(), null);
+            bottom1.setImage(image);
+
             createNewPanel(characterLeft,characterRight,leftBubbleText,rightBubbleText,narrativeText);
         });
 
