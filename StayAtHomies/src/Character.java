@@ -1,6 +1,6 @@
 import javafx.scene.paint.Color;
 import javafx.scene.image.*;
-
+//Character.java represents the Model of our MVC
 public class Character implements CharacterInterface
 {
     private enum Gender{FEMALE, MALE}

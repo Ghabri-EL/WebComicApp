@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
+//createGUI.java represents the View of our MVC
 public class createGUI extends Application
 {
     private final double WORKING_PANE_WIDTH = 610;
@@ -42,6 +42,7 @@ public class createGUI extends Application
     Color selectedColor = Color.WHITE;
     Character characterLeft = null;
     Character characterRight = null;
+    private Panels panelList;
 
     public static void main(String[] args)
     {
@@ -350,8 +351,16 @@ public class createGUI extends Application
             importText("BOTTOM");
         });
 
+        Button panelSave = new Button();
+        buttonCommonStyles(panelSave);
+        panelSave.setGraphic(setButtonImg(40, "panelSave.png"));
+        panelSave.setOnAction(actionEvent -> {
+
+        });
+
+
         vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, genderSwap, changeSkinTone, changeHairColor,
-                lipsColor, speechBubble, thoughtBubble, removeBubble, textTop, textBottom);
+                lipsColor, speechBubble, thoughtBubble, removeBubble, textTop, textBottom, panelSave);
 
         layout.setLeft(scrollPane);
     }
