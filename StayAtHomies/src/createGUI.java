@@ -19,6 +19,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
 //createGUI.java represents the View of our MVC
 public class createGUI extends Application
 {
@@ -42,7 +44,8 @@ public class createGUI extends Application
     Color selectedColor = Color.WHITE;
     Character characterLeft = null;
     Character characterRight = null;
-    private Panels panelList;
+    private ArrayList<Panels> panelList = new ArrayList<Panels>();
+
 
     public static void main(String[] args)
     {
@@ -355,12 +358,27 @@ public class createGUI extends Application
         buttonCommonStyles(panelSave);
         panelSave.setGraphic(setButtonImg(40, "panelSave.png"));
         panelSave.setOnAction(actionEvent -> {
+            createNewPanel(characterLeft,characterRight,leftBubbleText,rightBubbleText,narrativeText);
+        });
+
+        Button panelLoad = new Button();
+        buttonCommonStyles(panelLoad);
+        panelLoad.setGraphic(setButtonImg(40, "loadPanel.png"));
+        panelLoad.setOnAction(actionEvent ->
+        {
+
+        });
+        Button panelRemove = new Button();
+        buttonCommonStyles(panelRemove);
+        panelRemove.setGraphic(setButtonImg(40, "removePanel.png"));
+        panelRemove.setOnAction(actionEvent ->
+        {
 
         });
 
 
         vbox.getChildren().addAll(colorPalette, importLeftChar, importRightChar, flip, genderSwap, changeSkinTone, changeHairColor,
-                lipsColor, speechBubble, thoughtBubble, removeBubble, textTop, textBottom, panelSave);
+                lipsColor, speechBubble, thoughtBubble, removeBubble, textTop, textBottom, panelSave, panelLoad, panelRemove);
 
         layout.setLeft(scrollPane);
     }
@@ -442,6 +460,31 @@ public class createGUI extends Application
         text.setPrefSize(250, 150);
         text.setTextAlignment(TextAlignment.CENTER);
         text.setFont(Font.font("Arial", 18));
+    }
+
+    private void createNewPanel(Character left, Character right, Label leftBubbleText, Label rightBubbleText, Label narrativeText)
+    {
+        Panels newPanel = new Panels();
+        newPanel.setLeft(left);
+        newPanel.setRight(right);
+        newPanel.setLeftBubbleText(leftBubbleText);
+        newPanel.setRightBubbleText(rightBubbleText);
+        newPanel.setNarratorText(narrativeText);
+        addPanelToList(newPanel);
+    }
+    private void addPanelToList(Panels panel)
+    {
+        panelList.add(panel);
+        System.out.println("PANEL SAVED");
+        System.out.println(panelList);
+    }
+    private void loadPanelFromList(Panels panel)
+    {
+
+    }
+    private void removePanelFromList(Panels panel)
+    {
+        panelList.remove(panel);
     }
 
     private void importText(String position) {
