@@ -136,7 +136,7 @@ public class createGUI extends Application
         mainPane.setPrefSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setMaxSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setHgap(5);
-        mainPane.setGridLinesVisible(true);
+        //mainPane.setGridLinesVisible(true);
 
         RowConstraints row0 = new RowConstraints();
         row0.setMaxHeight(40);
@@ -222,6 +222,7 @@ public class createGUI extends Application
         scrollPane.setFitToHeight(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setPannable(true);
 
         Button importLeftChar = new Button();
         buttonCommonStyles(importLeftChar);
