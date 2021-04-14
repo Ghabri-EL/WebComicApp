@@ -39,7 +39,8 @@ public class createGUI extends Application
     private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
     private Label leftBubbleText = new Label();
     private Label rightBubbleText = new Label();
-    private Label narrativeText = new Label();
+    private Label topNarrativeText = new Label();
+    private Label bottomNarrativeText = new Label();
     private ImageView selectedCharacterView = null;
     private Character selectedCharacter = null;
     Color selectedColor = Color.WHITE;
@@ -347,15 +348,18 @@ public class createGUI extends Application
         buttonCommonStyles(textTop);
         textTop.setGraphic(setButtonImg(40, "narrativeTextTop.png"));
         textTop.setOnAction(actionEvent -> {
-            System.out.println(mainPane.getWidth());
-            importText("TOP");
+            if(selectedCharacter != null){
+                importText("TOP");
+            }
         });
 
         Button textBottom = new Button();
         buttonCommonStyles(textBottom);
         textBottom.setGraphic(setButtonImg(40, "narrativeTextBottom.png"));
         textBottom.setOnAction(actionEvent -> {
-            importText("BOTTOM");
+            if(selectedCharacter != null){
+                importText("BOTTOM");
+            }
         });
 
         Button panelSave = new Button();
@@ -365,7 +369,7 @@ public class createGUI extends Application
             WritableImage image = mainPane.snapshot(new SnapshotParameters(), null);
             bottom1.setImage(image);
 
-            createNewPanel(characterLeft,characterRight,leftBubbleText,rightBubbleText,narrativeText);
+            //createNewPanel(characterLeft,characterRight,leftBubbleText,rightBubbleText,narrativeText);
         });
 
         Button panelLoad = new Button();
@@ -502,30 +506,31 @@ public class createGUI extends Application
 
         if(textInput.getResult() != null){
             String text = textInput.getResult();
-            //text = (text.length() < 150 ? text : text.substring(0 , 150));
-            narrativeText.setText(text);
-            narrativeText.setAlignment(Pos.CENTER);
-            narrativeText.setWrapText(true);
-            narrativeText.setPrefSize(WORKING_PANE_WIDTH, 40);
-            narrativeText.setFont(Font.font("Arial", 18));
+            //text = (text.length() < 150 ? text : text.substring(0 , 150))
 
             //if the given possition is bottom the the narrative text is placed at the bottom
             //if there exists a narrative label in the grid then it is removed and the new one is added
             //optional: set border top of bottom to improve aesthetics
             if(position.toUpperCase() == "BOTTOM"){
-                //(Node, colIndex, rowIndex, colSpan, rowSpan)
-                mainPane.getChildren().remove(narrativeText);
-                narrativeText.setStyle("-fx-border-width: 1 0 0 0; -fx-border-color: black");
-                mainPane.add(narrativeText, 0, 3, 3, 1);
+                topNarrativeText.setText(text);
+                narrativeTextStyle(topNarrativeText);
+                mainPane.add(topNarrativeText, 0, 3, 3, 1);
             }
             else{
-                //(Node, colIndex, rowIndex, colSpan, rowSpan)
-                mainPane.getChildren().remove(narrativeText);
-                narrativeText.setStyle("-fx-border-width: 0 0 1 0; -fx-border-color: black");
-                mainPane.add(narrativeText, 0, 0, 3, 1);
+                bottomNarrativeText.setText(text);
+                narrativeTextStyle(bottomNarrativeText);
+                mainPane.add(bottomNarrativeText, 0, 0, 3, 1);
             }
         }
     }
+
+    private void narrativeTextStyle(Label narrativeText){
+        narrativeText.setAlignment(Pos.CENTER);
+        narrativeText.setWrapText(true);
+        narrativeText.setPrefSize(WORKING_PANE_WIDTH, 40);
+        narrativeText.setFont(Font.font("Arial", 18));
+    }
+
 //    public static void saveToFile(Image image) {
 //        File outputFile = new File("../image.png");
 //        BufferedImage buffImage = SwingFXUtils.fromFXImage(image, null);

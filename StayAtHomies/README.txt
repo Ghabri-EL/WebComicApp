@@ -72,3 +72,16 @@ Gabriel: 34%
 Daiana: 33%
 Ryan: 0%
 
+=== Story 9 & 10 ===
+
+How to execute :
+-Command to execute : java -jar StayAtHomies.jar
+-Required to execute: JDK version 13 or above
+
+Story 9 :
+Once a character is selected , use the 12th button down on the left hand side bar which will bring up a popup . Insert the text you wish to add
+at the TOP of the pannel .
+
+Story 10 :
+Once a character is selected , use the 13th button down from the left hand side bar which will bring up a popup . Insert the text you wish to add
+at the BOTTOM of the pannel .
