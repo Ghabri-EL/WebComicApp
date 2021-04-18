@@ -1,7 +1,7 @@
-public class RunHome
+public class ExecuteApp
 {
     public static void main(String []args)
     {
-        createGUI.main(args);
+        Main.main(args);
     }
 }

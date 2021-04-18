@@ -1,11 +1,14 @@
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+
 public class Panels
 {
     private Character left;
     private Character right;
-    private Label narratorText;
-    private Label leftBubbleText;
-    private Label rightBubbleText;
+    private String narratorText;
+    private String leftBubbleText;
+    private String rightBubbleText;
+    private Image panelShot;
     private int id;
 
     public Character getLeft() {
@@ -24,28 +27,36 @@ public class Panels
         this.right = right;
     }
 
-    public Label getNarratorText() {
+    public String getNarratorText() {
         return narratorText;
     }
 
-    public void setNarratorText(Label narratorText) {
+    public void setNarratorText(String narratorText) {
         this.narratorText = narratorText;
     }
 
-    public Label getLeftBubbleText() {
+    public String getLeftBubbleText() {
         return leftBubbleText;
     }
 
-    public void setLeftBubbleText(Label leftBubbleText) {
+    public void setLeftBubbleText(String leftBubbleText) {
         this.leftBubbleText = leftBubbleText;
     }
 
-    public Label getRightBubbleText() {
+    public String getRightBubbleText() {
         return rightBubbleText;
     }
 
-    public void setRightBubbleText(Label rightBubbleText) {
+    public void setRightBubbleText(String rightBubbleText) {
         this.rightBubbleText = rightBubbleText;
+    }
+
+    public Image getPanelShot() {
+        return panelShot;
+    }
+
+    public void setPanelShot(Image panelShot) {
+        this.panelShot = panelShot;
     }
 
     public int getId() {

@@ -7,6 +7,8 @@ public interface CharacterInterface {
     Color DEFAULT_SKIN_COLOR = Color.web("0xffe8d8ff");
     Color DEFAULT_LIPS_COLOR = Color.web("0xff0000ff");
     Color DEFAULT_RIBBON_COLOR = Color.web("0xecb4b5ff");
+    enum Gender{FEMALE, MALE}
+    enum Direction{LEFT, RIGHT}
 
     public void flipImage();
     public void switchGenders();

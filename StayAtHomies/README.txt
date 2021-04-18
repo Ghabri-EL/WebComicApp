@@ -72,7 +72,7 @@ Gabriel: 34%
 Daiana: 33%
 Ryan: 0%
 
-=== Story 9 & 10 ===
+=== Sprint 5: Story 9 & 10 ===
 
 How to execute :
 -Command to execute : java -jar StayAtHomies.jar
@@ -80,8 +80,8 @@ How to execute :
 
 Story 9 :
 Once a character is selected , use the 12th button down on the left hand side bar which will bring up a popup . Insert the text you wish to add
-at the TOP of the pannel .
+at the TOP of the panel .
 
 Story 10 :
 Once a character is selected , use the 13th button down from the left hand side bar which will bring up a popup . Insert the text you wish to add
-at the BOTTOM of the pannel .
+at the BOTTOM of the panel.

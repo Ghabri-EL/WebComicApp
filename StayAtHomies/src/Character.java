@@ -1,11 +1,8 @@
 import javafx.scene.paint.Color;
 import javafx.scene.image.*;
-//Character.java represents the Model of our MVC
+
 public class Character implements CharacterInterface
 {
-    private enum Gender{FEMALE, MALE}
-    private enum Direction{LEFT, RIGHT}
-
     private Color hair;
     private Color lips;
     private Color skin;
@@ -218,7 +215,7 @@ public class Character implements CharacterInterface
         characterImage = newImage;
     }
 
-    public void lipsColor(Color lipsColor){
+    public void changeLipsColor(Color lipsColor){
         if(gender == Gender.FEMALE){
 
             int width = (int)characterImage.getWidth();
@@ -383,3 +380,4 @@ public class Character implements CharacterInterface
         return newMask;
     }
 }
+
