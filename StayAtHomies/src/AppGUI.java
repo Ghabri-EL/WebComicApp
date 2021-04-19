@@ -187,9 +187,9 @@ public class AppGUI
         Menu viewTopBar = new Menu("View");
         Menu configureTopBar = new Menu("Configure");
 
-        fileTopBar.getItems().add(new MenuItem("FileOption1"));
-        fileTopBar.getItems().add(new MenuItem("FileOption2"));
-        fileTopBar.getItems().add(new MenuItem("FileOption3"));
+        fileTopBar.getItems().add(new MenuItem("Save Panel"));
+        fileTopBar.getItems().add(new MenuItem("Load Panel"));
+        fileTopBar.getItems().add(new MenuItem("Delete Panel"));
 
         viewTopBar.getItems().add(new MenuItem("ViewOption1"));
         viewTopBar.getItems().add(new MenuItem("ViewOption2"));
@@ -280,11 +280,6 @@ public class AppGUI
         panelSave = new Button();
         buttonCommonStyles(panelSave);
         panelSave.setGraphic(setButtonImg(40, "panelSave.png"));
-        panelSave.setOnAction(actionEvent -> {
-            WritableImage image = mainPane.snapshot(new SnapshotParameters(), null);
-            //bottom1.setImage(image);
-            //createNewPanel(characterLeft,characterRight,leftBubbleText,rightBubbleText,narrativeText);
-        });
 
         leftBarButtonsWrapper.getChildren().addAll(colorPalette, importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
                 changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton, panelSave);
@@ -427,14 +422,15 @@ public class AppGUI
         narrativeText.setFont(Font.font("Arial", 18));
     }
 
-    private void createNewPanel(Character left, Character right, Label leftBubbleText, Label rightBubbleText, Label narrativeText)
+    private void createNewPanel(Character left, Character right, Label leftBubbleText, Label rightBubbleText, Label narrativeTextTop, Label narrativeTextBottom)
     {
         Panels newPanel = new Panels();
         newPanel.setLeft(left);
         newPanel.setRight(right);
         newPanel.setLeftBubbleText(leftBubbleText.getText());
         newPanel.setRightBubbleText(rightBubbleText.getText());
-        newPanel.setNarratorText(narrativeText.getText());
+        newPanel.setNarratorTextTop(narrativeTextTop.getText());
+        newPanel.setNarratorTextBottom(narrativeTextBottom.getText());
         addPanelToList(newPanel);
     }
     private void addPanelToList(Panels panel)

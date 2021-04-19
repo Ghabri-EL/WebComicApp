@@ -1,5 +1,7 @@
 import javafx.event.EventHandler;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 
 //Controller.java represents the Controller following the MVC pattern
@@ -182,7 +184,9 @@ public class Controller {
        });
 
        view.getPanelSave().setOnAction(actionEvent -> {
-
+//           WritableImage image = mainPane.snapshot(new SnapshotParameters(), null);
+//           bottom1.setImage(image);
+//           view.createNewPanel(characterLeft,characterRight,leftBubbleText,rightBubbleText,narrativeTextTop, narrativeTextBottom);
        });
    }
 

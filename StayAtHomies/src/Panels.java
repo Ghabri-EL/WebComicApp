@@ -5,7 +5,8 @@ public class Panels
 {
     private Character left;
     private Character right;
-    private String narratorText;
+    private String narratorTextTop;
+    private String narratorTextBottom;
     private String leftBubbleText;
     private String rightBubbleText;
     private Image panelShot;
@@ -27,12 +28,20 @@ public class Panels
         this.right = right;
     }
 
-    public String getNarratorText() {
-        return narratorText;
+    public String getNarratorTextTop() {
+        return narratorTextTop;
     }
 
-    public void setNarratorText(String narratorText) {
-        this.narratorText = narratorText;
+    public void setNarratorTextTop(String narratorTextTop) {
+        this.narratorTextTop = narratorTextTop;
+    }
+
+    public String getNarratorTextBottom() {
+        return narratorTextBottom;
+    }
+
+    public void setNarratorTextBottom(String narratorTextBottom) {
+        this.narratorTextBottom = narratorTextBottom;
     }
 
     public String getLeftBubbleText() {
