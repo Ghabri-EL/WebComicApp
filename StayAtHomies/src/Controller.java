@@ -29,7 +29,7 @@ public class Controller {
        view.getAddTextTopButton().setOnAction(actionEvent -> addNarrativeTextTopEvent());
        view.getAddTextBottomButton().setOnAction(actionEvent -> addNarrativeTextBottomEvent());
        view.getPanelMenuSave().setOnAction(actionEvent -> savePanelEvent());
-       view.getPanelMenuNew().setOnAction(event -> resetPanelEvent());
+       view.getPanelMenuNew().setOnAction(event -> resetWorkingPaneEvent());
        view.getPanelMenuDelete().setOnAction(event -> deletePanel());
    }
 
@@ -57,14 +57,7 @@ public class Controller {
            Character character = new Character(charImage, pose);
            comixApp.setCharacterLeft(character);
            view.getLeftCharView().setImage(character.getCharacterImage());
-
-           //if the selected character was the left character and a new one was imported
-           //then set the new model to selected
-           if(comixApp.isCharacterSelected()){
-               if(comixApp.getSelectedCharacter() != comixApp.getCharacterRight()){
-                   comixApp.setSelectedCharacter(character);
-               }
-           }
+           comixApp.refreshSelectedCharacter();
        }
    }
 
@@ -76,19 +69,15 @@ public class Controller {
            Character character = new Character(charImage, pose);
            comixApp.setCharacterRight(character);
            view.getRightCharView().setImage(character.getCharacterImage());
-
-           if(comixApp.isCharacterSelected()){
-               if(comixApp.getSelectedCharacter() != comixApp.getCharacterLeft()){
-                   comixApp.setSelectedCharacter(character);
-               }
-           }
+           comixApp.refreshSelectedCharacter();
        }
    }
 
    private void flipCharacterEvent(){
        if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
-           comixApp.getSelectedCharacter().flipImage();
-           Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
+           Character selectedCharacter = comixApp.getSelectedCharacter();
+           selectedCharacter.flipImage();
+           Image newCharImage = selectedCharacter.getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
        }
        else{
@@ -120,8 +109,9 @@ public class Controller {
 
    private void changeHairColorEvent(){
        if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
-           comixApp.getSelectedCharacter().hairChange(view.getSelectedColor());
-           Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
+           Character selectedCharacter = comixApp.getSelectedCharacter();
+           selectedCharacter.hairChange(view.getSelectedColor());
+           Image newCharImage = selectedCharacter.getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
        }
        else{
@@ -131,8 +121,9 @@ public class Controller {
 
    private void changeLipsColorEvent(){
        if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
-           comixApp.getSelectedCharacter().changeLipsColor(view.getSelectedColor());
-           Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
+           Character selectedCharacter = comixApp.getSelectedCharacter();
+           selectedCharacter.changeLipsColor(view.getSelectedColor());
+           Image newCharImage = selectedCharacter.getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
        }
        else{
@@ -172,13 +163,13 @@ public class Controller {
        if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
            if(view.getSelectedCharacterView() == view.getLeftCharView()){
                view.getLeftBubble().setImage(null);
-               view.getLeftBubbleText().setText("");
+               view.getLeftBubbleText().setText(null);
            }
            else{
                view.getRightBubble().setImage(null);
-               view.getRightBubbleText().setText("");
+               view.getRightBubbleText().setText(null);
            }
-           comixApp.setBubbleText("");
+           comixApp.setBubbleText(null);
            comixApp.setBubbleType(BubbleType.NONE);
        }
        else{
@@ -232,7 +223,7 @@ public class Controller {
        panel.setPanelId(id);
        addPanelEventHandler(panel);
        view.addPanelToStrip(panel);
-       resetPanelEvent();
+       resetWorkingPaneEvent();
    }
 
    private void editExistingPanel(){
@@ -245,26 +236,35 @@ public class Controller {
        comixApp.editPanel(id, basePanel);
    }
 
-   private void resetPanelEvent(){
+   private void resetWorkingPaneEvent(){
        comixApp.resetWorkingSpace();
        view.resetWorkingPane();
    }
 
+   //selects
    private void addPanelEventHandler(PanelView panel){
        panel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
            view.selectPanel(panel);
-           Panel backEndPanel = comixApp.getComixStrip().getPanel(panel.getPanelId());
-           Character leftChar = backEndPanel.getCharacterLeft();
-           Character rightChar = backEndPanel.getCharacterRight();
+           System.out.println("View Panel ID: " + panel.getPanelId());
+            loadSelectedPanel(panel.getPanelId());
+           mouseEvent.consume();
+       });
+   }
 
-           comixApp.loadSelectedPanel(backEndPanel);
+   private void loadSelectedPanel(int id){
+       boolean loaded = comixApp.loadSelectedPanel(id);
+
+       if(loaded){
+           Character leftChar = comixApp.getCharacterLeft();
+           Character rightChar = comixApp.getCharacterRight();
+           System.out.println("Base Panel ID: " + comixApp.getId());
+
            //parameters: Image leftCharacter, Image rightCharacter, BubbleType leftBubbleType, BubbleType rightBubbleType,
            //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
            view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), leftChar.getBubbleType(),
                    rightChar.getBubbleType(), leftChar.getBubbleText(), rightChar.getBubbleText(),
-                   backEndPanel.getNarrativeTextTop(), backEndPanel.getNarrativeTextBottom());
-           mouseEvent.consume();
-       });
+                   comixApp.getNarrativeTextTop(), comixApp.getNarrativeTextBottom());
+       }
    }
 
    private void deletePanel(){

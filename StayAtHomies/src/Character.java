@@ -394,5 +394,17 @@ public class Character implements CharacterInterface
         }
         return newMask;
     }
+
+    public Character clone(){
+        Character character = new Character(characterImage, pose);
+        character.setHair(hair);
+        character.setLips(lips);
+        character.setSkin(skin);
+        character.setGender(gender);
+        character.setDirection(direction);
+        character.setBubbleText(bubbleText);
+        character.setBubbleType(bubbleType);
+        return character;
+    }
 }
 

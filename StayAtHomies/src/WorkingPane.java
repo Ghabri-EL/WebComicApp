@@ -5,17 +5,25 @@ public abstract class WorkingPane {
     private Image panelShot;
     private Character characterLeft;
     private Character characterRight;
+    private String leftBubbleText;
+    private String rightBubbleText;
+    private BubbleType leftBubbleType;
+    private BubbleType rightBubbleType;
     private String narrativeTextTop;
     private String narrativeTextBottom;
 
     public WorkingPane(){};
 
-    public WorkingPane(int id, Image panelShot, Character characterLeft, Character characterRight,
-                       String narrativeTextTop, String narrativeTextBottom){
+    public WorkingPane(int id, Image panelShot, Character characterLeft, Character characterRight, String leftBubbleText, String rightBubbleText,
+                       BubbleType leftBubbleType, BubbleType rightBubbleType, String narrativeTextTop, String narrativeTextBottom){
         this.id = id;
         this.panelShot = panelShot;
         this.characterLeft = characterLeft;
         this.characterRight = characterRight;
+        this.leftBubbleText = leftBubbleText;
+        this.rightBubbleText = rightBubbleText;
+        this.leftBubbleType = leftBubbleType;
+        this.rightBubbleType = rightBubbleType;
         this.narrativeTextTop = narrativeTextTop;
         this.narrativeTextBottom = narrativeTextBottom;
     }
@@ -50,6 +58,38 @@ public abstract class WorkingPane {
 
     public void setCharacterRight(Character characterRight) {
         this.characterRight = characterRight;
+    }
+
+    public String getLeftBubbleText() {
+        return leftBubbleText;
+    }
+
+    public void setLeftBubbleText(String leftBubbleText) {
+        this.leftBubbleText = leftBubbleText;
+    }
+
+    public String getRightBubbleText() {
+        return rightBubbleText;
+    }
+
+    public void setRightBubbleText(String rightBubbleText) {
+        this.rightBubbleText = rightBubbleText;
+    }
+
+    public BubbleType getLeftBubbleType() {
+        return leftBubbleType;
+    }
+
+    public void setLeftBubbleType(BubbleType leftBubbleType) {
+        this.leftBubbleType = leftBubbleType;
+    }
+
+    public BubbleType getRightBubbleType() {
+        return rightBubbleType;
+    }
+
+    public void setRightBubbleType(BubbleType rightBubbleType) {
+        this.rightBubbleType = rightBubbleType;
     }
 
     public String getNarrativeTextTop() {
