@@ -14,13 +14,15 @@ public class Character implements CharacterInterface
     private Image lipsMask;
     private Image skinMask;
     private String bubbleText = "";
+    private String pose;
 
-    public Character(Image characterImage){
+    public Character(Image characterImage, String pose){
         this.skin = DEFAULT_SKIN_COLOR;
         this.gender = Gender.FEMALE;
         this.hair = DEFAULT_FEMALE_HAIR_COLOR;
         this.lips = DEFAULT_LIPS_COLOR;
         this.direction = Direction.RIGHT;
+        this.pose = pose;
         setCharacterImage(characterImage);
     }
 

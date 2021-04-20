@@ -2,6 +2,8 @@ import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
+import java.io.File;
+
 //Controller.java represents the Controller following the MVC pattern
 public class Controller {
    private ComixApp comixApp;
@@ -28,9 +30,11 @@ public class Controller {
        view.setSelectingHandler(leftViewEvent, rightViewEvent);
 
        view.getImportLeftCharButton().setOnAction(actionEvent -> {
-           Image charImage = view.importModel();
-           if(charImage != null){
-               Character character = new Character(charImage);
+           File imageFile = view.importModel();
+           if(imageFile != null){
+               Image charImage = new Image(imageFile.toURI().toString());
+               String pose = imageFile.getName();
+               Character character = new Character(charImage, pose);
                comixApp.setCharacterLeft(character);
                view.getLeftCharView().setImage(character.getCharacterImage());
 
@@ -45,9 +49,12 @@ public class Controller {
        });
 
        view.getImportRightCharButton().setOnAction(actionEvent -> {
-           Image charImage = view.importModel();
-           if(charImage != null){
-               Character character = new Character(charImage);
+           File imageFile = view.importModel();
+
+           if(imageFile != null){
+               Image charImage = new Image(imageFile.toURI().toString());
+               String pose = imageFile.getName();
+               Character character = new Character(charImage, pose);
                comixApp.setCharacterRight(character);
                view.getRightCharView().setImage(character.getCharacterImage());
 
@@ -119,7 +126,7 @@ public class Controller {
                String bubbleText;
                bubbleText = view.importSpeechBubble();
                if(bubbleText != null){
-                   comixApp.getSelectedCharacter().setBubbleText(bubbleText);
+                   comixApp.setBubbleText(bubbleText);
                }
            }
            else{
@@ -132,7 +139,7 @@ public class Controller {
                String bubbleText;
                bubbleText = view.importThoughtBubble();
                if(bubbleText != null){
-                   comixApp.getSelectedCharacter().setBubbleText(bubbleText);
+                   comixApp.setBubbleText(bubbleText);
                }
            }
            else{
@@ -150,7 +157,7 @@ public class Controller {
                    view.getRightBubble().setImage(null);
                    view.getRightBubbleText().setText("");
                }
-               comixApp.getSelectedCharacter().setBubbleText("");
+               comixApp.setBubbleText("");
            }
            else{
                notSelectedMsg();
@@ -181,8 +188,13 @@ public class Controller {
            }
        });
 
-       view.getPanelSave().setOnAction(actionEvent -> {
-
+       view.getPanelMenuSave().setOnAction(actionEvent -> {
+           int id = comixApp.generateId();
+           PanelView panel = view.createPanel();
+           comixApp.setPanelShot(panel.getImage());
+           comixApp.createPanel();
+           panel.setPanelId(id);
+           view.addPanelToStrip(panel);
        });
    }
 

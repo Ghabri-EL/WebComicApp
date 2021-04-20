@@ -1,13 +1,17 @@
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -26,6 +30,8 @@ public class AppGUI
     private final double BUBBLE_WIDTH = 290;
     private final double BUBBLE_HEIGHT = 220;
     private final double CHARACTER_VIEW_SIZE = 300;
+    private final double COMIX_STRIP_PANE_HEIGHT = 160;
+    private final String APP_THEME_COLOR = "#103859";
     private final Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
     private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
 
@@ -43,7 +49,7 @@ public class AppGUI
     private Label bottomNarrativeText = new Label();
     private ImageView selectedCharacterView = null;
     private Color selectedColor = Color.WHITE;
-    ImageView panelOne = new ImageView();
+    private HBox comixStrip;
 
     //SIDE BUTTONS
     private ColorPicker colorPalette;
@@ -59,7 +65,22 @@ public class AppGUI
     private Button removeBubbleButton;
     private Button addTextTopButton;
     private Button addTextBottomButton;
-    private Button panelSave;
+
+    //TOP BAR MENU BUTTONS
+    private Menu fileMenu;
+    private Menu viewMenu;
+    private Menu panelMenu;
+
+    //MENU OPTIONS
+    private MenuItem fileMenuOne = new MenuItem("Load");
+    private MenuItem fileMenuTwo = new MenuItem("Save");
+    private MenuItem fileMenuThree = new MenuItem("FileOption");
+    private MenuItem viewMenuOne = new MenuItem("Option1");
+    private MenuItem viewMenuTwo = new MenuItem("Option2");
+    private MenuItem viewMenuThree = new MenuItem("Option3");
+    private MenuItem panelMenuSave = new MenuItem("Save");
+    private MenuItem panelMenuDelete = new MenuItem("Delete");
+    private MenuItem panelMenuSnap = new MenuItem("TakeSnap");
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -141,9 +162,9 @@ public class AppGUI
         row0.setMaxHeight(40);
         row0.setMinHeight(40);
         RowConstraints row1 = new RowConstraints();
-        row1.setPrefHeight(220);
+        row1.setPrefHeight(BUBBLE_HEIGHT);
         RowConstraints row2 = new RowConstraints();
-        row2.setPrefHeight(300);
+        row2.setPrefHeight(CHARACTER_VIEW_SIZE);
         RowConstraints row3 = new RowConstraints();
         row3.setMaxHeight(40);
         row3.setMinHeight(40);
@@ -153,58 +174,55 @@ public class AppGUI
         BorderPane.setMargin(mainPane, new Insets(10, 10, 10, 10));
         layout.setCenter(mainPane);
     }
-
     public void createBottomPane()
     {
         //Hbox
-        HBox bottomPanelsWrapper = new HBox();
-        bottomPanelsWrapper.setSpacing(15);
-        bottomPanelsWrapper.setPadding(new Insets(5, 5, 5, 5));
-        bottomPanelsWrapper.setStyle("-fx-background-color: #103859; -fx-border-color: #d4d4d4");
-        bottomPanelsWrapper.setMinHeight(160);
+        comixStrip = new HBox();
+        comixStrip.setSpacing(15);
+        comixStrip.setPadding(new Insets(5, 5, 5, 5));
+        comixStrip.setStyle("-fx-background-color: " + APP_THEME_COLOR + "; -fx-border-color: #d4d4d4");
+        comixStrip.setMinHeight(COMIX_STRIP_PANE_HEIGHT);
 
-        panelOne.setStyle("-fx-border-color: black ;");
-        panelOne.setFitHeight(150);
-        panelOne.setFitWidth(150);
+        ScrollPane scrollPane = new ScrollPane(comixStrip);
+        //the value of 15 added to the default height is to account for the scroll bar
+        scrollPane.setMinHeight(COMIX_STRIP_PANE_HEIGHT + 15);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
 
-        ListView panelTwo = new ListView();
-        panelTwo.setStyle("-fx-border-color: black ;");
-        panelTwo.setPrefWidth(150);
-        panelTwo.setPrefHeight(150);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setPannable(true);
 
-        ListView panelThree = new ListView();
-        panelThree.setStyle("-fx-border-color: black ;");
-        panelThree.setPrefWidth(150);
-        panelThree.setPrefHeight(150);
-
-        bottomPanelsWrapper.getChildren().addAll(panelOne, panelTwo, panelThree);
-        layout.setBottom(bottomPanelsWrapper);
+        layout.setBottom(scrollPane);
     }
+
     public void createTopMenuBar()
     {
-        //Creating the Top Menu bar (File, View, Configure)
-        Menu fileTopBar = new Menu("File");
-        Menu viewTopBar = new Menu("View");
-        Menu configureTopBar = new Menu("Configure");
+        //Creating the Top Menu bar (File, View, Panel)
+        fileMenu = new Menu("File");
+        viewMenu = new Menu("View");
+        panelMenu = new Menu("Panel");
 
-        fileTopBar.getItems().add(new MenuItem("FileOption1"));
-        fileTopBar.getItems().add(new MenuItem("FileOption2"));
-        fileTopBar.getItems().add(new MenuItem("FileOption3"));
+        fileMenu.getItems().add(fileMenuOne);
+        fileMenu.getItems().add(fileMenuTwo);
+        fileMenu.getItems().add(fileMenuThree);
 
-        viewTopBar.getItems().add(new MenuItem("ViewOption1"));
-        viewTopBar.getItems().add(new MenuItem("ViewOption2"));
-        viewTopBar.getItems().add(new MenuItem("ViewOption3"));
+        viewMenu.getItems().add(viewMenuOne);
+        viewMenu.getItems().add(viewMenuTwo);
+        viewMenu.getItems().add(viewMenuThree);
 
-        configureTopBar.getItems().add(new MenuItem("ConfigureOption1"));
-        configureTopBar.getItems().add(new MenuItem("ConfigureOption2"));
-        configureTopBar.getItems().add(new MenuItem("ConfigureOption3"));
+        panelMenu.getItems().add(panelMenuSave);
 
-        MenuBar topMenu = new MenuBar();
-        topMenu.getMenus().addAll(fileTopBar, viewTopBar, configureTopBar);
+        panelMenu.getItems().add(panelMenuDelete);
+        panelMenu.getItems().add(panelMenuSnap);
 
-        layout.setTop(topMenu);
+        MenuBar topMenuBar = new MenuBar();
+        topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu);
+
+        layout.setTop(topMenuBar);
     }
 
+    //LEFT SIDE BUTTONS
     private void createButtons()    {
         //VBox within a BorderPane within another BorderPane
         VBox leftBarButtonsWrapper = new VBox();
@@ -277,27 +295,13 @@ public class AppGUI
         buttonCommonStyles(addTextBottomButton);
         addTextBottomButton.setGraphic(setButtonImg(40, "narrativeTextBottom.png"));
 
-        panelSave = new Button();
-        buttonCommonStyles(panelSave);
-        panelSave.setGraphic(setButtonImg(40, "panelSave.png"));
-        panelSave.setOnAction(actionEvent -> {
-            WritableImage image = mainPane.snapshot(new SnapshotParameters(), null);
-            //bottom1.setImage(image);
-            //createNewPanel(characterLeft,characterRight,leftBubbleText,rightBubbleText,narrativeText);
-        });
-
         leftBarButtonsWrapper.getChildren().addAll(colorPalette, importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
-                changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton, panelSave);
+                changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton);
 
         layout.setLeft(scrollPane);
     }
 
-    public void setSelectingHandler(EventHandler<MouseEvent> leftViewEvent, EventHandler<MouseEvent> rightViewEvent){
-        leftCharView.addEventHandler(MouseEvent.MOUSE_CLICKED, leftViewEvent);
-        rightCharView.addEventHandler(MouseEvent.MOUSE_CLICKED, rightViewEvent);
-    }
-
-    public Image importModel()    //Uploads character to workspace pane
+    public File importModel()    //Uploads character to workspace pane
     {
         File defaultDir = new File("./images");
         if(!defaultDir.exists()){
@@ -308,11 +312,7 @@ public class AppGUI
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png"));
         File file = fileChooser.showOpenDialog(stage);
 
-        if(file != null){
-            Image image = new Image(file.toURI().toString());   //image
-            return image;
-        }
-        return null;
+        return file;
     }
 
     private ImageView setButtonImg(int size, String filename){
@@ -338,15 +338,14 @@ public class AppGUI
             selectedCharacterView = rightCharView;
         }
         selectedCharacterView.setEffect(new DropShadow(10, Color.BLACK));
-
-        if(selectedCharacterView == leftCharView){
-            System.out.println("LEFT CHARACTER SELECTED");
-        }
-        else if(selectedCharacterView == rightCharView){
-            System.out.println("RIGHT CHARACTER SELECTED");
-        }
     }
 
+    public void setSelectingHandler(EventHandler<MouseEvent> leftViewEvent, EventHandler<MouseEvent> rightViewEvent){
+        leftCharView.addEventHandler(MouseEvent.MOUSE_CLICKED, leftViewEvent);
+        rightCharView.addEventHandler(MouseEvent.MOUSE_CLICKED, rightViewEvent);
+    }
+
+    //====> BUBBLE IMPORT METHODS
     private String importBubble(Image bubbleImage){
         ImageView bubble = new ImageView(bubbleImage);
         bubble.setFitWidth(30);
@@ -389,7 +388,9 @@ public class AppGUI
         text.setTextAlignment(TextAlignment.CENTER);
         text.setFont(Font.font("Arial", 18));
     }
+    //===> END BUBBLE IMPORT METHODS
 
+    //===> NARRATIVE TEXT METHODS
     private String addNarrativeText(String position) {
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Narrative Text");
@@ -426,21 +427,38 @@ public class AppGUI
         narrativeText.setPrefSize(WORKING_PANE_WIDTH, 40);
         narrativeText.setFont(Font.font("Arial", 18));
     }
+    //END NARRATIVE TEXT METHODS
 
-    private void createNewPanel(Character left, Character right, Label leftBubbleText, Label rightBubbleText, Label narrativeText)
-    {
-        Panels newPanel = new Panels();
-        newPanel.setLeft(left);
-        newPanel.setRight(right);
-        newPanel.setLeftBubbleText(leftBubbleText.getText());
-        newPanel.setRightBubbleText(rightBubbleText.getText());
-        newPanel.setNarratorText(narrativeText.getText());
-        addPanelToList(newPanel);
+    //===> BOTTOM PANEL(comixStrip) METHODS
+    private Image snapCurrentPanel(){
+        WritableImage image;
+        if(isSelected()){
+            Effect selectedEffect = selectedCharacterView.getEffect();
+            selectedCharacterView.setEffect(null);
+            image = mainPane.snapshot(new SnapshotParameters(), null);
+            selectedCharacterView.setEffect(selectedEffect);
+        }
+        else{
+             image = mainPane.snapshot(new SnapshotParameters(), null);
+        }
+        return image;
     }
-    private void addPanelToList(Panels panel)
-    {
-        //panelList.add(panel);
-        System.out.println("PANEL SAVED");
+
+    public Image addPanelToStrip(PanelView panel){
+        comixStrip.getChildren().add(panel);
+        return panel.getImage();
+    }
+    public PanelView createPanel(){
+        Image snapshot = snapCurrentPanel();
+        PanelView panel = new PanelView(snapshot);
+        panelStyle(panel);
+        return panel;
+    }
+
+    private void panelStyle(PanelView panel){
+        panel.setStyle("-fx-border-color: black ; -fx-cursor: hand");
+        panel.setFitHeight(150);
+        panel.setFitWidth(150);
     }
 
     public ImageView getLeftBubble() {
@@ -531,8 +549,40 @@ public class AppGUI
         return addTextBottomButton;
     }
 
-    public Button getPanelSave() {
-        return panelSave;
+    public MenuItem getFileMenuOne() {
+        return fileMenuOne;
+    }
+
+    public MenuItem getFileMenuTwo() {
+        return fileMenuTwo;
+    }
+
+    public MenuItem getFileMenuThree() {
+        return fileMenuThree;
+    }
+
+    public MenuItem getViewMenuOne() {
+        return viewMenuOne;
+    }
+
+    public MenuItem getViewMenuTwo() {
+        return viewMenuTwo;
+    }
+
+    public MenuItem getViewMenuThree() {
+        return viewMenuThree;
+    }
+
+    public MenuItem getPanelMenuSave() {
+        return panelMenuSave;
+    }
+
+    public MenuItem getPanelMenuDelete() {
+        return panelMenuDelete;
+    }
+
+    public MenuItem getPanelMenuSnap() {
+        return panelMenuSnap;
     }
 
     public boolean isSelected(){

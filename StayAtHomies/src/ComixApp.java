@@ -1,29 +1,11 @@
-import java.util.ArrayList;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 
 //ComixApp.java represents the Model following the MVC pattern
-public class ComixApp {
-    private Character characterLeft = null;
-    private Character characterRight = null;
+public class ComixApp extends WorkingPane
+{
     private Character selectedCharacter = null;
-    private String narrativeTextTop;
-    private String narrativeTextBottom;
-    private ArrayList<Panels> panelList = new ArrayList<Panels>();
-
-    public Character getCharacterLeft() {
-        return characterLeft;
-    }
-
-    public void setCharacterLeft(Character characterLeft) {
-        this.characterLeft = characterLeft;
-    }
-
-    public Character getCharacterRight() {
-        return characterRight;
-    }
-
-    public void setCharacterRight(Character characterRight) {
-        this.characterRight = characterRight;
-    }
+    private ComixStrip panelList = new ComixStrip();
 
     public Character getSelectedCharacter() {
         return selectedCharacter;
@@ -33,36 +15,41 @@ public class ComixApp {
         this.selectedCharacter = selectedCharacter;
     }
 
-    public String getNarrativeTextTop() {
-        return narrativeTextTop;
-    }
-
-    public void setNarrativeTextTop(String narrativeTextTop) {
-        this.narrativeTextTop = narrativeTextTop;
-    }
-
-    public String getNarrativeTextBottom() {
-        return narrativeTextBottom;
-    }
-
-    public void setNarrativeTextBottom(String narrativeTextBottom) {
-        this.narrativeTextBottom = narrativeTextBottom;
-    }
-
-    public ArrayList<Panels> getPanelList() {
+    public ComixStrip getPanelList() {
         return panelList;
+    }
+
+    public void setBubbleText(String text){
+        selectedCharacter.setBubbleText(text);
+        if(selectedCharacter == getCharacterLeft()){
+            setLeftBubbleText(selectedCharacter.getBubbleText());
+        }
+        else if(selectedCharacter == getCharacterRight()){
+            setRightBubbleText(selectedCharacter.getBubbleText());
+        }
     }
 
     public void selectCharacter(Selected select){
         if(select == Selected.LEFT){
-            selectedCharacter = characterLeft;
+            selectedCharacter = getCharacterLeft();
         }
         else{
-            selectedCharacter = characterRight;
+            selectedCharacter = getCharacterRight();
         }
     }
 
     public boolean isCharacterSelected(){
         return selectedCharacter != null;
+    }
+
+    public int generateId(){
+        setId(panelList.size());
+        return getId();
+    }
+
+    public void createPanel(){
+        Panel newPanel = new Panel(getId(), getPanelShot(), getCharacterLeft(), getCharacterRight(),
+                getNarrativeTextTop(), getNarrativeTextBottom(), getLeftBubbleText(), getRightBubbleText());
+        panelList.addPanel(newPanel);
     }
 }
