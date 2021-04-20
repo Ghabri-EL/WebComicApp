@@ -1,7 +1,6 @@
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
@@ -11,14 +10,16 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import javax.swing.*;
 import java.io.File;
+import java.util.Optional;
 
 //AppGUI.java represents the View following the MVC pattern
 public class AppGUI
@@ -31,6 +32,7 @@ public class AppGUI
     private final double BUBBLE_HEIGHT = 220;
     private final double CHARACTER_VIEW_SIZE = 300;
     private final double COMIX_STRIP_PANE_HEIGHT = 160;
+    private final double PANEL_SIZE = COMIX_STRIP_PANE_HEIGHT - 10;
     private final String APP_THEME_COLOR = "#103859";
     private final Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
     private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
@@ -50,6 +52,7 @@ public class AppGUI
     private ImageView selectedCharacterView = null;
     private Color selectedColor = Color.WHITE;
     private HBox comixStrip;
+    private PanelView selectedPanel;
 
     //SIDE BUTTONS
     private ColorPicker colorPalette;
@@ -80,7 +83,7 @@ public class AppGUI
     private MenuItem viewMenuThree = new MenuItem("Option3");
     private MenuItem panelMenuSave = new MenuItem("Save");
     private MenuItem panelMenuDelete = new MenuItem("Delete");
-    private MenuItem panelMenuSnap = new MenuItem("TakeSnap");
+    private MenuItem panelMenuNew = new MenuItem("New");
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -214,7 +217,7 @@ public class AppGUI
         panelMenu.getItems().add(panelMenuSave);
 
         panelMenu.getItems().add(panelMenuDelete);
-        panelMenu.getItems().add(panelMenuSnap);
+        panelMenu.getItems().add(panelMenuNew);
 
         MenuBar topMenuBar = new MenuBar();
         topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu);
@@ -345,6 +348,15 @@ public class AppGUI
         rightCharView.addEventHandler(MouseEvent.MOUSE_CLICKED, rightViewEvent);
     }
 
+    //deals with the selection of panels in the strip
+    public void selectPanel(PanelView panel){
+        if(selectedPanel != null){
+            selectedPanel.setEffect(null);
+        }
+        selectedPanel = panel;
+        selectedPanel.setEffect(new DropShadow(15, Color.CYAN));
+    }
+
     //====> BUBBLE IMPORT METHODS
     private String importBubble(Image bubbleImage){
         ImageView bubble = new ImageView(bubbleImage);
@@ -429,10 +441,10 @@ public class AppGUI
     }
     //END NARRATIVE TEXT METHODS
 
-    //===> BOTTOM PANEL(comixStrip) METHODS
+    //===> BOTTOM PANE(comixStrip) METHODS
     private Image snapCurrentPanel(){
         WritableImage image;
-        if(isSelected()){
+        if(isCharacterSelected()){
             Effect selectedEffect = selectedCharacterView.getEffect();
             selectedCharacterView.setEffect(null);
             image = mainPane.snapshot(new SnapshotParameters(), null);
@@ -444,23 +456,107 @@ public class AppGUI
         return image;
     }
 
-    public Image addPanelToStrip(PanelView panel){
+    public void addPanelToStrip(PanelView panel){
         comixStrip.getChildren().add(panel);
-        return panel.getImage();
     }
+
     public PanelView createPanel(){
         Image snapshot = snapCurrentPanel();
         PanelView panel = new PanelView(snapshot);
-        panelStyle(panel);
+        setPanelAttributes(panel);
         return panel;
     }
 
-    private void panelStyle(PanelView panel){
-        panel.setStyle("-fx-border-color: black ; -fx-cursor: hand");
-        panel.setFitHeight(150);
-        panel.setFitWidth(150);
+    public PanelView editSelectedPanel(){
+        Image snapshot = snapCurrentPanel();
+        if(isPanelSelected()){
+            selectedPanel.setImage(snapshot);
+        }
+        return selectedPanel;
     }
 
+    private void setPanelAttributes(PanelView panel){
+        panel.setStyle("-fx-border-color: black ; -fx-cursor: hand");
+        panel.setFitHeight(PANEL_SIZE);
+        panel.setFitWidth(PANEL_SIZE);
+    }
+
+    public void loadSelectedPanel(Image leftCharacter, Image rightCharacter, BubbleType leftBubbleType, BubbleType rightBubbleType,
+                                  String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText){
+        this.leftCharView.setImage(leftCharacter);
+        this.rightCharView.setImage(rightCharacter);
+        this.leftBubbleText.setText(leftBubbleText);
+        this.rightBubbleText.setText(rightBubbleText);
+        this.topNarrativeText.setText(topNarrativeText);
+        this.bottomNarrativeText.setText(bottomNarrativeText);
+
+        if(leftBubbleType == BubbleType.SPEECH){
+            this.leftBubble.setImage(SPEECH_BUBBLE_IMAGE);
+        }
+        else if(leftBubbleType == BubbleType.THOUGHT){
+            this.leftBubble.setImage(THOUGHT_BUBBLE_IMAGE);
+        }
+        else{
+            this.leftBubble.setImage(null);
+        }
+
+        if(rightBubbleType == BubbleType.SPEECH){
+            this.rightBubble.setImage(SPEECH_BUBBLE_IMAGE);
+        }
+        else if(rightBubbleType == BubbleType.THOUGHT){
+            this.rightBubble.setImage(THOUGHT_BUBBLE_IMAGE);
+        }
+        else{
+            this.rightBubble.setImage(null);
+        }
+        //reset selected character
+        if(isCharacterSelected()){
+            selectedCharacterView.setEffect(null);
+            selectedCharacterView = null;
+        }
+    }
+
+    public void resetWorkingPane(){
+        leftBubble.setImage(null);
+        rightBubble.setImage(null);
+        leftCharView.setImage(null);
+        rightCharView.setImage(null);
+        leftBubbleText.setText(null);
+        rightBubbleText.setText(null);
+        topNarrativeText.setText(null);
+        bottomNarrativeText.setText(null);
+
+        if(isCharacterSelected()){
+            selectedCharacterView.setEffect(null);
+            selectedCharacterView = null;
+        }
+
+        if(isPanelSelected()){
+            selectedPanel.setEffect(null);
+            selectedPanel = null;
+        }
+    }
+
+    public int deletePanel(){
+        if(!isPanelSelected()){
+            return -1;
+        }
+        else{
+            int id = selectedPanel.getPanelId();
+            comixStrip.getChildren().remove(selectedPanel);
+            recomputeIds(id);
+            resetWorkingPane();
+            return id;
+        }
+    }
+    private void recomputeIds(int id){
+        ObservableList list = comixStrip.getChildren();
+
+        for(int i = id; i < list.size(); i++){
+            PanelView panel = (PanelView) list.get(i);
+            panel.setPanelId(panel.getPanelId() - 1);
+        }
+    }
     public ImageView getLeftBubble() {
         return leftBubble;
     }
@@ -581,12 +677,20 @@ public class AppGUI
         return panelMenuDelete;
     }
 
-    public MenuItem getPanelMenuSnap() {
-        return panelMenuSnap;
+    public MenuItem getPanelMenuNew() {
+        return panelMenuNew;
     }
 
-    public boolean isSelected(){
+    public boolean isCharacterSelected(){
         return selectedCharacterView != null;
+    }
+
+    public PanelView getSelectedPanel() {
+        return selectedPanel;
+    }
+
+    public boolean isPanelSelected(){
+        return selectedPanel != null;
     }
 }
 

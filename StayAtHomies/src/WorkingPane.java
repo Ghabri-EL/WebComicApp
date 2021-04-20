@@ -7,21 +7,17 @@ public abstract class WorkingPane {
     private Character characterRight;
     private String narrativeTextTop;
     private String narrativeTextBottom;
-    private String leftBubbleText;
-    private String rightBubbleText;
 
     public WorkingPane(){};
 
-    public WorkingPane(int id, Image panelShot, Character characterLeft, Character characterRight, String narrativeTextTop,
-                       String narrativeTextBottom, String leftBubbleText, String rightBubbleText){
+    public WorkingPane(int id, Image panelShot, Character characterLeft, Character characterRight,
+                       String narrativeTextTop, String narrativeTextBottom){
         this.id = id;
         this.panelShot = panelShot;
         this.characterLeft = characterLeft;
         this.characterRight = characterRight;
         this.narrativeTextTop = narrativeTextTop;
         this.narrativeTextBottom = narrativeTextBottom;
-        this.leftBubbleText = leftBubbleText;
-        this.rightBubbleText = rightBubbleText;
     }
 
     public int getId() {
@@ -70,25 +66,5 @@ public abstract class WorkingPane {
 
     public void setNarrativeTextBottom(String narrativeTextBottom) {
         this.narrativeTextBottom = narrativeTextBottom;
-    }
-
-    public String getLeftBubbleText() {
-        return leftBubbleText;
-    }
-
-    public void setLeftBubbleText(String leftBubbleText) {
-        this.leftBubbleText = leftBubbleText;
-    }
-
-    public String getRightBubbleText() {
-        return rightBubbleText;
-    }
-
-    public void setRightBubbleText(String rightBubbleText) {
-        this.rightBubbleText = rightBubbleText;
-    }
-
-    public boolean readyToCreate(){
-        return id >= 0 && panelShot != null && (characterLeft != null || characterRight != null);
     }
 }

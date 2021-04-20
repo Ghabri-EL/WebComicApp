@@ -13,7 +13,8 @@ public class Character implements CharacterInterface
     private Image maleHairMask;
     private Image lipsMask;
     private Image skinMask;
-    private String bubbleText = "";
+    private String bubbleText;
+    private BubbleType bubbleType = BubbleType.NONE;
     private String pose;
 
     public Character(Image characterImage, String pose){
@@ -80,6 +81,18 @@ public class Character implements CharacterInterface
 
     public void setBubbleText(String bubbleText){
         this.bubbleText = bubbleText;
+    }
+
+    public BubbleType getBubbleType() {
+        return bubbleType;
+    }
+
+    public void setBubbleType(BubbleType bubbleType) {
+        this.bubbleType = bubbleType;
+    }
+
+    public String getPose() {
+        return pose;
     }
 
     public void flipImage(){

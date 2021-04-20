@@ -6,14 +6,34 @@ import java.io.File;
 
 //Controller.java represents the Controller following the MVC pattern
 public class Controller {
-   private ComixApp comixApp;
-   private AppGUI view;
+   private final ComixApp comixApp;
+   private final AppGUI view;
 
    public Controller(ComixApp comixApp, AppGUI view){
        this.comixApp = comixApp;
        this.view = view;
    }
    public void execution(){
+       selectHandler();
+
+       view.getImportLeftCharButton().setOnAction(actionEvent -> importLeftModelEvent());
+       view.getImportRightCharButton().setOnAction(actionEvent -> importRightModelEvent());
+       view.getFlipButton().setOnAction(event -> flipCharacterEvent());
+       view.getGenderSwapButton().setOnAction(actionEvent -> genderSwapEvent());
+       view.getChangeSkinToneButton().setOnAction(actionEvent -> changeSkinToneEvent());
+       view.getChangeHairColorButton().setOnAction(actionEvent -> changeHairColorEvent());
+       view.getChangeLipsColorButton().setOnAction(actionEvent -> changeLipsColorEvent());
+       view.getAddSpeechBubbleButton().setOnAction(actionEvent -> addSpeechBubbleEvent());
+       view.getAddThoughtBubbleButton().setOnAction(actionEvent -> addThoughtBubbleEvent());
+       view.getRemoveBubbleButton().setOnAction(actionEvent -> removeBubbleEvent());
+       view.getAddTextTopButton().setOnAction(actionEvent -> addNarrativeTextTopEvent());
+       view.getAddTextBottomButton().setOnAction(actionEvent -> addNarrativeTextBottomEvent());
+       view.getPanelMenuSave().setOnAction(actionEvent -> savePanelEvent());
+       view.getPanelMenuNew().setOnAction(event -> resetPanelEvent());
+       view.getPanelMenuDelete().setOnAction(event -> deletePanel());
+   }
+
+   private void selectHandler(){
        EventHandler<MouseEvent> leftViewEvent = event -> {
            view.selectFrame(Selected.LEFT);
            comixApp.selectCharacter(Selected.LEFT);
@@ -28,174 +48,228 @@ public class Controller {
        //created handlers to handles selecting the left or right character
        //and set them for each view
        view.setSelectingHandler(leftViewEvent, rightViewEvent);
+   }
+   private void importLeftModelEvent(){
+       File imageFile = view.importModel();
+       if(imageFile != null){
+           Image charImage = new Image(imageFile.toURI().toString());
+           String pose = imageFile.getName();
+           Character character = new Character(charImage, pose);
+           comixApp.setCharacterLeft(character);
+           view.getLeftCharView().setImage(character.getCharacterImage());
 
-       view.getImportLeftCharButton().setOnAction(actionEvent -> {
-           File imageFile = view.importModel();
-           if(imageFile != null){
-               Image charImage = new Image(imageFile.toURI().toString());
-               String pose = imageFile.getName();
-               Character character = new Character(charImage, pose);
-               comixApp.setCharacterLeft(character);
-               view.getLeftCharView().setImage(character.getCharacterImage());
-
-               //if the selected character was the left character and a new one was imported
-               //then set the new model to selected
-               if(comixApp.isCharacterSelected()){
-                   if(comixApp.getSelectedCharacter() != comixApp.getCharacterRight()){
-                       comixApp.setSelectedCharacter(character);
-                   }
+           //if the selected character was the left character and a new one was imported
+           //then set the new model to selected
+           if(comixApp.isCharacterSelected()){
+               if(comixApp.getSelectedCharacter() != comixApp.getCharacterRight()){
+                   comixApp.setSelectedCharacter(character);
                }
            }
-       });
+       }
+   }
 
-       view.getImportRightCharButton().setOnAction(actionEvent -> {
-           File imageFile = view.importModel();
+   private void importRightModelEvent(){
+       File imageFile = view.importModel();
+       if(imageFile != null){
+           Image charImage = new Image(imageFile.toURI().toString());
+           String pose = imageFile.getName();
+           Character character = new Character(charImage, pose);
+           comixApp.setCharacterRight(character);
+           view.getRightCharView().setImage(character.getCharacterImage());
 
-           if(imageFile != null){
-               Image charImage = new Image(imageFile.toURI().toString());
-               String pose = imageFile.getName();
-               Character character = new Character(charImage, pose);
-               comixApp.setCharacterRight(character);
-               view.getRightCharView().setImage(character.getCharacterImage());
-
-               if(comixApp.isCharacterSelected()){
-                   if(comixApp.getSelectedCharacter() != comixApp.getCharacterLeft()){
-                       comixApp.setSelectedCharacter(character);
-                   }
+           if(comixApp.isCharacterSelected()){
+               if(comixApp.getSelectedCharacter() != comixApp.getCharacterLeft()){
+                   comixApp.setSelectedCharacter(character);
                }
            }
-       });
+       }
+   }
 
-       view.getFlipButton().setOnAction(event ->{
-           if(view.isSelected() && comixApp.isCharacterSelected()){
-               comixApp.getSelectedCharacter().flipImage();
-               Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
-               view.getSelectedCharacterView().setImage(newCharImage);
+   private void flipCharacterEvent(){
+       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
+           comixApp.getSelectedCharacter().flipImage();
+           Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
+           view.getSelectedCharacterView().setImage(newCharImage);
+       }
+       else{
+           notSelectedMsg();
+       }
+   }
+
+   private void genderSwapEvent(){
+       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
+           comixApp.getSelectedCharacter().switchGenders();
+           Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
+           view.getSelectedCharacterView().setImage(newCharImage);
+       }
+       else{
+           notSelectedMsg();
+       }
+   }
+
+   private void changeSkinToneEvent(){
+       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
+           comixApp.getSelectedCharacter().skinChange(view.getSelectedColor());
+           Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
+           view.getSelectedCharacterView().setImage(newCharImage);
+       }
+       else{
+           notSelectedMsg();
+       }
+   }
+
+   private void changeHairColorEvent(){
+       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
+           comixApp.getSelectedCharacter().hairChange(view.getSelectedColor());
+           Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
+           view.getSelectedCharacterView().setImage(newCharImage);
+       }
+       else{
+           notSelectedMsg();
+       }
+   }
+
+   private void changeLipsColorEvent(){
+       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
+           comixApp.getSelectedCharacter().changeLipsColor(view.getSelectedColor());
+           Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
+           view.getSelectedCharacterView().setImage(newCharImage);
+       }
+       else{
+           notSelectedMsg();
+       }
+   }
+
+   private void addSpeechBubbleEvent(){
+       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
+           String bubbleText;
+           bubbleText = view.importSpeechBubble();
+           if(bubbleText != null){
+               comixApp.setBubbleText(bubbleText);
+               comixApp.setBubbleType(BubbleType.SPEECH);
+           }
+       }
+       else{
+           notSelectedMsg();
+       }
+   }
+
+   private void addThoughtBubbleEvent(){
+       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
+           String bubbleText;
+           bubbleText = view.importThoughtBubble();
+           if(bubbleText != null){
+               comixApp.setBubbleText(bubbleText);
+               comixApp.setBubbleType(BubbleType.THOUGHT);
+           }
+       }
+       else{
+           notSelectedMsg();
+       }
+   }
+
+   private void removeBubbleEvent(){
+       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
+           if(view.getSelectedCharacterView() == view.getLeftCharView()){
+               view.getLeftBubble().setImage(null);
+               view.getLeftBubbleText().setText("");
            }
            else{
-               notSelectedMsg();
+               view.getRightBubble().setImage(null);
+               view.getRightBubbleText().setText("");
            }
-       });
+           comixApp.setBubbleText("");
+           comixApp.setBubbleType(BubbleType.NONE);
+       }
+       else{
+           notSelectedMsg();
+       }
+   }
 
-       view.getGenderSwapButton().setOnAction(actionEvent -> {
-           if(view.isSelected() && comixApp.isCharacterSelected()){
-               comixApp.getSelectedCharacter().switchGenders();
-               Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
-               view.getSelectedCharacterView().setImage(newCharImage);
+   private void addNarrativeTextTopEvent(){
+       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
+           String narrativeText = view.addNarrativeTextTop();
+           if(narrativeText != null){
+               comixApp.setNarrativeTextTop(narrativeText);
+           }
+       }
+       else{
+           notSelectedMsg();
+       }
+   }
+
+   private void addNarrativeTextBottomEvent(){
+       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
+           String narrativeText = view.addNarrativeTextBottom();
+           if(narrativeText != null){
+               comixApp.setNarrativeTextBottom(narrativeText);
+           }
+       }
+       else{
+           notSelectedMsg();
+       }
+   }
+
+   private void savePanelEvent(){
+       if(comixApp.readyToCreate()){
+           if(view.isPanelSelected()){
+               editExistingPanel();
            }
            else{
-               notSelectedMsg();
+               saveNewPanel();
            }
-       });
+       }
+       else{
+           System.out.println("You need to have the two characters imported in order to save the panel");
+       }
+   }
 
-       view.getChangeSkinToneButton().setOnAction(actionEvent -> {
-           if(view.isSelected() && comixApp.isCharacterSelected()){
-               comixApp.getSelectedCharacter().skinChange(view.getSelectedColor());
-               Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
-               view.getSelectedCharacterView().setImage(newCharImage);
-           }
-           else{
-               notSelectedMsg();
-           }
-       });
+   private void saveNewPanel(){
+       int id = comixApp.generateId();
+       PanelView panel = view.createPanel();
+       comixApp.setPanelShot(panel.getImage());
+       comixApp.createPanelAndAddToStrip();
+       panel.setPanelId(id);
+       addPanelEventHandler(panel);
+       view.addPanelToStrip(panel);
+       resetPanelEvent();
+   }
 
-       view.getChangeHairColorButton().setOnAction(actionEvent -> {
-           if(view.isSelected() && comixApp.isCharacterSelected()){
-               comixApp.getSelectedCharacter().hairChange(view.getSelectedColor());
-               Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
-               view.getSelectedCharacterView().setImage(newCharImage);
-           }
-           else{
-               notSelectedMsg();
-           }
-       });
+   private void editExistingPanel(){
+       int id = view.getSelectedPanel().getPanelId();
 
-       view.getChangeLipsColorButton().setOnAction(actionEvent -> {
-           if(view.isSelected() && comixApp.isCharacterSelected()){
-               comixApp.getSelectedCharacter().changeLipsColor(view.getSelectedColor());
-               Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
-               view.getSelectedCharacterView().setImage(newCharImage);
-           }
-           else{
-               notSelectedMsg();
-           }
-       });
+       PanelView viewPanel = view.editSelectedPanel();
+       comixApp.setPanelShot(viewPanel.getImage());
 
-       view.getAddSpeechBubbleButton().setOnAction(actionEvent -> {
-           if(view.isSelected() && comixApp.isCharacterSelected()){
-               String bubbleText;
-               bubbleText = view.importSpeechBubble();
-               if(bubbleText != null){
-                   comixApp.setBubbleText(bubbleText);
-               }
-           }
-           else{
-               notSelectedMsg();
-           }
-       });
+       Panel basePanel = comixApp.createPanel();
+       comixApp.editPanel(id, basePanel);
+   }
 
-       view.getAddThoughtBubbleButton().setOnAction(actionEvent -> {
-           if(view.isSelected() && comixApp.isCharacterSelected()){
-               String bubbleText;
-               bubbleText = view.importThoughtBubble();
-               if(bubbleText != null){
-                   comixApp.setBubbleText(bubbleText);
-               }
-           }
-           else{
-               notSelectedMsg();
-           }
-       });
+   private void resetPanelEvent(){
+       comixApp.resetWorkingSpace();
+       view.resetWorkingPane();
+   }
 
-       view.getRemoveBubbleButton().setOnAction(actionEvent -> {
-           if(view.isSelected() && comixApp.isCharacterSelected()){
-               if(view.getSelectedCharacterView() == view.getLeftCharView()){
-                   view.getLeftBubble().setImage(null);
-                   view.getLeftBubbleText().setText("");
-               }
-               else{
-                   view.getRightBubble().setImage(null);
-                   view.getRightBubbleText().setText("");
-               }
-               comixApp.setBubbleText("");
-           }
-           else{
-               notSelectedMsg();
-           }
-       });
+   private void addPanelEventHandler(PanelView panel){
+       panel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+           view.selectPanel(panel);
+           Panel backEndPanel = comixApp.getComixStrip().getPanel(panel.getPanelId());
+           Character leftChar = backEndPanel.getCharacterLeft();
+           Character rightChar = backEndPanel.getCharacterRight();
 
-       view.getAddTextTopButton().setOnAction(actionEvent -> {
-           if(view.isSelected() && comixApp.isCharacterSelected()){
-               String narrativeText = view.addNarrativeTextTop();
-               if(narrativeText != null){
-                   comixApp.setNarrativeTextTop(narrativeText);
-               }
-           }
-           else{
-               notSelectedMsg();
-           }
+           comixApp.loadSelectedPanel(backEndPanel);
+           //parameters: Image leftCharacter, Image rightCharacter, BubbleType leftBubbleType, BubbleType rightBubbleType,
+           //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
+           view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), leftChar.getBubbleType(),
+                   rightChar.getBubbleType(), leftChar.getBubbleText(), rightChar.getBubbleText(),
+                   backEndPanel.getNarrativeTextTop(), backEndPanel.getNarrativeTextBottom());
+           mouseEvent.consume();
        });
+   }
 
-       view.getAddTextBottomButton().setOnAction(actionEvent -> {
-           if(view.isSelected() && comixApp.isCharacterSelected()){
-               String narrativeText = view.addNarrativeTextBottom();
-               if(narrativeText != null){
-                   comixApp.setNarrativeTextBottom(narrativeText);
-               }
-           }
-           else{
-               notSelectedMsg();
-           }
-       });
-
-       view.getPanelMenuSave().setOnAction(actionEvent -> {
-           int id = comixApp.generateId();
-           PanelView panel = view.createPanel();
-           comixApp.setPanelShot(panel.getImage());
-           comixApp.createPanel();
-           panel.setPanelId(id);
-           view.addPanelToStrip(panel);
-       });
+   private void deletePanel(){
+       int id = view.deletePanel();
+       comixApp.deletePanel(id);
    }
 
    private void notSelectedMsg(){
