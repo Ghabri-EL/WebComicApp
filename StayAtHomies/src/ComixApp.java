@@ -27,14 +27,11 @@ public class ComixApp extends WorkingPane
     }
 
     public void selectCharacter(Selected select){
-        System.out.println("YALA BITCHES");
         if(select == Selected.LEFT){
             selectedCharacter = getCharacterLeft();
-            System.out.println("YALA Nope");
         }
         else{
             selectedCharacter = getCharacterRight();
-            System.out.println("YALA RIGHT");
         }
     }
 
