@@ -125,6 +125,7 @@ public class ComixApp extends WorkingPane
 
     public void deletePanel(int id){
         comixStrip.removePanel(id);
+        resetWorkingSpace();
     }
 
     public boolean readyToCreate(){

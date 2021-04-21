@@ -533,16 +533,8 @@ public class AppGUI
         rightBubbleText.setText(null);
         topNarrativeText.setText(null);
         bottomNarrativeText.setText(null);
-
-        if(isCharacterSelected()){
-            selectedCharacterView.setEffect(null);
-            selectedCharacterView = null;
-        }
-
-        if(isPanelSelected()){
-            selectedPanel.setEffect(null);
-            selectedPanel = null;
-        }
+        resetSelectedCharacter();
+        resetSelectedPanel();
     }
 
     public int deletePanel(){
@@ -703,6 +695,18 @@ public class AppGUI
 
     public boolean isPanelSelected(){
         return selectedPanel != null;
+    }
+    private void resetSelectedCharacter(){
+        if(isCharacterSelected()){
+            selectedCharacterView.setEffect(null);
+            selectedCharacterView = null;
+        }
+    }
+    private void resetSelectedPanel(){
+        if(isPanelSelected()){
+            selectedPanel.setEffect(null);
+            selectedPanel = null;
+        }
     }
 }
 
