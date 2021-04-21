@@ -285,6 +285,6 @@ public class Controller {
 
    private Stage stage;
    private void helpPage() {
-        helpPage.helpPage(stage);
+        helpPage.helpPage(stage); 
    }
 }
