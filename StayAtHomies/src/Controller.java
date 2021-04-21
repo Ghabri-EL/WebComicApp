@@ -268,7 +268,7 @@ public class Controller {
    }
 
    private void deletePanel(){
-       if(!view.isPanelSelected()){
+       if(view.isPanelSelected()){
            int id = view.deletePanel();
            comixApp.deletePanel(id);
        }
