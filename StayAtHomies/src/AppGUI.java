@@ -1,3 +1,4 @@
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,7 +18,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.Optional;
 
@@ -73,6 +73,8 @@ public class AppGUI
     private Menu fileMenu;
     private Menu viewMenu;
     private Menu panelMenu;
+    private Menu helpMenu;
+    private Menu messageMenu;
 
     //MENU OPTIONS
     private MenuItem fileMenuOne = new MenuItem("Load");
@@ -205,6 +207,8 @@ public class AppGUI
         fileMenu = new Menu("File");
         viewMenu = new Menu("View");
         panelMenu = new Menu("Panel");
+        helpMenu = new Menu("Help");
+        messageMenu = new Menu("Messages");
 
         fileMenu.getItems().add(fileMenuOne);
         fileMenu.getItems().add(fileMenuTwo);
@@ -219,8 +223,10 @@ public class AppGUI
         panelMenu.getItems().add(panelMenuDelete);
         panelMenu.getItems().add(panelMenuNew);
 
+
+
         MenuBar topMenuBar = new MenuBar();
-        topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu);
+        topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu, helpMenu, messageMenu);
 
         layout.setTop(topMenuBar);
     }
@@ -679,6 +685,10 @@ public class AppGUI
 
     public MenuItem getPanelMenuNew() {
         return panelMenuNew;
+    }
+
+    public MenuItem getHelpMenuPage() {
+        return helpMenu;
     }
 
     public boolean isCharacterSelected(){

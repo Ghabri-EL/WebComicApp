@@ -1,6 +1,8 @@
 import javafx.event.EventHandler;
+import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.io.File;
 
@@ -8,10 +10,12 @@ import java.io.File;
 public class Controller {
    private final ComixApp comixApp;
    private final AppGUI view;
+   private final HelpPage helpPage;
 
-   public Controller(ComixApp comixApp, AppGUI view){
+   public Controller(ComixApp comixApp, AppGUI view, HelpPage helpPage){
        this.comixApp = comixApp;
        this.view = view;
+       this.helpPage = helpPage;
    }
    public void execution(){
        selectHandler();
@@ -31,6 +35,7 @@ public class Controller {
        view.getPanelMenuSave().setOnAction(actionEvent -> savePanelEvent());
        view.getPanelMenuNew().setOnAction(event -> resetWorkingPaneEvent());
        view.getPanelMenuDelete().setOnAction(event -> deletePanel());
+       view.getHelpMenuPage().setOnAction(event -> helpPage());
    }
 
    private void selectHandler(){
@@ -276,5 +281,10 @@ public class Controller {
 
    private void notSelectedMsg(){
        System.out.println("Select one of the characters on which you want to perform the operation");
+   }
+
+   private Stage stage;
+   private void helpPage() {
+        helpPage.helpPage(stage);
    }
 }
