@@ -1,4 +1,6 @@
 import javafx.collections.ObservableList;
+import javafx.css.Style;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,14 +19,12 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.File;
-import java.util.Optional;
 
 //AppGUI.java represents the View following the MVC pattern
 public class AppGUI
 {
-    private static final double SCENE_WIDTH = 700;
+    private static final double SCENE_WIDTH = 900;
     private static final double SCENE_HEIGHT = 850;
     private final double WORKING_PANE_WIDTH = 610;
     private final double WORKING_PANE_HEIGHT = 600;
@@ -33,6 +33,7 @@ public class AppGUI
     private final double CHARACTER_VIEW_SIZE = 300;
     private final double COMIX_STRIP_PANE_HEIGHT = 160;
     private final double PANEL_SIZE = COMIX_STRIP_PANE_HEIGHT - 10;
+    private final double LEFT_BUTTONS_PANEL_WIDTH = 200;
     private final String APP_THEME_COLOR = "#103859";
     private final Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
     private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
@@ -229,11 +230,11 @@ public class AppGUI
     private void createButtons()    {
         //VBox within a BorderPane within another BorderPane
         VBox leftBarButtonsWrapper = new VBox();
-        leftBarButtonsWrapper.setMinWidth(50);
-        leftBarButtonsWrapper.setPrefWidth(50);
-        leftBarButtonsWrapper.setSpacing(5);
+        leftBarButtonsWrapper.setMinWidth(LEFT_BUTTONS_PANEL_WIDTH);
+        leftBarButtonsWrapper.setPrefWidth(LEFT_BUTTONS_PANEL_WIDTH);
+        leftBarButtonsWrapper.setSpacing(2);
         leftBarButtonsWrapper.setAlignment(Pos.TOP_CENTER);
-        leftBarButtonsWrapper.setPadding(new Insets(5, 5 ,5, 5));
+        //leftBarButtonsWrapper.setPadding(new Insets(5, 5 ,5, 5));
         leftBarButtonsWrapper.setStyle("-fx-background-color: #103859");
 
         ScrollPane scrollPane = new ScrollPane(leftBarButtonsWrapper);
@@ -242,66 +243,69 @@ public class AppGUI
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setPannable(true);
 
-        importLeftCharButton = new Button();
+        importLeftCharButton = new Button("Import Left", setButtonImg( "importLeftChar.png"));
         buttonCommonStyles(importLeftCharButton);
-        importLeftCharButton.setGraphic(setButtonImg(40, "importLeftChar.png"));
 
-        importRightCharButton = new Button();
+        importRightCharButton = new Button("Import Right", setButtonImg( "importRightChar.png"));
         buttonCommonStyles(importRightCharButton);
-        importRightCharButton.setGraphic(setButtonImg(40, "importRightChar.png"));
 
-        flipButton = new Button();
+        flipButton = new Button("Change Direction", setButtonImg( "flip.png"));
         buttonCommonStyles(flipButton);
-        flipButton.setGraphic(setButtonImg(40, "flip.png"));
 
         colorPalette = new ColorPicker();
-        colorPalette.setMinHeight(40);
-        colorPalette.setMinWidth(40);
-        colorPalette.setStyle("-fx-background-color: rgba(0, 0, 0, 1); -fx-background-radius: 2; -fx-cursor: hand");
+        colorPalette.setMinHeight(30);
+        colorPalette.setMinWidth(LEFT_BUTTONS_PANEL_WIDTH);
+        colorPalette.setStyle("-fx-background-color: rgba(30, 194, 227, 0.5); -fx-background-radius: 1;-fx-highlight-fill: white;-fx-cursor: hand");
         colorPalette.setOnAction(event ->{
             selectedColor = colorPalette.getValue();
         });
 
-        genderSwapButton = new Button();
+        genderSwapButton = new Button("Gender Swap", setButtonImg( "changeGender.png"));
         buttonCommonStyles(genderSwapButton);
-        genderSwapButton.setGraphic(setButtonImg(40, "changeGender.png"));
 
-        changeSkinToneButton = new Button();
+        changeSkinToneButton = new Button("Skin Tone", setButtonImg( "bodyColor.png"));
         buttonCommonStyles(changeSkinToneButton);
-        changeSkinToneButton.setGraphic(setButtonImg(40, "bodyColor.png"));
 
-        changeHairColorButton = new Button();
+        changeHairColorButton = new Button("Hair Color", setButtonImg( "hairColor.png"));
         buttonCommonStyles(changeHairColorButton);
-        changeHairColorButton.setGraphic(setButtonImg(40, "hairColor.png"));
 
-        changeLipsColorButton = new Button();
+        changeLipsColorButton = new Button("Lip Color", setButtonImg( "lipsColor.png"));
         buttonCommonStyles(changeLipsColorButton);
-        changeLipsColorButton.setGraphic(setButtonImg(40, "lipsColor.png"));
 
-        addSpeechBubbleButton = new Button();
+        addSpeechBubbleButton = new Button("Speech Bubble", setButtonImg( "speechBubbleButton.png"));
         buttonCommonStyles(addSpeechBubbleButton);
-        addSpeechBubbleButton.setGraphic(setButtonImg(40, "speechBubbleButton.png"));
 
-        addThoughtBubbleButton = new Button();
+        addThoughtBubbleButton = new Button("Thought Bubble", setButtonImg( "thoughtBubbleButton.png"));
         buttonCommonStyles(addThoughtBubbleButton);
-        addThoughtBubbleButton.setGraphic(setButtonImg(40, "thoughtBubbleButton.png"));
 
-        removeBubbleButton = new Button();
+        removeBubbleButton = new Button("Remove Bubble", setButtonImg( "removeBubbleButton.png"));
         buttonCommonStyles(removeBubbleButton);
-        removeBubbleButton.setGraphic(setButtonImg(40, "removeBubbleButton.png"));
 
-        addTextTopButton = new Button();
+        addTextTopButton = new Button("Top Narration", setButtonImg( "narrativeTextTop.png"));
         buttonCommonStyles(addTextTopButton);
-        addTextTopButton.setGraphic(setButtonImg(40, "narrativeTextTop.png"));
 
-        addTextBottomButton = new Button();
+        addTextBottomButton = new Button("Bottom Narration", setButtonImg("narrativeTextBottom.png"));
         buttonCommonStyles(addTextBottomButton);
-        addTextBottomButton.setGraphic(setButtonImg(40, "narrativeTextBottom.png"));
 
         leftBarButtonsWrapper.getChildren().addAll(colorPalette, importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
                 changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton);
 
         layout.setLeft(scrollPane);
+    }
+
+    private void buttonCommonStyles(Button btn){
+        btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.2); -fx-font-size: 18px;-fx-cursor: hand; -fx-background-radius: 1;"+
+                "-fx-text-fill: black");
+        btn.setAlignment(Pos.BASELINE_LEFT);
+        btn.prefWidthProperty().setValue(LEFT_BUTTONS_PANEL_WIDTH);
+        btn.setOnMouseEntered(mouseEvent ->{
+            btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 18px;-fx-cursor: hand; -fx-background-radius: 1;"+
+                    "-fx-text-fill: rgb(229, 235, 195)");
+        });
+        btn.setOnMouseExited(mouseEvent -> {
+            btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.2); -fx-font-size: 18px;-fx-cursor: hand; -fx-background-radius: 1;"+
+                    "-fx-text-fill: black");
+        });
     }
 
     public File importModel()    //Uploads character to workspace pane
@@ -318,15 +322,12 @@ public class AppGUI
         return file;
     }
 
-    private ImageView setButtonImg(int size, String filename){
+    private ImageView setButtonImg(String filename){
+        int size = 25;
         ImageView imgV = new ImageView("/resources/"+filename);
         imgV.setFitHeight(size);
         imgV.setFitWidth(size);
         return imgV;
-    }
-
-    private void buttonCommonStyles(Button btn){
-        btn.setStyle("-fx-background-color: transparent; -fx-cursor: hand");
     }
 
     // sets the given character view and character to currently selected
