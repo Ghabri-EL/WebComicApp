@@ -354,7 +354,7 @@ public class AppGUI
             selectedPanel.setEffect(null);
         }
         selectedPanel = panel;
-        selectedPanel.setEffect(new DropShadow(15, Color.CYAN));
+        selectedPanel.setEffect(new DropShadow(15, Color.TURQUOISE));
     }
 
     //====> BUBBLE IMPORT METHODS

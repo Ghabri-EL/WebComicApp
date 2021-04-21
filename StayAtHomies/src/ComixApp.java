@@ -65,6 +65,11 @@ public class ComixApp extends WorkingPane
     }
 
     public Panel createPanel(){
+        //set the bubble type and text for each char before creating the panel
+        getCharacterLeft().setBubbleText(getLeftBubbleText());
+        getCharacterLeft().setBubbleType(getLeftBubbleType());
+        getCharacterRight().setBubbleText(getRightBubbleText());
+        getCharacterRight().setBubbleType(getRightBubbleType());
         //parameters: int id, Image panelShot, Character characterLeft, Character characterRight, String leftBubbleText, String rightBubbleText,
         //BubbleType leftBubbleType, BubbleType rightBubbleType, String narrativeTextTop, String narrativeTextBottom
         Panel newPanel = new Panel(getId(), getPanelShot(), getCharacterLeft(), getCharacterRight(),
@@ -88,11 +93,16 @@ public class ComixApp extends WorkingPane
         if(panel == null){
             return false;
         }
+        //create a copy of the characters in the panel to prevent any
+        //changes applied directly on the characters in the panel without
+        //the user saving those changes
+        Character leftChar = new Character(panel.getCharacterLeft());
+        Character rightCharacter = new Character(panel.getCharacterRight());
 
         resetSelectedCharacter();
         setId(panel.getId());
-        setCharacterLeft(panel.getCharacterLeft());
-        setCharacterRight(panel.getCharacterRight());
+        setCharacterLeft(leftChar);
+        setCharacterRight(rightCharacter);
         setLeftBubbleText(panel.getLeftBubbleText());
         setRightBubbleText(panel.getRightBubbleText());
         setLeftBubbleType(panel.getLeftBubbleType());

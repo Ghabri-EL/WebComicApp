@@ -13,8 +13,9 @@ public class Character implements CharacterInterface
     private Image maleHairMask;
     private Image lipsMask;
     private Image skinMask;
+     Image bodyOutlineMask;
     private String bubbleText;
-    private BubbleType bubbleType = BubbleType.NONE;
+    private BubbleType bubbleType;
     private String pose;
 
     public Character(Image characterImage, String pose){
@@ -23,54 +24,54 @@ public class Character implements CharacterInterface
         this.hair = DEFAULT_FEMALE_HAIR_COLOR;
         this.lips = DEFAULT_LIPS_COLOR;
         this.direction = Direction.RIGHT;
+        this.bubbleType = BubbleType.NONE;
         this.pose = pose;
-        setCharacterImage(characterImage);
+        setCharacterImageAndMasks(characterImage);
+    }
+
+    //creates a clone of the given character
+    public Character(Character baseCharacter){
+        this.hair = baseCharacter.hair;
+        this.lips = baseCharacter.lips;
+        this.skin = baseCharacter.skin;
+        this.gender = baseCharacter.gender;
+        this.direction = baseCharacter.direction;
+        this.characterImage = baseCharacter.characterImage;
+        this.femaleHairMask = baseCharacter.femaleHairMask;
+        this.maleHairMask = baseCharacter.maleHairMask;
+        this.lipsMask = baseCharacter.lipsMask;
+        this.skinMask = baseCharacter.skinMask;
+        this.bodyOutlineMask = baseCharacter.bodyOutlineMask;
+        this.bubbleText = baseCharacter.bubbleText;
+        this.bubbleType = baseCharacter.bubbleType;
+        this.pose = baseCharacter.pose;
     }
 
     public Color getHair() {
         return hair;
     }
 
-    public void setHair(Color hair) {
-        this.hair = hair;
-    }
-
     public Color getLips() {
         return lips;
-    }
-
-    public void setLips(Color lips) {
-        this.lips = lips;
     }
 
     public Color getSkin() {
         return skin;
     }
 
-    public void setSkin(Color skin) {
-        this.skin = skin;
-    }
-
     public Gender getGender() {
         return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
     }
 
     public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
     public Image getCharacterImage() {
         return characterImage;
     }
 
-    public void setCharacterImage(Image image) {
+    private void setCharacterImageAndMasks(Image image) {
         this.characterImage = image;
         setMasks();
     }
@@ -101,6 +102,7 @@ public class Character implements CharacterInterface
         maleHairMask = flip(maleHairMask);
         lipsMask = flip(lipsMask);
         skinMask = flip(skinMask);
+        bodyOutlineMask = flip(bodyOutlineMask);
 
         if(direction == Direction.RIGHT){
             direction = Direction.LEFT;
@@ -171,7 +173,7 @@ public class Character implements CharacterInterface
                 }
             }
         }
-        characterImage = newImage;
+        characterImage = correctBodyOutline(newImage);
 
         if(gender == Gender.FEMALE){
             gender = Gender.MALE;
@@ -202,7 +204,7 @@ public class Character implements CharacterInterface
             }
         }
         hair = hairColor;
-        characterImage = newImage;
+        characterImage = correctBodyOutline(newImage);
     }
 
     public void skinChange(Color skinColor){
@@ -227,7 +229,7 @@ public class Character implements CharacterInterface
             }
         }
         skin = skinColor;
-        characterImage = newImage;
+        characterImage = correctBodyOutline(newImage);
     }
 
     public void changeLipsColor(Color lipsColor){
@@ -252,7 +254,7 @@ public class Character implements CharacterInterface
                 }
             }
             lips = lipsColor;
-            characterImage = newImage;
+            characterImage = correctBodyOutline(newImage);
         }
     }
 
@@ -272,6 +274,9 @@ public class Character implements CharacterInterface
 
         WritableImage bodyMask = new WritableImage(width,  height);         //skin mask
         PixelWriter pixelWriterBM = bodyMask.getPixelWriter();
+
+        WritableImage bodyOutlineMask = new WritableImage(width,  height);         //skin mask
+        PixelWriter pixelWriterBOM = bodyOutlineMask.getPixelWriter();
 
         for(int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
@@ -298,27 +303,33 @@ public class Character implements CharacterInterface
                 }
 
                 if(pixel.equals(DEFAULT_SKIN_COLOR)){
-                    for(int i = 0; i < 4; i++){
-                        pixelWriterBM.setColor(x, y, pixel);
-                    }
+//                    for(int i = 0; i < 4; i++){
+//                        pixelWriterBM.setColor(x, y, pixel);
+//                    }
                     pixelWriterBM.setColor(x, y, pixel);
                 }
                 else{
                     pixelWriterBM.setColor(x, y, Color.TRANSPARENT);
+                }
+
+                if(pixel.equals(DEFAULT_BODY_OUTLINE_COLOR)){
+                    pixelWriterBOM.setColor(x, y, pixel);
+                }
+                else{
+                    pixelWriterBOM.setColor(x, y, Color.TRANSPARENT);
                 }
             }
         }
 
         //the int parameters are used to optimize the anti aliasing correction
         this.maleHairMask = correctMaskEdges(maleHairMask, 4);
+        this.femaleHairMask = correctMaskEdges(femaleHairMask, 4);
         //combined these two masks again as there were a lot of antialiasing artefacts in the female hair color
         // due to the difference in color and antialiasing
-        // I didnt use correctMaskInnerPixels as for male hair because the female hair is more complex and
-        // it would erode more into certain black lines when applied on the image
-        this.femaleHairMask = correctMaskEdges(femaleHairMask, 3);
         this.femaleHairMask = combineMasks(this.femaleHairMask, this.maleHairMask);
         this.lipsMask = correctMaskEdges(lipsMask, 3);
         this.skinMask = correctMaskEdges(bodyMask, 2);
+        this.bodyOutlineMask = correctMaskEdges(bodyOutlineMask, 1);
     }
 
     //nPixels is the number of pixels by which the edge of the mask will be extended
@@ -395,16 +406,26 @@ public class Character implements CharacterInterface
         return newMask;
     }
 
-    public Character clone(){
-        Character character = new Character(characterImage, pose);
-        character.setHair(hair);
-        character.setLips(lips);
-        character.setSkin(skin);
-        character.setGender(gender);
-        character.setDirection(direction);
-        character.setBubbleText(bubbleText);
-        character.setBubbleType(bubbleType);
-        return character;
+    //body outline and limbs were eroded in certain places due to the
+    //correctMaskEdges method trying to correct anti aliasing artefacts by extending the edges
+    private Image correctBodyOutline(WritableImage image){
+        int width = (int)characterImage.getWidth();
+        int height = (int)characterImage.getHeight();
+
+        PixelReader pixelReaderOutlineMask = bodyOutlineMask.getPixelReader();
+        PixelWriter pixelWriterImage = image.getPixelWriter();
+
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                Color pixel = pixelReaderOutlineMask.getColor(x, y);
+
+                if(!pixel.equals(Color.TRANSPARENT)){
+                    pixelWriterImage.setColor(x, y, pixel);
+                }
+            }
+        }
+
+        return image;
     }
 }
 

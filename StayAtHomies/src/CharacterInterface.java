@@ -1,4 +1,3 @@
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public interface CharacterInterface {
@@ -7,11 +6,12 @@ public interface CharacterInterface {
     Color DEFAULT_SKIN_COLOR = Color.web("0xffe8d8ff");
     Color DEFAULT_LIPS_COLOR = Color.web("0xff0000ff");
     Color DEFAULT_RIBBON_COLOR = Color.web("0xecb4b5ff");
+    Color DEFAULT_BODY_OUTLINE_COLOR = Color.web("0x000000");
     enum Gender{FEMALE, MALE}
     enum Direction{LEFT, RIGHT}
 
-    public void flipImage();
-    public void switchGenders();
-    public void hairChange(Color hairColor);
-    public void skinChange(Color skinColor);
+    void flipImage();
+    void switchGenders();
+    void hairChange(Color hairColor);
+    void skinChange(Color skinColor);
 }
