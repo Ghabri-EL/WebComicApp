@@ -24,8 +24,8 @@ import java.io.File;
 //AppGUI.java represents the View following the MVC pattern
 public class AppGUI
 {
-    private static final double SCENE_WIDTH = 900;
-    private static final double SCENE_HEIGHT = 850;
+    private static final double SCENE_WIDTH = 860;
+    private static final double SCENE_HEIGHT = 860;
     private final double WORKING_PANE_WIDTH = 610;
     private final double WORKING_PANE_HEIGHT = 600;
     private final double BUBBLE_WIDTH = 290;
@@ -137,42 +137,41 @@ public class AppGUI
 
         bubbleTextStyle(leftBubbleText);
         bubbleTextStyle(rightBubbleText);
-
-        //(Node, colIndex, rowIndex, colSpan, rowSpan)
-        mainPane.add(leftBubbleWrapper, 0,1,1,1);
-        mainPane.add(rightBubbleWrapper, 2,1,1,1);
-        mainPane.add(leftCharView, 0, 2, 1, 1);
-        mainPane.add(rightCharView, 2, 2, 1, 1);
-        mainPane.add(topNarrativeText, 0, 0, 3, 1);
-        mainPane.add(bottomNarrativeText, 0, 3, 3, 1);
-
         narrativeTextStyle(topNarrativeText);
         narrativeTextStyle(bottomNarrativeText);
-
-        GridPane.setValignment(leftBubbleWrapper, VPos.BOTTOM);
-        GridPane.setValignment(rightBubbleWrapper, VPos.BOTTOM);
-
-        mainPane.setStyle("-fx-background-color: white");
-        mainPane.setPrefSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
-        mainPane.setMaxSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
-        mainPane.setHgap(5);
-        //mainPane.setGridLinesVisible(true);
 
         //size for each row and col
         //first & last row: height= 40 & width= gridspan
         //second row height 220 and width 300
         //third row size is 300 x 300
-        RowConstraints row0 = new RowConstraints();
-        row0.setMaxHeight(40);
-        row0.setMinHeight(40);
-        RowConstraints row1 = new RowConstraints();
-        row1.setPrefHeight(BUBBLE_HEIGHT);
-        RowConstraints row2 = new RowConstraints();
-        row2.setPrefHeight(CHARACTER_VIEW_SIZE);
-        RowConstraints row3 = new RowConstraints();
-        row3.setMaxHeight(40);
-        row3.setMinHeight(40);
-        mainPane.getRowConstraints().addAll(row0, row1, row2, row3);
+//        RowConstraints row0 = new RowConstraints();
+//        row0.setMaxHeight(40);
+//        row0.setMinHeight(40);
+//        RowConstraints row1 = new RowConstraints();
+//        row1.setPrefHeight(BUBBLE_HEIGHT);
+//        RowConstraints row2 = new RowConstraints();
+//        row2.setPrefHeight(CHARACTER_VIEW_SIZE);
+//        RowConstraints row3 = new RowConstraints();
+//        row3.setMaxHeight(40);
+//        row3.setMinHeight(40);
+//        mainPane.getRowConstraints().addAll(row0, row1, row2, row3);
+
+        //(Node, colIndex, rowIndex, colSpan, rowSpan)
+        mainPane.add(topNarrativeText, 0, 0, 2, 1);
+        mainPane.add(leftBubbleWrapper, 0,1,1,1);
+        mainPane.add(rightBubbleWrapper, 1,1,1,1);
+        mainPane.add(leftCharView, 0, 2, 1, 1);
+        mainPane.add(rightCharView, 1, 2, 1, 1);
+        mainPane.add(bottomNarrativeText, 0, 3, 2, 1);
+
+        GridPane.setValignment(leftBubbleWrapper, VPos.BOTTOM);
+        GridPane.setValignment(rightBubbleWrapper, VPos.BOTTOM);
+
+        mainPane.setStyle("-fx-background-color: white");
+        mainPane.setMinSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
+        mainPane.setMaxSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
+        mainPane.setHgap(10);
+        mainPane.setGridLinesVisible(true);
 
         BorderPane.setAlignment(mainPane, Pos.CENTER);
         BorderPane.setMargin(mainPane, new Insets(10, 10, 10, 10));
@@ -215,10 +214,9 @@ public class AppGUI
         viewMenu.getItems().add(viewMenuTwo);
         viewMenu.getItems().add(viewMenuThree);
 
-        panelMenu.getItems().add(panelMenuSave);
-
-        panelMenu.getItems().add(panelMenuDelete);
         panelMenu.getItems().add(panelMenuNew);
+        panelMenu.getItems().add(panelMenuSave);
+        panelMenu.getItems().add(panelMenuDelete);
 
         MenuBar topMenuBar = new MenuBar();
         topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu);
@@ -234,7 +232,6 @@ public class AppGUI
         leftBarButtonsWrapper.setPrefWidth(LEFT_BUTTONS_PANEL_WIDTH);
         leftBarButtonsWrapper.setSpacing(2);
         leftBarButtonsWrapper.setAlignment(Pos.TOP_CENTER);
-        //leftBarButtonsWrapper.setPadding(new Insets(5, 5 ,5, 5));
         leftBarButtonsWrapper.setStyle("-fx-background-color: #103859");
 
         ScrollPane scrollPane = new ScrollPane(leftBarButtonsWrapper);
@@ -294,17 +291,17 @@ public class AppGUI
     }
 
     private void buttonCommonStyles(Button btn){
-        btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.2); -fx-font-size: 18px;-fx-cursor: hand; -fx-background-radius: 1;"+
-                "-fx-text-fill: black");
+        btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
+                "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold");
         btn.setAlignment(Pos.BASELINE_LEFT);
         btn.prefWidthProperty().setValue(LEFT_BUTTONS_PANEL_WIDTH);
         btn.setOnMouseEntered(mouseEvent ->{
-            btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 18px;-fx-cursor: hand; -fx-background-radius: 1;"+
-                    "-fx-text-fill: rgb(229, 235, 195)");
+            btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
+                    "-fx-text-fill: rgb(237, 237, 237); -fx-font-weight: bold");
         });
         btn.setOnMouseExited(mouseEvent -> {
-            btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.2); -fx-font-size: 18px;-fx-cursor: hand; -fx-background-radius: 1;"+
-                    "-fx-text-fill: black");
+            btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
+                    "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold");
         });
     }
 
@@ -412,14 +409,19 @@ public class AppGUI
 
         if(textInput.getResult() != null){
             String text = textInput.getResult();
-            //text = (text.length() < 150 ? text : text.substring(0 , 150))
+            //limit the narrative text to 70 characters
+            text = (text.length() < 70 ? text : text.substring(0 , 70));
 
             //if the given possition is bottom the the narrative text is placed at the bottom
             if(position.toUpperCase() == "BOTTOM"){
                 bottomNarrativeText.setText(text);
+                System.out.println("Bot TXT: " + bottomNarrativeText.getWidth());
+                System.out.println("GRID: " + mainPane.getWidth());
             }
             else{
                 topNarrativeText.setText(text);
+                System.out.println(topNarrativeText.getWidth());
+                System.out.println("GRID: " + mainPane.getWidth());
             }
             return text;
         }
@@ -436,8 +438,8 @@ public class AppGUI
 
     private void narrativeTextStyle(Label narrativeText){
         narrativeText.setAlignment(Pos.CENTER);
-        narrativeText.setWrapText(true);
         narrativeText.setPrefSize(WORKING_PANE_WIDTH, 40);
+        narrativeText.setMaxWidth(WORKING_PANE_WIDTH);
         narrativeText.setFont(Font.font("Arial", 18));
     }
     //END NARRATIVE TEXT METHODS
@@ -450,6 +452,7 @@ public class AppGUI
             selectedCharacterView.setEffect(null);
             image = mainPane.snapshot(new SnapshotParameters(), null);
             selectedCharacterView.setEffect(selectedEffect);
+            System.out.println("IMAGE WI: " + image.getWidth());
         }
         else{
              image = mainPane.snapshot(new SnapshotParameters(), null);

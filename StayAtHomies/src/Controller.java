@@ -1,5 +1,6 @@
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
@@ -15,7 +16,6 @@ public class Controller {
    }
    public void execution(){
        selectHandler();
-
        view.getImportLeftCharButton().setOnAction(actionEvent -> importLeftModelEvent());
        view.getImportRightCharButton().setOnAction(actionEvent -> importRightModelEvent());
        view.getFlipButton().setOnAction(event -> flipCharacterEvent());

@@ -59,6 +59,10 @@ public class ComixApp extends WorkingPane
         setPanelShot(null);
         setCharacterLeft(null);
         setCharacterRight(null);
+        setLeftBubbleText(null);
+        setRightBubbleText(null);
+        setLeftBubbleType(BubbleType.NONE);
+        setRightBubbleType(BubbleType.NONE);
         setNarrativeTextTop(null);
         setNarrativeTextBottom(null);
         resetSelectedCharacter();
