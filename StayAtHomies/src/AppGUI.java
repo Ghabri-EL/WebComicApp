@@ -101,7 +101,7 @@ public class AppGUI
         stage.setScene(scene);
         //stage.setWidth(SCENE_WIDTH);
         //stage.setHeight(SCENE_HEIGHT);
-        stage.setFullScreen(true);
+        stage.setMaximized(true);
         stage.setTitle("HomiesComix");
         stage.show();
     }
@@ -172,7 +172,7 @@ public class AppGUI
         mainPane.setMinSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setMaxSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setHgap(10);
-        mainPane.setGridLinesVisible(true);
+        //mainPane.setGridLinesVisible(true);
 
         BorderPane.setAlignment(mainPane, Pos.CENTER);
         BorderPane.setMargin(mainPane, new Insets(10, 10, 10, 10));
@@ -462,7 +462,6 @@ public class AppGUI
             selectedCharacterView.setEffect(null);
             image = mainPane.snapshot(new SnapshotParameters(), null);
             selectedCharacterView.setEffect(selectedEffect);
-            System.out.println("IMAGE WI: " + image.getWidth());
         }
         else{
              image = mainPane.snapshot(new SnapshotParameters(), null);
@@ -543,6 +542,20 @@ public class AppGUI
         resetSelectedPanel();
     }
 
+    public boolean confirmWorkingPaneReset(){
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Create new panel", ButtonType.YES, ButtonType.NO);
+        confirmation.setTitle("New Panel");
+        confirmation.setHeaderText("Creating new panel will reset the current panel. Any unsaved changes will be lost.");
+        confirmation.setContentText("Are you sure you want to continue?");
+        confirmation.showAndWait();
+
+        if(confirmation.getResult() == ButtonType.YES){
+            return true;
+        }
+
+        return false;
+    }
+
     public int deletePanel(){
         if(!isPanelSelected()){
             return -1;
@@ -555,6 +568,21 @@ public class AppGUI
             return id;
         }
     }
+
+    public boolean confirmDeletePanel(){
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Create new panel", ButtonType.YES, ButtonType.NO);
+        confirmation.setTitle("Remove Panel");
+        confirmation.setHeaderText("Panel removal cannot be undone and the panel cannot be recovered.");
+        confirmation.setContentText("Are you sure you want to continue?");
+        confirmation.showAndWait();
+
+        if(confirmation.getResult() == ButtonType.YES){
+            return true;
+        }
+
+        return false;
+    }
+
     private void recomputeIds(int id){
         ObservableList list = comixStrip.getChildren();
 
@@ -709,6 +737,13 @@ public class AppGUI
             selectedPanel.setEffect(null);
             selectedPanel = null;
         }
+    }
+
+    public void userInformationAlert(String msg){
+        Alert information = new Alert(Alert.AlertType.INFORMATION);
+        information.setTitle("Info");
+        information.setHeaderText(msg);
+        information.show();
     }
 }
 

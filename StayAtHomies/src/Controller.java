@@ -1,7 +1,5 @@
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
@@ -31,8 +29,8 @@ public class Controller {
        view.getAddTextBottomButton().setOnAction(actionEvent -> addNarrativeTextBottomEvent());
        view.getFileMenuCharactersDir().setOnAction(actionEvent -> openCharacterDirectory());
        view.getPanelMenuSave().setOnAction(actionEvent -> savePanelEvent());
-       view.getPanelMenuNew().setOnAction(event -> resetWorkingPaneEvent());
-       view.getPanelMenuDelete().setOnAction(event -> deletePanel());
+       view.getPanelMenuNew().setOnAction(event -> newPanelEvent());
+       view.getPanelMenuDelete().setOnAction(event -> deletePanelEvent());
    }
 
    private void selectHandler(){
@@ -218,6 +216,7 @@ public class Controller {
        }
        else{
            System.out.println("You need to have the two characters imported in order to save the panel");
+           view.userInformationAlert("You need to have the two characters imported in order to save the panel");
        }
    }
 
@@ -229,7 +228,7 @@ public class Controller {
        panel.setPanelId(id);
        addPanelEventHandler(panel);
        view.addPanelToStrip(panel);
-       resetWorkingPaneEvent();
+       resetWorkingPane();
    }
 
    private void editExistingPanel(){
@@ -242,7 +241,12 @@ public class Controller {
        comixApp.editPanel(id, basePanel);
    }
 
-   private void resetWorkingPaneEvent(){
+   private void newPanelEvent(){
+       if(view.confirmWorkingPaneReset()){
+            resetWorkingPane();
+       }
+   }
+   private void resetWorkingPane(){
        comixApp.resetWorkingSpace();
        view.resetWorkingPane();
    }
@@ -270,6 +274,12 @@ public class Controller {
            view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), leftChar.getBubbleType(),
                    rightChar.getBubbleType(), leftChar.getBubbleText(), rightChar.getBubbleText(),
                    comixApp.getNarrativeTextTop(), comixApp.getNarrativeTextBottom());
+       }
+   }
+
+   private void deletePanelEvent(){
+       if(view.confirmDeletePanel()){
+           deletePanel();
        }
    }
 
