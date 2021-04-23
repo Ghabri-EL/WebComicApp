@@ -27,8 +27,8 @@ public class HelpPage {
                     + "\n"
             + "To change hair color again select a color from the color palette (first button on left hand side bar) . Then use the 9th button down to change " +
                     "the hair color to the selected color . Character has to be selected in order for the operation to work ."
-                    + "\n"
-            + "First insert a character by pressing the second button on the left hand side bar , then selecting the image of the desired character . Once" +
+                    + "\n",
+            "First insert a character by pressing the second button on the left hand side bar , then selecting the image of the desired character . Once" +
                     "thats done , select the speech button which is 11th button down on the left hand side bar . A window will pop up where you can introduce the" +
                     "desired text , and press ok . A speech bubble will appear above the character with the desired text . Make sure the character is selected before" +
                     "inserting the speech bubble .\n"
@@ -44,8 +44,8 @@ public class HelpPage {
                     + "\n"
             + "Once a character is selected , use the 13th button down from the left hand side bar which will bring up a popup . Insert the text you wish to add" +
                     "at the BOTTOM of the panel.\n"
-                    + "\n"
-            + "Top Bar Buttons\n"
+                    + "\n",
+            "Top Bar Buttons\n"
                     + "\n"
 
     };

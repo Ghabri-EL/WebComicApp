@@ -304,17 +304,6 @@ public class AppGUI
     }
 
     public void createRightPane() {
-//        Pagination pagination = new Pagination(28, 0);
-//        pagination.setStyle("fx-border-color:red;");
-//        StackPane sp = new StackPane();
-//        sp.getChildren().add(pagination);
-//        AnchorPane anchor = new AnchorPane();
-//        AnchorPane.setTopAnchor(pagination, 10.0);
-//        AnchorPane.setRightAnchor(pagination, 10.0);
-//        AnchorPane.setBottomAnchor(pagination, 10.0);
-//        AnchorPane.setLeftAnchor(pagination, 10.0);
-//        anchor.getChildren().addAll(pagination);
-
         layout.setRight(helpPageClass.helpPage());
     }
 
