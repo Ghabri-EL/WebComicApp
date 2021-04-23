@@ -1,5 +1,6 @@
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextArea;
@@ -11,6 +12,9 @@ import javafx.util.Callback;
 
 public class HelpPage {
     private Pagination pagination;
+    private Button exitHelp;
+    private AppGUI app;
+
     final String[] textPages = new String[] {
             "Left Bar Buttons\n"
                     + "\n"
@@ -87,7 +91,11 @@ public class HelpPage {
         AnchorPane.setRightAnchor(pagination, 10.0);
         AnchorPane.setBottomAnchor(pagination, 10.0);
         AnchorPane.setLeftAnchor(pagination, 10.0);
-        anchor.getChildren().addAll(pagination);
+
+        exitHelp = new Button("x");
+        exitHelp.setOnAction(event -> app.closeRightPane());
+
+        anchor.getChildren().addAll(pagination, exitHelp);
 
         return anchor;
     }
