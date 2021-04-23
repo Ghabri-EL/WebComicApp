@@ -1,6 +1,7 @@
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
@@ -28,6 +29,7 @@ public class Controller {
        view.getRemoveBubbleButton().setOnAction(actionEvent -> removeBubbleEvent());
        view.getAddTextTopButton().setOnAction(actionEvent -> addNarrativeTextTopEvent());
        view.getAddTextBottomButton().setOnAction(actionEvent -> addNarrativeTextBottomEvent());
+       view.getFileMenuCharactersDir().setOnAction(actionEvent -> openCharacterDirectory());
        view.getPanelMenuSave().setOnAction(actionEvent -> savePanelEvent());
        view.getPanelMenuNew().setOnAction(event -> resetWorkingPaneEvent());
        view.getPanelMenuDelete().setOnAction(event -> deletePanel());
@@ -201,6 +203,10 @@ public class Controller {
        }
    }
 
+   private void openCharacterDirectory(){
+       view.setCharactersDirectory();
+   }
+
    private void savePanelEvent(){
        if(comixApp.readyToCreate()){
            if(view.isPanelSelected()){
@@ -241,7 +247,7 @@ public class Controller {
        view.resetWorkingPane();
    }
 
-   //selects
+   //add handler to panel to select panel and load it in the working pane
    private void addPanelEventHandler(PanelView panel){
        panel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
            view.selectPanel(panel);

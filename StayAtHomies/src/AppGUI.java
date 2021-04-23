@@ -1,6 +1,4 @@
 import javafx.collections.ObservableList;
-import javafx.css.Style;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -37,6 +36,7 @@ public class AppGUI
     private final String APP_THEME_COLOR = "#103859";
     private final Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
     private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
+    private File defaultCharactersDirectory = new File("./");
 
     private Stage stage;
     private Scene scene;
@@ -76,15 +76,15 @@ public class AppGUI
     private Menu panelMenu;
 
     //MENU OPTIONS
-    private MenuItem fileMenuOne = new MenuItem("Load");
-    private MenuItem fileMenuTwo = new MenuItem("Save");
-    private MenuItem fileMenuThree = new MenuItem("FileOption");
+    private MenuItem fileMenuSaveXML = new MenuItem("Save");
+    private MenuItem fileMenuLoadXML = new MenuItem("Load");
+    private MenuItem fileMenuCharactersDir = new MenuItem("Characters Directory");
     private MenuItem viewMenuOne = new MenuItem("Option1");
     private MenuItem viewMenuTwo = new MenuItem("Option2");
     private MenuItem viewMenuThree = new MenuItem("Option3");
+    private MenuItem panelMenuNew = new MenuItem("New");
     private MenuItem panelMenuSave = new MenuItem("Save");
     private MenuItem panelMenuDelete = new MenuItem("Delete");
-    private MenuItem panelMenuNew = new MenuItem("New");
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -99,8 +99,9 @@ public class AppGUI
         createBottomPane();
         scene = new Scene(layout);
         stage.setScene(scene);
-        stage.setMinWidth(SCENE_WIDTH);
-        stage.setMinHeight(SCENE_HEIGHT);
+        //stage.setWidth(SCENE_WIDTH);
+        //stage.setHeight(SCENE_HEIGHT);
+        stage.setFullScreen(true);
         stage.setTitle("HomiesComix");
         stage.show();
     }
@@ -144,17 +145,17 @@ public class AppGUI
         //first & last row: height= 40 & width= gridspan
         //second row height 220 and width 300
         //third row size is 300 x 300
-//        RowConstraints row0 = new RowConstraints();
-//        row0.setMaxHeight(40);
-//        row0.setMinHeight(40);
-//        RowConstraints row1 = new RowConstraints();
-//        row1.setPrefHeight(BUBBLE_HEIGHT);
-//        RowConstraints row2 = new RowConstraints();
-//        row2.setPrefHeight(CHARACTER_VIEW_SIZE);
-//        RowConstraints row3 = new RowConstraints();
-//        row3.setMaxHeight(40);
-//        row3.setMinHeight(40);
-//        mainPane.getRowConstraints().addAll(row0, row1, row2, row3);
+        RowConstraints row0 = new RowConstraints();
+        row0.setMaxHeight(40);
+        row0.setMinHeight(40);
+        RowConstraints row1 = new RowConstraints();
+        row1.setPrefHeight(BUBBLE_HEIGHT);
+        RowConstraints row2 = new RowConstraints();
+        row2.setPrefHeight(CHARACTER_VIEW_SIZE);
+        RowConstraints row3 = new RowConstraints();
+        row3.setMaxHeight(40);
+        row3.setMinHeight(40);
+        mainPane.getRowConstraints().addAll(row0, row1, row2, row3);
 
         //(Node, colIndex, rowIndex, colSpan, rowSpan)
         mainPane.add(topNarrativeText, 0, 0, 2, 1);
@@ -206,9 +207,9 @@ public class AppGUI
         viewMenu = new Menu("View");
         panelMenu = new Menu("Panel");
 
-        fileMenu.getItems().add(fileMenuOne);
-        fileMenu.getItems().add(fileMenuTwo);
-        fileMenu.getItems().add(fileMenuThree);
+        fileMenu.getItems().add(fileMenuLoadXML);
+        fileMenu.getItems().add(fileMenuSaveXML);
+        fileMenu.getItems().add(fileMenuCharactersDir);
 
         viewMenu.getItems().add(viewMenuOne);
         viewMenu.getItems().add(viewMenuTwo);
@@ -292,27 +293,36 @@ public class AppGUI
 
     private void buttonCommonStyles(Button btn){
         btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
-                "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold");
+                "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold; -fx-padding: 10");
         btn.setAlignment(Pos.BASELINE_LEFT);
         btn.prefWidthProperty().setValue(LEFT_BUTTONS_PANEL_WIDTH);
+        btn.setGraphicTextGap(15);
         btn.setOnMouseEntered(mouseEvent ->{
-            btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
-                    "-fx-text-fill: rgb(237, 237, 237); -fx-font-weight: bold");
+            btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1 50 50 1;"+
+                    "-fx-text-fill: rgb(237, 237, 237); -fx-font-weight: bold; -fx-padding: 10");
         });
         btn.setOnMouseExited(mouseEvent -> {
             btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
-                    "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold");
+                    "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold; -fx-padding: 10");
         });
     }
 
+    public void setCharactersDirectory(){
+        DirectoryChooser dirChooser = new DirectoryChooser();
+        dirChooser.setInitialDirectory(defaultCharactersDirectory);
+        File dir = dirChooser.showDialog(stage);
+
+        if(dir != null){
+            defaultCharactersDirectory = dir;
+        }
+    }
     public File importModel()    //Uploads character to workspace pane
     {
-        File defaultDir = new File("./images");
-        if(!defaultDir.exists()){
-            defaultDir = new File("./");
+        if(!defaultCharactersDirectory.exists()){
+            defaultCharactersDirectory = new File("./images");
         }
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(defaultDir);
+        fileChooser.setInitialDirectory(defaultCharactersDirectory);
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png"));
         File file = fileChooser.showOpenDialog(stage);
 
@@ -410,7 +420,7 @@ public class AppGUI
         if(textInput.getResult() != null){
             String text = textInput.getResult();
             //limit the narrative text to 70 characters
-            text = (text.length() < 70 ? text : text.substring(0 , 70));
+            text = (text.length() <= 70 ? text : text.substring(0 , 70));
 
             //if the given possition is bottom the the narrative text is placed at the bottom
             if(position.toUpperCase() == "BOTTOM"){
@@ -641,16 +651,16 @@ public class AppGUI
         return addTextBottomButton;
     }
 
-    public MenuItem getFileMenuOne() {
-        return fileMenuOne;
+    public MenuItem getFileMenuLoadXML() {
+        return fileMenuLoadXML;
     }
 
-    public MenuItem getFileMenuTwo() {
-        return fileMenuTwo;
+    public MenuItem getFileMenuSaveXML() {
+        return fileMenuSaveXML;
     }
 
-    public MenuItem getFileMenuThree() {
-        return fileMenuThree;
+    public MenuItem getFileMenuCharactersDir() {
+        return fileMenuCharactersDir;
     }
 
     public MenuItem getViewMenuOne() {
