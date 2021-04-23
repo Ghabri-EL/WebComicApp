@@ -56,6 +56,7 @@ public class AppGUI
     private Color selectedColor = Color.WHITE;
     private HBox comixStrip;
     private PanelView selectedPanel;
+    private HelpPage helpPageClass;
 
     //SIDE BUTTONS
     private ColorPicker colorPalette;
@@ -90,8 +91,6 @@ public class AppGUI
     private MenuItem panelMenuSave = new MenuItem("Save");
     private MenuItem panelMenuDelete = new MenuItem("Delete");
     private MenuItem help = new MenuItem("Help");
-
-    private HelpPage helpPageClass = new HelpPage();
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -303,6 +302,7 @@ public class AppGUI
     }
 
     public void createRightPane() {
+        helpPageClass = new HelpPage();
         layout.setRight(helpPageClass.helpPage());
     }
 
@@ -622,6 +622,7 @@ public class AppGUI
     public ImageView getSelectedCharacterView() {
         return selectedCharacterView;
     }
+
 
     public Label getLeftBubbleText() {
         return leftBubbleText;

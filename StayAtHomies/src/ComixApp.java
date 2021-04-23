@@ -36,19 +36,6 @@ public class ComixApp extends WorkingPane
         }
     }
 
-    public void selectCharacter(Selected select){
-        if(select == Selected.LEFT){
-            selectedCharacter = getCharacterLeft();
-        }
-        else{
-            selectedCharacter = getCharacterRight();
-        }
-    }
-
-    public boolean isCharacterSelected(){
-        return selectedCharacter != null;
-    }
-
     public int generateId(){
         setId(comixStrip.size());
         return getId();
@@ -136,28 +123,34 @@ public class ComixApp extends WorkingPane
         return getId() >= 0 && getCharacterLeft() != null && getCharacterRight() != null;
     }
 
+    public void selectCharacter(Selected select){
+        if(select == Selected.LEFT){
+            selectedCharacter = getCharacterLeft();
+        }
+        else{
+            selectedCharacter = getCharacterRight();
+        }
+    }
+
+    public boolean isCharacterSelected(){
+        return selectedCharacter != null;
+    }
+
     private void resetSelectedCharacter(){
         selectedCharacter = null;
     }
 
-    private boolean leftCharSelected(){
+    public boolean leftCharSelected(){
+        if(!isCharacterSelected()){
+            return false;
+        }
         return selectedCharacter == getCharacterLeft();
     }
 
-    private boolean rightCharSelected(){
-        return selectedCharacter == getCharacterRight();
-    }
-
-    public void refreshSelectedCharacter(){
-        //if the selected character was the left character and a new one was imported
-        //then set the new model to selected
-        if(isCharacterSelected()){
-            if(getSelectedCharacter() != getCharacterRight()){
-                setSelectedCharacter(getCharacterLeft());
-            }
-            else if(getSelectedCharacter() != getCharacterLeft()){
-                setSelectedCharacter(getCharacterRight());
-            }
+    public boolean rightCharSelected(){
+        if(!isCharacterSelected()){
+            return false;
         }
+        return selectedCharacter == getCharacterRight();
     }
 }

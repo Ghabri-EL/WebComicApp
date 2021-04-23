@@ -58,7 +58,8 @@ public class Controller {
            Character character = new Character(charImage, pose);
            comixApp.setCharacterLeft(character);
            view.getLeftCharView().setImage(character.getCharacterImage());
-           comixApp.refreshSelectedCharacter();
+           comixApp.selectCharacter(Selected.LEFT);
+           view.selectFrame(Selected.LEFT);
        }
    }
 
@@ -70,7 +71,8 @@ public class Controller {
            Character character = new Character(charImage, pose);
            comixApp.setCharacterRight(character);
            view.getRightCharView().setImage(character.getCharacterImage());
-           comixApp.refreshSelectedCharacter();
+           comixApp.selectCharacter(Selected.RIGHT);
+           view.selectFrame(Selected.RIGHT);
        }
    }
 
