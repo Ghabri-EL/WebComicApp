@@ -1,6 +1,4 @@
 import javafx.collections.ObservableList;
-import javafx.css.Style;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -198,7 +196,6 @@ public class AppGUI
         scrollPane.setMinHeight(COMIX_STRIP_PANE_HEIGHT + 15);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
-
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setPannable(true);
@@ -315,6 +312,7 @@ public class AppGUI
         btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
                 "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold; -fx-padding: 10");
         btn.setAlignment(Pos.BASELINE_LEFT);
+        btn.setGraphicTextGap(15);
         btn.prefWidthProperty().setValue(LEFT_BUTTONS_PANEL_WIDTH);
         btn.setOnMouseEntered(mouseEvent ->{
             btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1 50 50 1;"+
@@ -378,6 +376,7 @@ public class AppGUI
             selectedPanel.setEffect(null);
         }
         selectedPanel = panel;
+        System.out.println("IMAGE SIZE: " + panel.getImage().getWidth() + "::" + panel.getImage().getHeight());
         selectedPanel.setEffect(new DropShadow(15, Color.TURQUOISE));
     }
 
@@ -420,14 +419,15 @@ public class AppGUI
     private void bubbleTextStyle(Label text){
         text.setAlignment(Pos.CENTER);
         text.setWrapText(true);
-        text.setPrefSize(250, 150);
+        //text.setPrefSize(250, 150);
+        text.setMaxSize(250, 150);
         text.setTextAlignment(TextAlignment.CENTER);
         text.setFont(Font.font("Arial", 18));
     }
     //===> END BUBBLE IMPORT METHODS
 
     //===> NARRATIVE TEXT METHODS
-    private String addNarrativeText(String position) {
+    private String addNarrativeText() {
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Narrative Text");
         textInput.setHeaderText("Enter narrative text...");
@@ -437,25 +437,17 @@ public class AppGUI
             String text = textInput.getResult();
             //limit the narrative text to 70 characters
             text = (text.length() <= 70 ? text : text.substring(0 , 70));
-
-            //if the given possition is bottom the the narrative text is placed at the bottom
-            if(position.toUpperCase() == "BOTTOM"){
-                bottomNarrativeText.setText(text);
-            }
-            else{
-                topNarrativeText.setText(text);
-            }
             return text;
         }
         return null;
     }
 
     public String addNarrativeTextTop(){
-        return addNarrativeText("TOP");
+        return addNarrativeText();
     }
 
     public String addNarrativeTextBottom(){
-        return addNarrativeText("BOTTOM");
+        return addNarrativeText();
     }
 
     private void narrativeTextStyle(Label narrativeText){
@@ -467,16 +459,16 @@ public class AppGUI
     //END NARRATIVE TEXT METHODS
 
     //===> BOTTOM PANE(comixStrip) METHODS
-    private Image snapCurrentPanel(){
-        WritableImage image;
+    private Image snapshotCurrentPanel(){
+        WritableImage image = new WritableImage((int)WORKING_PANE_WIDTH, (int)WORKING_PANE_HEIGHT);
         if(isCharacterSelected()){
             Effect selectedEffect = selectedCharacterView.getEffect();
             selectedCharacterView.setEffect(null);
-            image = mainPane.snapshot(new SnapshotParameters(), null);
+            image = mainPane.snapshot(new SnapshotParameters(), image);
             selectedCharacterView.setEffect(selectedEffect);
         }
         else{
-             image = mainPane.snapshot(new SnapshotParameters(), null);
+             image = mainPane.snapshot(new SnapshotParameters(), image);
         }
         return image;
     }
@@ -486,14 +478,14 @@ public class AppGUI
     }
 
     public PanelView createPanel(){
-        Image snapshot = snapCurrentPanel();
+        Image snapshot = snapshotCurrentPanel();
         PanelView panel = new PanelView(snapshot);
         setPanelAttributes(panel);
         return panel;
     }
 
     public PanelView editSelectedPanel(){
-        Image snapshot = snapCurrentPanel();
+        Image snapshot = snapshotCurrentPanel();
         if(isPanelSelected()){
             selectedPanel.setImage(snapshot);
         }
@@ -564,7 +556,6 @@ public class AppGUI
         if(confirmation.getResult() == ButtonType.YES){
             return true;
         }
-
         return false;
     }
 
@@ -591,7 +582,6 @@ public class AppGUI
         if(confirmation.getResult() == ButtonType.YES){
             return true;
         }
-
         return false;
     }
 
@@ -622,7 +612,6 @@ public class AppGUI
     public ImageView getSelectedCharacterView() {
         return selectedCharacterView;
     }
-
 
     public Label getLeftBubbleText() {
         return leftBubbleText;

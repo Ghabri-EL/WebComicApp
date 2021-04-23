@@ -185,6 +185,7 @@ public class Controller {
            String narrativeText = view.addNarrativeTextTop();
            if(narrativeText != null){
                comixApp.setNarrativeTextTop(narrativeText);
+               view.getTopNarrativeText().setText(narrativeText);
            }
        }
        else{
@@ -197,6 +198,7 @@ public class Controller {
            String narrativeText = view.addNarrativeTextBottom();
            if(narrativeText != null){
                comixApp.setNarrativeTextBottom(narrativeText);
+               view.getBottomNarrativeText().setText(narrativeText);
            }
        }
        else{
