@@ -10,12 +10,10 @@ import java.io.File;
 public class Controller {
    private final ComixApp comixApp;
    private final AppGUI view;
-   private final HelpPage helpPage;
 
-   public Controller(ComixApp comixApp, AppGUI view, HelpPage helpPage){
+   public Controller(ComixApp comixApp, AppGUI view){
        this.comixApp = comixApp;
        this.view = view;
-       this.helpPage = helpPage;
    }
    public void execution(){
        selectHandler();
@@ -283,8 +281,7 @@ public class Controller {
        System.out.println("Select one of the characters on which you want to perform the operation");
    }
 
-   private Stage stage;
    private void helpPage() {
-        helpPage.helpPage(stage); 
+        view.createRightPane();
    }
 }

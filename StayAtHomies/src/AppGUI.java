@@ -88,6 +88,9 @@ public class AppGUI
     private MenuItem panelMenuSave = new MenuItem("Save");
     private MenuItem panelMenuDelete = new MenuItem("Delete");
     private MenuItem panelMenuNew = new MenuItem("New");
+    private MenuItem help = new MenuItem("Help");
+
+    private HelpPage helpPageClass = new HelpPage();
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -225,7 +228,7 @@ public class AppGUI
         panelMenu.getItems().add(panelMenuDelete);
         panelMenu.getItems().add(panelMenuNew);
 
-
+        helpMenu.getItems().add(help);
 
         MenuBar topMenuBar = new MenuBar();
         topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu, helpMenu, messageMenu);
@@ -298,6 +301,21 @@ public class AppGUI
                 changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton);
 
         layout.setLeft(scrollPane);
+    }
+
+    public void createRightPane() {
+//        Pagination pagination = new Pagination(28, 0);
+//        pagination.setStyle("fx-border-color:red;");
+//        StackPane sp = new StackPane();
+//        sp.getChildren().add(pagination);
+//        AnchorPane anchor = new AnchorPane();
+//        AnchorPane.setTopAnchor(pagination, 10.0);
+//        AnchorPane.setRightAnchor(pagination, 10.0);
+//        AnchorPane.setBottomAnchor(pagination, 10.0);
+//        AnchorPane.setLeftAnchor(pagination, 10.0);
+//        anchor.getChildren().addAll(pagination);
+
+        layout.setRight(helpPageClass.helpPage());
     }
 
     private void buttonCommonStyles(Button btn){
