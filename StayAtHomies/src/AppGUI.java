@@ -1,4 +1,6 @@
 import javafx.collections.ObservableList;
+import javafx.css.Style;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,8 +25,8 @@ import java.io.File;
 //AppGUI.java represents the View following the MVC pattern
 public class AppGUI
 {
-    private static final double SCENE_WIDTH = 860;
-    private static final double SCENE_HEIGHT = 860;
+    private static final double SCENE_WIDTH = 900;
+    private static final double SCENE_HEIGHT = 850;
     private final double WORKING_PANE_WIDTH = 610;
     private final double WORKING_PANE_HEIGHT = 600;
     private final double BUBBLE_WIDTH = 290;
@@ -74,6 +76,8 @@ public class AppGUI
     private Menu fileMenu;
     private Menu viewMenu;
     private Menu panelMenu;
+    private Menu helpMenu;
+    private Menu messageMenu;
 
     //MENU OPTIONS
     private MenuItem fileMenuSaveXML = new MenuItem("Save");
@@ -85,6 +89,9 @@ public class AppGUI
     private MenuItem panelMenuNew = new MenuItem("New");
     private MenuItem panelMenuSave = new MenuItem("Save");
     private MenuItem panelMenuDelete = new MenuItem("Delete");
+    private MenuItem help = new MenuItem("Help");
+
+    private HelpPage helpPageClass = new HelpPage();
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -206,6 +213,8 @@ public class AppGUI
         fileMenu = new Menu("File");
         viewMenu = new Menu("View");
         panelMenu = new Menu("Panel");
+        helpMenu = new Menu("Help");
+        messageMenu = new Menu("Messages");
 
         fileMenu.getItems().add(fileMenuLoadXML);
         fileMenu.getItems().add(fileMenuSaveXML);
@@ -219,8 +228,10 @@ public class AppGUI
         panelMenu.getItems().add(panelMenuSave);
         panelMenu.getItems().add(panelMenuDelete);
 
+        helpMenu.getItems().add(help);
+
         MenuBar topMenuBar = new MenuBar();
-        topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu);
+        topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu, helpMenu, messageMenu);
 
         layout.setTop(topMenuBar);
     }
@@ -291,12 +302,20 @@ public class AppGUI
         layout.setLeft(scrollPane);
     }
 
+    public void createRightPane() {
+        layout.setRight(helpPageClass.helpPage());
+    }
+
+    public void closeRightPane() {
+//        StackPane sp = new StackPane();
+//        layout.setRight(sp);
+    }
+
     private void buttonCommonStyles(Button btn){
         btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
                 "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold; -fx-padding: 10");
         btn.setAlignment(Pos.BASELINE_LEFT);
         btn.prefWidthProperty().setValue(LEFT_BUTTONS_PANEL_WIDTH);
-        btn.setGraphicTextGap(15);
         btn.setOnMouseEntered(mouseEvent ->{
             btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1 50 50 1;"+
                     "-fx-text-fill: rgb(237, 237, 237); -fx-font-weight: bold; -fx-padding: 10");
@@ -318,9 +337,6 @@ public class AppGUI
     }
     public File importModel()    //Uploads character to workspace pane
     {
-        if(!defaultCharactersDirectory.exists()){
-            defaultCharactersDirectory = new File("./images");
-        }
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(defaultCharactersDirectory);
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png"));
@@ -425,13 +441,9 @@ public class AppGUI
             //if the given possition is bottom the the narrative text is placed at the bottom
             if(position.toUpperCase() == "BOTTOM"){
                 bottomNarrativeText.setText(text);
-                System.out.println("Bot TXT: " + bottomNarrativeText.getWidth());
-                System.out.println("GRID: " + mainPane.getWidth());
             }
             else{
                 topNarrativeText.setText(text);
-                System.out.println(topNarrativeText.getWidth());
-                System.out.println("GRID: " + mainPane.getWidth());
             }
             return text;
         }
@@ -713,6 +725,10 @@ public class AppGUI
 
     public MenuItem getPanelMenuNew() {
         return panelMenuNew;
+    }
+
+    public MenuItem getHelpMenuPage() {
+        return helpMenu;
     }
 
     public boolean isCharacterSelected(){

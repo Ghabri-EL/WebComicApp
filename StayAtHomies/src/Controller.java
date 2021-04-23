@@ -31,6 +31,7 @@ public class Controller {
        view.getPanelMenuSave().setOnAction(actionEvent -> savePanelEvent());
        view.getPanelMenuNew().setOnAction(event -> newPanelEvent());
        view.getPanelMenuDelete().setOnAction(event -> deletePanelEvent());
+       view.getHelpMenuPage().setOnAction(event -> helpPage());
    }
 
    private void selectHandler(){
@@ -292,5 +293,9 @@ public class Controller {
 
    private void notSelectedMsg(){
        System.out.println("Select one of the characters on which you want to perform the operation");
+   }
+
+   private void helpPage() {
+        view.createRightPane();
    }
 }
