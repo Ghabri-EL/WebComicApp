@@ -22,14 +22,11 @@ How to execute:
 -Required to execute: JDK version 13 or above
 
 Story2:
-First button on the left bar opens up a window for you to search and select the image Character that is to be placed on the left side of the panel.
-The second button does the same thing, it lets you import a Character for the right side of the panel.
+Second button on the left bar opens up a window for you to search and select the image Character that is to be placed on the left side of the panel.
+The third button does the same thing, it lets you import a Character for the right side of the panel.
 
 Story 3:
-The third button flips the Character image horizontally. Image has to be selected in order for the operation to work.
-
-Additional functionality:
-Buttons 4 & 5 rotate the characters 90 degrees left and right respectively
+The forth button flips the Character image horizontally. Image has to be selected in order for the operation to work.
 
 === Story 4 , 5 , 6 ===
 
@@ -38,15 +35,19 @@ How to execute :
 -Required to execute: JDK version 13 or above
 
 Story 4 :
-The 7th button from the left hand side bar switches the gender of characters . Character has to be selected in order for the operation to work .
+The 5th button from the left hand side bar switches the gender of characters . Character has to be selected in order for the operation to work .
 
 Story 5 :
 In order to change skin colour , first use the first button on the left hand side bar which will open the color palette . Once the preferred color
-is selected , press the 8th button down which will change the skin color . Character has to be selected in order for the operation to work .
+is selected , press the 6th button down which will change the skin color . Character has to be selected in order for the operation to work .
 
 Story 6 :
-To change hair color again select a color from the color palette (first button on left hand side bar) . Then use the 9th button down to change
+To change hair color again select a color from the color palette (first button on left hand side bar) . Then use the 7th button down to change
 the hair color to the selected color . Character has to be selected in order for the operation to work .
+
+Additional :
+To change lip colour select a colour from the colour palette (first button on left hand side bar) . Then use the 8th button down to change
+the lips colour . Character has to be selected in order for the operation to work .
 
 === Story 7 & 8 ===
 
@@ -56,23 +57,23 @@ How to execute :
 
 Story 7 :
 First insert a character by pressing the second button on the left hand side bar , then selecting the image of the desired character . Once
-thats done , select the speech button which is 11th button down on the left hand side bar . A window will pop up where you can introduce the
+thats done , select the speech button which is 9th button down on the left hand side bar . A window will pop up where you can introduce the
 desired text , and press ok . A speech bubble will appear above the character with the desired text . Make sure the character is selected before
 inserting the speech bubble .
 
 Story 8 :
-Follow the same steps as described above in "Story 7" in order to insert a thought bubble by using the 12th button down from the left hand side bar .
+Follow the same steps as described above in "Story 7" in order to insert a thought bubble by using the 10th button down from the left hand side bar .
 Make sure character is selected before inserting the thought bubble .
 
 Extra :
-If you wish to delete a speech bubble or a thought bubble , use the 13th button down from the left hand side bar . In order for the operation to work ,
+If you wish to delete a speech bubble or a thought bubble , use the 11th button down from the left hand side bar . In order for the operation to work ,
 make sure you select the character of which you want to delete the speech bubble .
 Niall McGurk: 33%
 Gabriel: 34%
 Daiana: 33%
 Ryan: 0%
 
-=== Sprint 5: Story 9 & 10 ===
+=== Story 9 & 10 ===
 
 How to execute :
 -Command to execute : java -jar StayAtHomies.jar
@@ -85,3 +86,20 @@ at the TOP of the panel .
 Story 10 :
 Once a character is selected , use the 13th button down from the left hand side bar which will bring up a popup . Insert the text you wish to add
 at the BOTTOM of the panel.
+
+=== Story 11, 12 & 13 ===
+
+How to execute :
+-Command to execute : java -jar StayAtHomies.jar
+-Required to execute: JDK version 13 or above
+
+Story 11 :
+In order to save panels to a list , use the top bar "Panel" menu . Make sure you have 2 characters into the current panel , then use the "save" option
+on the Panel menu . This will save the panels to the bottom comic strip section .
+
+Story 12 :
+To go back and work on a previous panel , simply click on the panel you desire to open again .
+
+Story 13 :
+To delete a panel you no longer need , click on the panel from the comic strip then use the "Panel" menu in the top bar and press on "Delete" .
+A popup will show on screen to make sure you want to delete the panel . By clicking yes the panel will be deleted .
