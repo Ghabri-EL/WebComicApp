@@ -303,11 +303,6 @@ public class AppGUI
         layout.setRight(helpPageClass.helpPage());
     }
 
-    public void closeRightPane() {
-//        StackPane sp = new StackPane();
-//        layout.setRight(sp);
-    }
-
     private void buttonCommonStyles(Button btn){
         btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
                 "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold; -fx-padding: 10");

@@ -64,6 +64,8 @@ public class HelpPage {
 
     };
 
+    AnchorPane anchor = new AnchorPane();
+
     public int itemsPerPage() {
         return 1;
     }
@@ -96,19 +98,25 @@ public class HelpPage {
             }
         });
 
-        AnchorPane anchor = new AnchorPane();
         AnchorPane.setTopAnchor(pagination, 10.0);
         AnchorPane.setRightAnchor(pagination, 10.0);
         AnchorPane.setBottomAnchor(pagination, 10.0);
         AnchorPane.setLeftAnchor(pagination, 10.0);
 
         exitHelp = new Button("x");
-        exitHelp.setOnAction(event -> app.closeRightPane());
+        exitHelp.setOnAction(event -> closeHelpPage());
 
         AnchorPane.setBottomAnchor(exitHelp, 10.0);
         AnchorPane.setRightAnchor(exitHelp, 10.0);
 
         anchor.getChildren().addAll(pagination, exitHelp);
+
+        return anchor;
+    }
+
+    public AnchorPane closeHelpPage() {
+        anchor.setVisible(false);
+        anchor.setPrefSize(0,0);
 
         return anchor;
     }
