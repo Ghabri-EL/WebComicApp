@@ -1,19 +1,15 @@
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class HelpPage {
     private Pagination pagination;
     private Button exitHelp;
-    private AppGUI app;
+    private AnchorPane anchor = new AnchorPane();
 
     final String[] textPages = new String[] {
             "1. Left Bar Buttons\n"
@@ -64,8 +60,6 @@ public class HelpPage {
 
     };
 
-    AnchorPane anchor = new AnchorPane();
-
     public int itemsPerPage() {
         return 1;
     }
@@ -77,6 +71,9 @@ public class HelpPage {
         for(int i = page; i < page + itemsPerPage(); i++) {
             TextArea text = new TextArea(textPages[i]);
             text.setWrapText(true);
+            text.setPrefSize(400, 1000);
+            text.setEditable(false);
+            text.setMouseTransparent(true);
             box.getChildren().add(text);
         }
 
@@ -103,21 +100,22 @@ public class HelpPage {
         AnchorPane.setBottomAnchor(pagination, 10.0);
         AnchorPane.setLeftAnchor(pagination, 10.0);
 
-        exitHelp = new Button("x");
+        exitHelp = new Button("X");
+        exitHelp.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand");
         exitHelp.setOnAction(event -> closeHelpPage());
 
         AnchorPane.setBottomAnchor(exitHelp, 10.0);
-        AnchorPane.setRightAnchor(exitHelp, 10.0);
+        AnchorPane.setLeftAnchor(exitHelp, 10.0);
 
         anchor.getChildren().addAll(pagination, exitHelp);
+        anchor.setStyle("-fx-border-color: rgb(209, 209, 209)");
 
         return anchor;
     }
 
-    public AnchorPane closeHelpPage() {
+    private AnchorPane closeHelpPage() {
         anchor.setVisible(false);
         anchor.setPrefSize(0,0);
-
         return anchor;
     }
 }

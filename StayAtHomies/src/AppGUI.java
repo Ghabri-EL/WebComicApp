@@ -23,7 +23,7 @@ import java.io.File;
 //AppGUI.java represents the View following the MVC pattern
 public class AppGUI
 {
-    private static final double SCENE_WIDTH = 900;
+    private static final double SCENE_WIDTH = 1300;
     private static final double SCENE_HEIGHT = 850;
     private final double WORKING_PANE_WIDTH = 610;
     private final double WORKING_PANE_HEIGHT = 600;
@@ -103,7 +103,7 @@ public class AppGUI
         createBottomPane();
         scene = new Scene(layout);
         stage.setScene(scene);
-        //stage.setWidth(SCENE_WIDTH);
+        stage.setWidth(SCENE_WIDTH);
         //stage.setHeight(SCENE_HEIGHT);
         stage.setMaximized(true);
         stage.setTitle("HomiesComix");
