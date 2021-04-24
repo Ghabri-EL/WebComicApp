@@ -16,41 +16,51 @@ public class HelpPage {
     private AppGUI app;
 
     final String[] textPages = new String[] {
-            "Left Bar Buttons\n"
+            "1. Left Bar Buttons\n"
                     + "\n"
-            + "First button on the left bar opens up a window for you to search and select the image Character that is to be placed on the left side of the panel.\n"
+            + "1.1 Second button on the left bar opens up a window for you to search and select the image Character that is to be placed on the left side of the panel.\n"
                     + "\n"
-            + "The second button does the same thing, it lets you import a Character for the right side of the panel.\n"
+            + "1.2 The third button does the same thing, it lets you import a Character for the right side of the panel.\n"
                     + "\n"
-            + "The third button flips the Character image horizontally. Image has to be selected in order for the operation to work.\n"
+            + "1.3 The fourth button flips the Character image horizontally. Image has to be selected in order for the operation to work.\n"
                     + "\n"
-            + "The 7th button from the left hand side bar switches the gender of characters . Character has to be selected in order for the operation to work .\n"
+            + "1.4 The 5th button from the left hand side bar switches the gender of characters . Character has to be selected in order for the operation to work .\n"
                     + "\n"
-            + "In order to change skin colour , first use the first button on the left hand side bar which will open the color palette . Once the preferred color" +
-                    " is selected , press the 8th button down which will change the skin color . Character has to be selected in order for the operation to work .\n"
+            + "1.5 In order to change skin colour , first use the first button on the left hand side bar which will open the color palette . Once the preferred color" +
+                    " is selected , press the 6th button down which will change the skin color . Character has to be selected in order for the operation to work .\n"
                     + "\n"
-            + "To change hair color again select a color from the color palette (first button on left hand side bar) . Then use the 9th button down to change " +
+            + "1.6 To change hair color again select a color from the color palette (first button on left hand side bar) . Then use the 7th button down to change " +
                     "the hair color to the selected color . Character has to be selected in order for the operation to work ."
+                    + "\n"
+            + "1.7 To change lip colour select a colour from the colour palette (first button on left hand side bar) . Then use the 8th button down to change" +
+                    "the lips colour . Character has to be selected in order for the operation to work .\n"
                     + "\n",
-            "First insert a character by pressing the second button on the left hand side bar , then selecting the image of the desired character . Once" +
-                    "thats done , select the speech button which is 11th button down on the left hand side bar . A window will pop up where you can introduce the" +
+            "1.8 First insert a character by pressing the second button on the left hand side bar , then selecting the image of the desired character . Once" +
+                    "thats done , select the speech button which is 9th button down on the left hand side bar . A window will pop up where you can introduce the" +
                     "desired text , and press ok . A speech bubble will appear above the character with the desired text . Make sure the character is selected before" +
                     "inserting the speech bubble .\n"
                     + "\n"
-            + "Follow the same steps as described above in \"Story 7\" in order to insert a thought bubble by using the 12th button down from the left hand side bar ." +
+            + "1.9 Follow the same steps as described above in \"Story 7\" in order to insert a thought bubble by using the 10th button down from the left hand side bar ." +
                     "Make sure character is selected before inserting the thought bubble .\n"
                     + "\n"
-            + "If you wish to delete a speech bubble or a thought bubble , use the 13th button down from the left hand side bar . In order for the operation to work ," +
+            + "1.10 If you wish to delete a speech bubble or a thought bubble , use the 11th button down from the left hand side bar . In order for the operation to work ," +
                     "make sure you select the character of which you want to delete the speech bubble .\n"
                     + "\n"
-            + "Once a character is selected , use the 12th button down on the left hand side bar which will bring up a popup . Insert the text you wish to add" +
+            + "1.11 Once a character is selected , use the 12th button down on the left hand side bar which will bring up a popup . Insert the text you wish to add" +
                     "at the TOP of the panel .\n"
                     + "\n"
-            + "Once a character is selected , use the 13th button down from the left hand side bar which will bring up a popup . Insert the text you wish to add" +
+            + " 1.12 Once a character is selected , use the 13th button down from the left hand side bar which will bring up a popup . Insert the text you wish to add" +
                     "at the BOTTOM of the panel.\n"
                     + "\n",
-            "Top Bar Buttons\n"
+            "2. Top Bar Buttons\n"
                     + "\n"
+            + "2.1 In order to save panels to a list , use the top bar \"Panel\" menu . Make sure you have 2 characters into the current panel , then use the \"save\" option" +
+                    "on the Panel menu . This will save the panels to the bottom comic strip section .\n"
+                    + "\n"
+            + "2.2 To go back and work on a previous panel , simply click on the panel you desire to open again .\n"
+                    + "\n"
+            +"2.3 To delete a panel you no longer need , click on the panel from the comic strip then use the \"Panel\" menu in the top bar and press on \"Delete\" ." +
+                    "A popup will show on screen to make sure you want to delete the panel . By clicking yes the panel will be deleted .\n"
 
     };
 
@@ -94,6 +104,9 @@ public class HelpPage {
 
         exitHelp = new Button("x");
         exitHelp.setOnAction(event -> app.closeRightPane());
+
+        AnchorPane.setBottomAnchor(exitHelp, 10.0);
+        AnchorPane.setRightAnchor(exitHelp, 10.0);
 
         anchor.getChildren().addAll(pagination, exitHelp);
 
