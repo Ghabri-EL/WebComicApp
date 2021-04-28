@@ -302,14 +302,14 @@ public class Controller {
    }
 
    private void helpPage() {
-        view.createRightPane();
+        view.createRightPaneHelp();
    }
 
    private void gettingStarted() {
-
+        view.createRightPaneGS();
    }
 
    private void aboutPage() {
-
+        view.createRightPaneAbout();
    }
 }

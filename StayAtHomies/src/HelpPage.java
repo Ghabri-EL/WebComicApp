@@ -61,23 +61,23 @@ public class HelpPage {
     };
 
     final String[] aboutTextPages = new String[] {
-
+            "About StayAtHomies\n"
     };
 
     final String[] gettingStartedTextPages = new String[] {
-
+            "First comic Panel\n"
     };
 
     public int itemsPerPage() {
         return 1;
     }
 
-    public VBox createHelpPage(int pageIndex) {
+    public VBox createPage(int pageIndex, String[] textPages) {
         VBox box = new VBox(5);
         int page = pageIndex * itemsPerPage();
 
         for(int i = page; i < page + itemsPerPage(); i++) {
-            TextArea text = new TextArea(helpTextPages[i]);
+            TextArea text = new TextArea(textPages[i]);
             text.setWrapText(true);
             text.setPrefSize(400, 1000);
             text.setEditable(false);
@@ -88,17 +88,38 @@ public class HelpPage {
         return box;
     }
 
-    public AnchorPane helpPage() {
+    public AnchorPane helpPage(String page) {
         pagination = new Pagination(3, 0);
         pagination.setStyle("fx-border-color:red;");
         pagination.setPageFactory(new Callback<Integer, Node>() {
             @Override
             public Node call(Integer pageIndex) {
-                if(pageIndex >= helpTextPages.length) {
-                    return null;
+                if(page == "HELP") {
+                    if(pageIndex >= helpTextPages.length) {
+                        return null;
+                    }
+                    else {
+                        return createPage(pageIndex, helpTextPages);
+                    }
+                }
+                if(page == "STARTED") {
+                    if(pageIndex >= gettingStartedTextPages.length) {
+                        return null;
+                    }
+                    else {
+                        return createPage(pageIndex, gettingStartedTextPages);
+                    }
+                }
+                if(page == "ABOUT") {
+                    if(pageIndex >= gettingStartedTextPages.length) {
+                        return null;
+                    }
+                    else {
+                        return createPage(pageIndex, aboutTextPages);
+                    }
                 }
                 else {
-                    return createHelpPage(pageIndex);
+                    return createPage(pageIndex, helpTextPages);
                 }
             }
         });

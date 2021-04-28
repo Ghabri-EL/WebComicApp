@@ -302,9 +302,19 @@ public class AppGUI
         layout.setLeft(scrollPane);
     }
 
-    public void createRightPane() {
+    public void createRightPaneHelp() {
         helpPageClass = new HelpPage();
-        layout.setRight(helpPageClass.helpPage());
+        layout.setRight(helpPageClass.helpPage("HELP"));
+    }
+
+    public void createRightPaneGS() {
+        helpPageClass = new HelpPage();
+        layout.setRight(helpPageClass.helpPage("STARTED"));
+    }
+
+    public void createRightPaneAbout() {
+        helpPageClass = new HelpPage();
+        layout.setRight(helpPageClass.helpPage("ABOUT"));
     }
 
     private void buttonCommonStyles(Button btn){
