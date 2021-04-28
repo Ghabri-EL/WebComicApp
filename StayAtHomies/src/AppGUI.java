@@ -89,6 +89,8 @@ public class AppGUI
     private MenuItem panelMenuSave = new MenuItem("Save");
     private MenuItem panelMenuDelete = new MenuItem("Delete");
     private MenuItem help = new MenuItem("Help");
+    private MenuItem about = new MenuItem("About");
+    private MenuItem gettingStarted = new MenuItem("Getting Started");
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -225,6 +227,8 @@ public class AppGUI
         panelMenu.getItems().add(panelMenuDelete);
 
         helpMenu.getItems().add(help);
+        helpMenu.getItems().add(gettingStarted);
+        helpMenu.getItems().add(about);
 
         MenuBar topMenuBar = new MenuBar();
         topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu, helpMenu, messageMenu);
@@ -712,8 +716,16 @@ public class AppGUI
         return panelMenuNew;
     }
 
-    public MenuItem getHelpMenuPage() {
-        return helpMenu;
+    public MenuItem getHelpPage() {
+        return help;
+    }
+
+    public MenuItem getHelpStartedPage() {
+        return gettingStarted;
+    }
+
+    public MenuItem getAboutPage() {
+        return about;
     }
 
     public boolean isCharacterSelected(){

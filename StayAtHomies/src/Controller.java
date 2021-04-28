@@ -31,7 +31,9 @@ public class Controller {
        view.getPanelMenuSave().setOnAction(actionEvent -> savePanelEvent());
        view.getPanelMenuNew().setOnAction(event -> newPanelEvent());
        view.getPanelMenuDelete().setOnAction(event -> deletePanelEvent());
-       view.getHelpMenuPage().setOnAction(event -> helpPage());
+       view.getHelpPage().setOnAction(event -> helpPage());
+       view.getHelpStartedPage().setOnAction(event -> gettingStarted());
+       view.getAboutPage().setOnAction(event -> aboutPage());
    }
 
    private void selectHandler(){
@@ -301,5 +303,13 @@ public class Controller {
 
    private void helpPage() {
         view.createRightPane();
+   }
+
+   private void gettingStarted() {
+
+   }
+
+   private void aboutPage() {
+
    }
 }

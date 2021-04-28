@@ -11,7 +11,7 @@ public class HelpPage {
     private Button exitHelp;
     private AnchorPane anchor = new AnchorPane();
 
-    final String[] textPages = new String[] {
+    final String[] helpTextPages = new String[] {
             "1. Left Bar Buttons\n"
                     + "\n"
             + "1.1 Second button on the left bar opens up a window for you to search and select the image Character that is to be placed on the left side of the panel.\n"
@@ -60,6 +60,14 @@ public class HelpPage {
 
     };
 
+    final String[] aboutTextPages = new String[] {
+
+    };
+
+    final String[] gettingStartedTextPages = new String[] {
+
+    };
+
     public int itemsPerPage() {
         return 1;
     }
@@ -69,7 +77,7 @@ public class HelpPage {
         int page = pageIndex * itemsPerPage();
 
         for(int i = page; i < page + itemsPerPage(); i++) {
-            TextArea text = new TextArea(textPages[i]);
+            TextArea text = new TextArea(helpTextPages[i]);
             text.setWrapText(true);
             text.setPrefSize(400, 1000);
             text.setEditable(false);
@@ -86,7 +94,7 @@ public class HelpPage {
         pagination.setPageFactory(new Callback<Integer, Node>() {
             @Override
             public Node call(Integer pageIndex) {
-                if(pageIndex >= textPages.length) {
+                if(pageIndex >= helpTextPages.length) {
                     return null;
                 }
                 else {
@@ -102,7 +110,7 @@ public class HelpPage {
 
         exitHelp = new Button("X");
         exitHelp.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand");
-        exitHelp.setOnAction(event -> closeHelpPage());
+        exitHelp.setOnAction(event -> closePage());
 
         AnchorPane.setBottomAnchor(exitHelp, 10.0);
         AnchorPane.setLeftAnchor(exitHelp, 10.0);
@@ -113,7 +121,7 @@ public class HelpPage {
         return anchor;
     }
 
-    private AnchorPane closeHelpPage() {
+    private AnchorPane closePage() {
         anchor.setVisible(false);
         anchor.setPrefSize(0,0);
         return anchor;
