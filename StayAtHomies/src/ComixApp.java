@@ -56,11 +56,6 @@ public class ComixApp extends WorkingPane
     }
 
     public Panel createPanel(){
-        //set the bubble type and text for each char before creating the panel
-        getCharacterLeft().setBubbleText(getLeftBubbleText());
-        getCharacterLeft().setBubbleType(getLeftBubbleType());
-        getCharacterRight().setBubbleText(getRightBubbleText());
-        getCharacterRight().setBubbleType(getRightBubbleType());
         //parameters: int id, Image panelShot, Character characterLeft, Character characterRight, String leftBubbleText, String rightBubbleText,
         //BubbleType leftBubbleType, BubbleType rightBubbleType, String narrativeTextTop, String narrativeTextBottom
         Panel newPanel = new Panel(getId(), getPanelShot(), getCharacterLeft(), getCharacterRight(),
@@ -105,10 +100,10 @@ public class ComixApp extends WorkingPane
         //testing the loading values to match with what's presented on screen
         System.out.println("LCHAR: "+ getCharacterLeft() + "\n" +
                         "RCHAR: "+ getCharacterRight() + "\n" +
-                        "LBTxt: "+getCharacterLeft().getBubbleText() + "\n" +
-                        "RBTxt: " + getCharacterRight().getBubbleText() + "\n" +
-                        "LBTp: " + getCharacterLeft().getBubbleType() + "\n"+
-                        "RBTp: " + getCharacterRight().getBubbleType() + "\n" +
+                        "LBTxt: "+getLeftBubbleText() + "\n" +
+                        "RBTxt: " + getRightBubbleText() + "\n" +
+                        "LBTp: " + getLeftBubbleType() + "\n"+
+                        "RBTp: " + getRightBubbleType() + "\n" +
                         "TNT: " + getNarrativeTextTop() + "\n" +
                         "BNT: " + getNarrativeTextBottom());
         return true;

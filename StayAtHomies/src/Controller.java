@@ -34,6 +34,7 @@ public class Controller {
        view.getHelpPage().setOnAction(event -> helpPage());
        view.getHelpStartedPage().setOnAction(event -> gettingStarted());
        view.getAboutPage().setOnAction(event -> aboutPage());
+       view.getFileMenuSaveXML().setOnAction(event -> saveComiXML());
    }
 
    private void selectHandler(){
@@ -56,7 +57,7 @@ public class Controller {
        File imageFile = view.importModel();
        if(imageFile != null){
            Image charImage = new Image(imageFile.toURI().toString());
-           String pose = imageFile.getName();
+           String pose = imageFile.getName().replaceFirst("[.][^.]+$", "");
            Character character = new Character(charImage, pose);
            comixApp.setCharacterLeft(character);
            view.getLeftCharView().setImage(character.getCharacterImage());
@@ -69,7 +70,7 @@ public class Controller {
        File imageFile = view.importModel();
        if(imageFile != null){
            Image charImage = new Image(imageFile.toURI().toString());
-           String pose = imageFile.getName();
+           String pose = imageFile.getName().replaceFirst("[.][^.]+$", "");
            Character character = new Character(charImage, pose);
            comixApp.setCharacterRight(character);
            view.getRightCharView().setImage(character.getCharacterImage());
@@ -278,8 +279,8 @@ public class Controller {
 
            //parameters: Image leftCharacter, Image rightCharacter, BubbleType leftBubbleType, BubbleType rightBubbleType,
            //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
-           view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), leftChar.getBubbleType(),
-                   rightChar.getBubbleType(), leftChar.getBubbleText(), rightChar.getBubbleText(),
+           view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),
+                   comixApp.getRightBubbleType(), comixApp.getLeftBubbleText(), comixApp.getRightBubbleText(),
                    comixApp.getNarrativeTextTop(), comixApp.getNarrativeTextBottom());
        }
    }
@@ -311,5 +312,9 @@ public class Controller {
 
    private void aboutPage() {
         view.createRightPaneAbout();
+   }
+
+   private void saveComiXML(){
+       ComiXML.createXML(comixApp.getComixStrip().getPanels());
    }
 }

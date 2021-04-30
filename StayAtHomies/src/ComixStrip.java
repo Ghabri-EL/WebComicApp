@@ -14,6 +14,10 @@ public class ComixStrip {
         return null;
     }
 
+    public ArrayList<Panel> getPanels(){
+        return panels;
+    }
+
     public Panel removePanel(int id){
         Panel rePanel = panels.remove(id);
         recomputeIds();

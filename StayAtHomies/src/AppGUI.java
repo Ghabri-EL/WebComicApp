@@ -258,7 +258,7 @@ public class AppGUI
         importRightCharButton = new Button("Import Right", setButtonImg( "importRightChar.png"));
         buttonCommonStyles(importRightCharButton);
 
-        flipButton = new Button("Change Direction", setButtonImg( "flip.png"));
+        flipButton = new Button("Orientation", setButtonImg( "flip.png"));
         buttonCommonStyles(flipButton);
 
         colorPalette = new ColorPicker();
