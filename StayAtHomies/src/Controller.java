@@ -315,6 +315,13 @@ public class Controller {
    }
 
    private void saveComiXML(){
-       ComiXML.createXML(comixApp.getComixStrip().getPanels());
+       boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels());
+       if(!created){
+           //log file feature to be added
+           view.userInformationAlert("Failed to save the XML file. Please check the log file");
+       }
+       else{
+           view.userInformationAlert("Project saved in XML format successfully");
+       }
    }
 }
