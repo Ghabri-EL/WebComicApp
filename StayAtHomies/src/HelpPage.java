@@ -14,39 +14,37 @@ public class HelpPage {
     final String[] helpTextPages = new String[] {
             "1. Left Bar Buttons\n"
                     + "\n"
-            + "1.1 Second button on the left bar opens up a window for you to search and select the image Character that is to be placed on the left side of the panel.\n"
+            + "1.1 \"Import Left\" button opens up a window for you to search and select the image Character that is to be placed on the left side of the panel.\n"
                     + "\n"
-            + "1.2 The third button does the same thing, it lets you import a Character for the right side of the panel.\n"
+            + "1.2 \"Import Right\" button does the same thing, it lets you import a Character for the right side of the panel.\n"
                     + "\n"
-            + "1.3 The fourth button flips the Character image horizontally. Image has to be selected in order for the operation to work.\n"
+            + "1.3 \"Orientation\" button flips the Character image horizontally. Character has to be selected in order for the operation to work.\n"
                     + "\n"
-            + "1.4 The 5th button from the left hand side bar switches the gender of characters . Character has to be selected in order for the operation to work .\n"
+            + "1.4 \"Gender Swap\" button switches the gender of characters . Character has to be selected in order for the operation to work .\n"
                     + "\n"
-            + "1.5 In order to change skin colour , first use the first button on the left hand side bar which will open the color palette . Once the preferred color" +
-                    " is selected , press the 6th button down which will change the skin color . Character has to be selected in order for the operation to work .\n"
+            + "1.5 The color palette at the top lets you select a colour for colour changing operations .\n"
                     + "\n"
-            + "1.6 To change hair color again select a color from the color palette (first button on left hand side bar) . Then use the 7th button down to change " +
-                    "the hair color to the selected color . Character has to be selected in order for the operation to work ."
+            + "1.6 \"Skin Tone\" button changes the colour of the Character's skin . A colour has to be selected from the colour palette first .\n" +
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n"
-            + "1.7 To change lip colour select a colour from the colour palette (first button on left hand side bar) . Then use the 8th button down to change" +
-                    "the lips colour . Character has to be selected in order for the operation to work .\n"
+            + "1.7 \"Hair Color\" button changes the colour of the Character's hair . A colour has to be selected from the colour palette first .\n" +
+                    "Character has to be selected in order for the operation to work .\n"
+                    + "\n"
+            + "1.8 \"Lip Color\" button changes the colour of the Character's lips . A colour has to be selected from the colour palette first .\n" +
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n",
-            "1.8 First insert a character by pressing the second button on the left hand side bar , then selecting the image of the desired character . Once" +
-                    "thats done , select the speech button which is 9th button down on the left hand side bar . A window will pop up where you can introduce the" +
-                    "desired text , and press ok . A speech bubble will appear above the character with the desired text . Make sure the character is selected before" +
-                    "inserting the speech bubble .\n"
+            "1.9 \"Speech Bubble\" button allows you to add a speech bubble at the top of the character .\n" +
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n"
-            + "1.9 Follow the same steps as described above in \"Story 7\" in order to insert a thought bubble by using the 10th button down from the left hand side bar ." +
-                    "Make sure character is selected before inserting the thought bubble .\n"
+            + "1.10  \"Thought Bubble\" button allows you to add a thought bubble at the top of the character .\n" +
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n"
-            + "1.10 If you wish to delete a speech bubble or a thought bubble , use the 11th button down from the left hand side bar . In order for the operation to work ," +
-                    "make sure you select the character of which you want to delete the speech bubble .\n"
+            + "1.11  \"Remove Bubble\" button allows you to remove any speech/thought bubble .\n" +
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n"
-            + "1.11 Once a character is selected , use the 12th button down on the left hand side bar which will bring up a popup . Insert the text you wish to add" +
-                    "at the TOP of the panel .\n"
+            + "1.12 \"Top Narration\" button allows you to add narrative text at the TOP of the panel .\n"
                     + "\n"
-            + " 1.12 Once a character is selected , use the 13th button down from the left hand side bar which will bring up a popup . Insert the text you wish to add" +
-                    "at the BOTTOM of the panel.\n"
+            + " 1.13 \"Bottom Narration\" button allows you to add narrative text at the BOTTOM of the panel .\n"
                     + "\n",
             "2. Top Bar Buttons\n"
                     + "\n"
@@ -62,10 +60,51 @@ public class HelpPage {
 
     final String[] aboutTextPages = new String[] {
             "About StayAtHomies\n"
+                    + "\n"
+            + "Hello !\n"
+                    + "\n"
+            + "We are StayAtHomies , a Software Engineering Team made up of 3 nerds : Gabriel , Niall and Daiana and this " +
+                    "is our project for the Software Engineering 3 module .\n"
+                    + "\n"
+            + "We hope you enjoy using our app and managed to make some fun comics with it !\n"
     };
 
     final String[] gettingStartedTextPages = new String[] {
-            "First comic Panel\n"
+            "First Comic Panel\n"
+                    + "\n"
+            + "This is a step by step tutorial on how to create your first ever comic panel using our application !\n"
+                    + "\n"
+            + "Step 1 : Selecting our characters ! In order to import our characters we use the \"Import Left\" and \"Import Right\"" +
+                    "buttons . These will pop open a window where we select our images folder . Select and import the desired characters .\n"
+                    + "\n"
+            + "Step 2 : First things first , making sure our characters are facing each other , we do this by clicking on the character " +
+                    "on the right hand side and selecting the \"Orientation\" button . This will flip the character to face the right direction .\n"
+                    + "\n"
+            +"Step 3 : Customizing Characters ! Now comes the fun part , by selecting a colour on the Color Palette located above our buttons , " +
+                    "we can play around and customize the characters . For this tutorial we are going to select the colour blue and then the button \"Skin Tone\" ," +
+                    "then the colour Orange and the button \"Hair Color\" for the character on the LEFT .\n"
+                    + "\n"
+            + "Lastly we are going to make this character a male by pressing the \"Gender Swap\" button .\n"
+                    + "\n"
+            + "Now its up to you what the character on the Right side is going to look like . Make sure you play around with the " +
+                    "buttons and colour to customize it as you wish .\n"
+                    + "\n",
+            "Step 4 : Lets add a setting to our characters . By using the buttons \"Top Narration\" and \"Bottom Narration\" " +
+                    "we will add some text such as \"In a galaxy far far away ... \" , but i will leave that to your imagination .\n"
+                    + "\n"
+            + "Step 5 : \"But why are we here ?\" well lets find out by adding some speech bubbles to these characters . " +
+                    "First lets select the character on the LEFT and the button \"Speech Bubble\" . For text i'm thinking of a joke " +
+                    "\"Two oranges walk into a bar ..\" , it is up to you to continue the conversation . \n"
+                    + "\n"
+            + "If a joke is not what you had in mind , you can always use the \"Remove Bubble\" button to delete the speech bubble " +
+                    "and create a new one .\n"
+                    + "\n",
+            "Step 6 : Now that our first panel looks done , we can save it in the comic strip by selecting Panel->Save from the " +
+                    "top bar . It is up to you to continue this story line , or delete it and start all over again !\n"
+                    + "\n"
+            + "For more help on what each button does , select Help->Help from the Top Bar .\n"
+                    + "\n"
+            + "Thank you for using our App :)\n"
     };
 
     public int itemsPerPage() {

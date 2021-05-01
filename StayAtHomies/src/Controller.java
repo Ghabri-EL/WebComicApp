@@ -184,12 +184,10 @@ public class Controller {
    }
 
    private void addNarrativeTextTopEvent(){
-       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
-           String narrativeText = view.addNarrativeTextTop();
-           if(narrativeText != null){
-               comixApp.setNarrativeTextTop(narrativeText);
-               view.getTopNarrativeText().setText(narrativeText);
-           }
+       String narrativeText = view.addNarrativeTextTop();
+       if(narrativeText != null){
+           comixApp.setNarrativeTextTop(narrativeText);
+           view.getTopNarrativeText().setText(narrativeText);
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -197,12 +195,10 @@ public class Controller {
    }
 
    private void addNarrativeTextBottomEvent(){
-       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
-           String narrativeText = view.addNarrativeTextBottom();
-           if(narrativeText != null){
-               comixApp.setNarrativeTextBottom(narrativeText);
-               view.getBottomNarrativeText().setText(narrativeText);
-           }
+       String narrativeText = view.addNarrativeTextBottom();
+       if(narrativeText != null){
+           comixApp.setNarrativeTextBottom(narrativeText);
+           view.getBottomNarrativeText().setText(narrativeText);
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
