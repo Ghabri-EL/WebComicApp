@@ -192,16 +192,11 @@ public class Controller {
    }
 
    private void addNarrativeTextBottomEvent(){
-//       if(view.isCharacterSelected() && comixApp.isCharacterSelected()){
-           String narrativeText = view.addNarrativeTextBottom();
-           if(narrativeText != null){
-               comixApp.setNarrativeTextBottom(narrativeText);
-               view.getBottomNarrativeText().setText(narrativeText);
-           }
-//       }
-//       else{
-//           notSelectedMsg();
-//       }
+       String narrativeText = view.addNarrativeTextBottom();
+       if(narrativeText != null){
+           comixApp.setNarrativeTextBottom(narrativeText);
+           view.getBottomNarrativeText().setText(narrativeText);
+       }
    }
 
    private void openCharacterDirectory(){
