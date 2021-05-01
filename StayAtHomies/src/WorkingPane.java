@@ -7,8 +7,8 @@ public abstract class WorkingPane {
     private Character characterRight;
     private String leftBubbleText;
     private String rightBubbleText;
-    private BubbleType leftBubbleType;
-    private BubbleType rightBubbleType;
+    private BubbleType leftBubbleType = BubbleType.NONE;
+    private BubbleType rightBubbleType = BubbleType.NONE;
     private String narrativeTextTop;
     private String narrativeTextBottom;
 

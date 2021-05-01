@@ -7,15 +7,13 @@ public class Character implements CharacterInterface
     private Color lips;
     private Color skin;
     private Gender gender;
-    private Direction direction;
+    private Orientation orientation;
     private Image characterImage;
     private Image femaleHairMask;
     private Image maleHairMask;
     private Image lipsMask;
     private Image skinMask;
-     Image bodyOutlineMask;
-    private String bubbleText;
-    private BubbleType bubbleType;
+    private Image bodyOutlineMask;
     private String pose;
 
     public Character(Image characterImage, String pose){
@@ -23,8 +21,7 @@ public class Character implements CharacterInterface
         this.gender = Gender.FEMALE;
         this.hair = DEFAULT_FEMALE_HAIR_COLOR;
         this.lips = DEFAULT_LIPS_COLOR;
-        this.direction = Direction.RIGHT;
-        this.bubbleType = BubbleType.NONE;
+        this.orientation = Orientation.RIGHT;
         this.pose = pose;
         setCharacterImageAndMasks(characterImage);
     }
@@ -35,15 +32,13 @@ public class Character implements CharacterInterface
         this.lips = baseCharacter.lips;
         this.skin = baseCharacter.skin;
         this.gender = baseCharacter.gender;
-        this.direction = baseCharacter.direction;
+        this.orientation = baseCharacter.orientation;
         this.characterImage = baseCharacter.characterImage;
         this.femaleHairMask = baseCharacter.femaleHairMask;
         this.maleHairMask = baseCharacter.maleHairMask;
         this.lipsMask = baseCharacter.lipsMask;
         this.skinMask = baseCharacter.skinMask;
         this.bodyOutlineMask = baseCharacter.bodyOutlineMask;
-        this.bubbleText = baseCharacter.bubbleText;
-        this.bubbleType = baseCharacter.bubbleType;
         this.pose = baseCharacter.pose;
     }
 
@@ -63,8 +58,8 @@ public class Character implements CharacterInterface
         return gender;
     }
 
-    public Direction getDirection() {
-        return direction;
+    public Orientation getOrientation() {
+        return orientation;
     }
 
     public Image getCharacterImage() {
@@ -74,22 +69,6 @@ public class Character implements CharacterInterface
     private void setCharacterImageAndMasks(Image image) {
         this.characterImage = image;
         setMasks();
-    }
-
-    public String getBubbleText(){
-        return bubbleText;
-    }
-
-    public void setBubbleText(String bubbleText){
-        this.bubbleText = bubbleText;
-    }
-
-    public BubbleType getBubbleType() {
-        return bubbleType;
-    }
-
-    public void setBubbleType(BubbleType bubbleType) {
-        this.bubbleType = bubbleType;
     }
 
     public String getPose() {
@@ -104,11 +83,11 @@ public class Character implements CharacterInterface
         skinMask = flip(skinMask);
         bodyOutlineMask = flip(bodyOutlineMask);
 
-        if(direction == Direction.RIGHT){
-            direction = Direction.LEFT;
+        if(orientation == Orientation.RIGHT){
+            orientation = Orientation.LEFT;
         }
         else{
-            direction = Direction.RIGHT;
+            orientation = Orientation.RIGHT;
         }
     }
 

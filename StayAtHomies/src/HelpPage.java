@@ -81,7 +81,6 @@ public class HelpPage {
             text.setWrapText(true);
             text.setPrefSize(400, 1000);
             text.setEditable(false);
-            text.setMouseTransparent(true);
             box.getChildren().add(text);
         }
 

@@ -8,7 +8,7 @@ public interface CharacterInterface {
     Color DEFAULT_RIBBON_COLOR = Color.web("0xecb4b5ff");
     Color DEFAULT_BODY_OUTLINE_COLOR = Color.web("0x000000");
     enum Gender{FEMALE, MALE}
-    enum Direction{LEFT, RIGHT}
+    enum Orientation {LEFT, RIGHT}
 
     void flipImage();
     void switchGenders();
