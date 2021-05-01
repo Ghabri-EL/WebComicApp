@@ -87,7 +87,7 @@ public class Controller {
            view.getSelectedCharacterView().setImage(newCharImage);
        }
        else{
-           notSelectedMsg();
+           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -98,7 +98,7 @@ public class Controller {
            view.getSelectedCharacterView().setImage(newCharImage);
        }
        else{
-           notSelectedMsg();
+           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -109,7 +109,7 @@ public class Controller {
            view.getSelectedCharacterView().setImage(newCharImage);
        }
        else{
-           notSelectedMsg();
+           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -121,7 +121,7 @@ public class Controller {
            view.getSelectedCharacterView().setImage(newCharImage);
        }
        else{
-           notSelectedMsg();
+           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -133,7 +133,7 @@ public class Controller {
            view.getSelectedCharacterView().setImage(newCharImage);
        }
        else{
-           notSelectedMsg();
+           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -147,7 +147,7 @@ public class Controller {
            }
        }
        else{
-           notSelectedMsg();
+           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -161,7 +161,7 @@ public class Controller {
            }
        }
        else{
-           view.userInformationAlert("Select character", "Select one of the characters on which you want to perform the operation");
+           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -179,7 +179,7 @@ public class Controller {
            comixApp.setBubbleType(BubbleType.NONE);
        }
        else{
-           view.userInformationAlert("Select character", "Select one of the characters on which you want to perform the operation");
+           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -192,7 +192,7 @@ public class Controller {
            }
        }
        else{
-           view.userInformationAlert("Select character", "Select one of the characters on which you want to perform the operation");
+           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -205,7 +205,7 @@ public class Controller {
            }
        }
        else{
-           view.userInformationAlert("Select character", "Select one of the characters on which you want to perform the operation");
+           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -224,7 +224,7 @@ public class Controller {
        }
        else{
            System.out.println("You need to have the two characters imported in order to save the panel");
-           view.userInformationAlert("Import characters", "You need to have the two characters imported in order to save the panel");
+           view.userInformationAlert("Import characters", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -299,7 +299,7 @@ public class Controller {
    }
 
    private void notSelectedMsg(){
-       System.out.println("Select one of the characters on which you want to perform the operation");
+       System.out.println("Select the characters on which you want to perform the operation");
    }
 
    private void helpPage() {
@@ -323,7 +323,7 @@ public class Controller {
                view.userErrorAlert("Failed to save ", "Failed to save the XML file. Please check the log file");
            }
            else{
-               view.userInformationAlert("Saved files", "Project saved in XML format successfully");
+               view.userInformationAlert("Saved file", "Project saved in XML format successfully");
            }
        }
    }

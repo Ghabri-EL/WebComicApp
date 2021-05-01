@@ -776,7 +776,7 @@ public class AppGUI
         information.setHeaderText(msg);
         information.show();
     }
-    
+
     public void userErrorAlert(String title, String msg){
         Alert information = new Alert(Alert.AlertType.ERROR);
         information.setTitle(title);
