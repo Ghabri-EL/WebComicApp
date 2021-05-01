@@ -60,6 +60,13 @@ public class HelpPage {
 
     final String[] aboutTextPages = new String[] {
             "About StayAtHomies\n"
+                    + "\n"
+            + "Hello !\n"
+                    + "\n"
+            + "We are StayAtHomies , a Software Engineering Team made up of 3 nerds : Gabriel , Niall and Daiana and this " +
+                    "is our project for the Software Engineering 3 module .\n"
+                    + "\n"
+            + "We hope you enjoy using our app and managed to make some fun comics with it !\n"
     };
 
     final String[] gettingStartedTextPages = new String[] {
