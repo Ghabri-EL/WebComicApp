@@ -63,7 +63,41 @@ public class HelpPage {
     };
 
     final String[] gettingStartedTextPages = new String[] {
-            "First comic Panel\n"
+            "First Comic Panel\n"
+                    + "\n"
+            + "This is a step by step tutorial on how to create your first ever comic panel using our application !\n"
+                    + "\n"
+            + "Step 1 : Selecting our characters ! In order to import our characters we use the \"Import Left\" and \"Import Right\"" +
+                    "buttons . These will pop open a window where we select our images folder . Select and import the desired characters .\n"
+                    + "\n"
+            + "Step 2 : First things first , making sure our characters are facing each other , we do this by clicking on the character " +
+                    "on the right hand side and selecting the \"Orientation\" button . This will flip the character to face the right direction .\n"
+                    + "\n"
+            +"Step 3 : Customizing Characters ! Now comes the fun part , by selecting a colour on the Color Palette located above our buttons , " +
+                    "we can play around and customize the characters . For this tutorial we are going to select the colour blue and then the button \"Skin Tone\" ," +
+                    "then the colour Orange and the button \"Hair Color\" for the character on the LEFT .\n"
+                    + "\n"
+            + "Lastly we are going to make this character a male by pressing the \"Gender Swap\" button .\n"
+                    + "\n"
+            + "Now its up to you what the character on the Right side is going to look like . Make sure you play around with the " +
+                    "buttons and colour to customize it as you wish .\n"
+                    + "\n",
+            "Step 4 : Lets add a setting to our characters . By using the buttons \"Top Narration\" and \"Bottom Narration\" " +
+                    "we will add some text such as \"In a galaxy far far away ... \" , but i will leave that to your imagination .\n"
+                    + "\n"
+            + "Step 5 : \"But why are we here ?\" well lets find out by adding some speech bubbles to these characters . " +
+                    "First lets select the character on the LEFT and the button \"Speech Bubble\" . For text i'm thinking of a joke " +
+                    "\"Two oranges walk into a bar ..\" , it is up to you to continue the conversation . \n"
+                    + "\n"
+            + "If a joke is not what you had in mind , you can always use the \"Remove Bubble\" button to delete the speech bubble " +
+                    "and create a new one .\n"
+                    + "\n",
+            "Step 6 : Now that our first panel looks done , we can save it in the comic strip by selecting Panel->Save from the " +
+                    "top bar . It is up to you to continue this story line , or delete it and start all over again !\n"
+                    + "\n"
+            + "For more help on what each button does , select Help->Help from the Top Bar .\n"
+                    + "\n"
+            + "Thank you for using our App :)\n"
     };
 
     public int itemsPerPage() {
