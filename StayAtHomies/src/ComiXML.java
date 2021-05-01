@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class ComiXML {
 
-    public static boolean createXML(ArrayList<Panel> list){
+    public static boolean createXML(ArrayList<Panel> list, File comiXMLFile){
 
         if(list.isEmpty()){
             return false;
@@ -57,17 +57,11 @@ public class ComiXML {
 
                 panels.appendChild(panel);
             }
-            File file = new File("./comiXML.xml");
-
-            if(!file.exists()){
-                file.delete();
-                file.createNewFile();
-            }
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource domSource = new DOMSource(document);
-            StreamResult streamResult = new StreamResult(file);
+            StreamResult streamResult = new StreamResult(comiXMLFile);
 
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -87,8 +81,6 @@ public class ComiXML {
         }
         catch(TransformerConfigurationException exception){
             exception.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (TransformerException e) {
             e.printStackTrace();
         }

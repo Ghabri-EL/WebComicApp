@@ -762,9 +762,24 @@ public class AppGUI
         }
     }
 
-    public void userInformationAlert(String msg){
+    public File saveXMLFileWindow(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
+        File file = fileChooser.showSaveDialog(stage);
+
+        return file;
+    }
+
+    public void userInformationAlert(String title, String msg){
         Alert information = new Alert(Alert.AlertType.INFORMATION);
-        information.setTitle("Info");
+        information.setTitle(title);
+        information.setHeaderText(msg);
+        information.show();
+    }
+    
+    public void userErrorAlert(String title, String msg){
+        Alert information = new Alert(Alert.AlertType.ERROR);
+        information.setTitle(title);
         information.setHeaderText(msg);
         information.show();
     }

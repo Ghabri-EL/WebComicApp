@@ -161,7 +161,7 @@ public class Controller {
            }
        }
        else{
-           notSelectedMsg();
+           view.userInformationAlert("Select character", "Select one of the characters on which you want to perform the operation");
        }
    }
 
@@ -179,7 +179,7 @@ public class Controller {
            comixApp.setBubbleType(BubbleType.NONE);
        }
        else{
-           notSelectedMsg();
+           view.userInformationAlert("Select character", "Select one of the characters on which you want to perform the operation");
        }
    }
 
@@ -192,7 +192,7 @@ public class Controller {
            }
        }
        else{
-           notSelectedMsg();
+           view.userInformationAlert("Select character", "Select one of the characters on which you want to perform the operation");
        }
    }
 
@@ -205,7 +205,7 @@ public class Controller {
            }
        }
        else{
-           notSelectedMsg();
+           view.userInformationAlert("Select character", "Select one of the characters on which you want to perform the operation");
        }
    }
 
@@ -224,7 +224,7 @@ public class Controller {
        }
        else{
            System.out.println("You need to have the two characters imported in order to save the panel");
-           view.userInformationAlert("You need to have the two characters imported in order to save the panel");
+           view.userInformationAlert("Import characters", "You need to have the two characters imported in order to save the panel");
        }
    }
 
@@ -315,13 +315,16 @@ public class Controller {
    }
 
    private void saveComiXML(){
-       boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels());
-       if(!created){
-           //log file feature to be added
-           view.userInformationAlert("Failed to save the XML file. Please check the log file");
-       }
-       else{
-           view.userInformationAlert("Project saved in XML format successfully");
+       File xmlFile = view.saveXMLFileWindow();
+       if(xmlFile != null){
+           boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels(), xmlFile);
+           if(!created){
+               //log file feature to be added
+               view.userErrorAlert("Failed to save ", "Failed to save the XML file. Please check the log file");
+           }
+           else{
+               view.userInformationAlert("Saved files", "Project saved in XML format successfully");
+           }
        }
    }
 }
