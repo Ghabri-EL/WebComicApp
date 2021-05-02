@@ -1,8 +1,12 @@
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
+import java.awt.*;
 import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
 
 //Controller.java represents the Controller following the MVC pattern
 public class Controller {
@@ -35,6 +39,7 @@ public class Controller {
        view.getHelpStartedPage().setOnAction(event -> gettingStarted());
        view.getAboutPage().setOnAction(event -> aboutPage());
        view.getFileMenuSaveXML().setOnAction(event -> saveComiXML());
+       view.getFileMenuLoadXML().setOnAction(event -> loadComiXML());
    }
 
    private void selectHandler(){
@@ -271,7 +276,6 @@ public class Controller {
        if(loaded){
            Character leftChar = comixApp.getCharacterLeft();
            Character rightChar = comixApp.getCharacterRight();
-           System.out.println("Base Panel ID: " + comixApp.getId());
 
            //parameters: Image leftCharacter, Image rightCharacter, BubbleType leftBubbleType, BubbleType rightBubbleType,
            //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
@@ -292,10 +296,6 @@ public class Controller {
            int id = view.deletePanel();
            comixApp.deletePanel(id);
        }
-   }
-
-   private void notSelectedMsg(){
-       System.out.println("Select the characters on which you want to perform the operation");
    }
 
    private void helpPage() {
@@ -323,4 +323,30 @@ public class Controller {
            }
        }
    }
+
+   private void loadComiXML(){
+       File xmlFile = view.loadXMLFileWindow();
+
+       if(xmlFile != null){
+           ArrayList<Panel> panels = ComiXML.createComicStripFromComiXML(xmlFile, view.getDefaultCharactersDirectory());
+
+           for(Panel p : panels){
+               System.out.println(p);
+               //loadPanel(p);
+               //saveNewPanel();
+           }
+       }
+   }
+
+    private void loadPanel(Panel panel){
+       comixApp.loadPanel(panel);
+       Character leftChar = panel.getCharacterLeft();
+       Character rightChar = panel.getCharacterRight();
+
+       //parameters: Image leftCharacter, Image rightCharacter, BubbleType leftBubbleType, BubbleType rightBubbleType,
+       // String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
+       view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), panel.getLeftBubbleType(),
+                panel.getRightBubbleType(), panel.getLeftBubbleText(), panel.getRightBubbleText(),
+                panel.getNarrativeTextTop(), panel.getNarrativeTextBottom());
+    }
 }

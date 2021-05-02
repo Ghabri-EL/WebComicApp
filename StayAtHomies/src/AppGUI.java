@@ -107,7 +107,7 @@ public class AppGUI
         stage.setScene(scene);
         stage.setWidth(SCENE_WIDTH);
         //stage.setHeight(SCENE_HEIGHT);
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         stage.setTitle("HomiesComix");
         stage.show();
     }
@@ -702,18 +702,6 @@ public class AppGUI
         return fileMenuCharactersDir;
     }
 
-    public MenuItem getViewMenuOne() {
-        return viewMenuOne;
-    }
-
-    public MenuItem getViewMenuTwo() {
-        return viewMenuTwo;
-    }
-
-    public MenuItem getViewMenuThree() {
-        return viewMenuThree;
-    }
-
     public MenuItem getPanelMenuSave() {
         return panelMenuSave;
     }
@@ -736,6 +724,10 @@ public class AppGUI
 
     public MenuItem getAboutPage() {
         return about;
+    }
+
+    public File getDefaultCharactersDirectory() {
+        return defaultCharactersDirectory;
     }
 
     public boolean isCharacterSelected(){
@@ -767,6 +759,15 @@ public class AppGUI
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
         File file = fileChooser.showSaveDialog(stage);
 
+        return file;
+    }
+
+    public File loadXMLFileWindow()    //Uploads character to workspace pane
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("./"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
+        File file = fileChooser.showOpenDialog(stage);
         return file;
     }
 

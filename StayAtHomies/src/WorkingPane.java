@@ -107,4 +107,20 @@ public abstract class WorkingPane {
     public void setNarrativeTextBottom(String narrativeTextBottom) {
         this.narrativeTextBottom = narrativeTextBottom;
     }
+
+    @Override
+    public String toString() {
+        return "WorkingPane{" +
+                "id=" + id +
+                ", panelShot=" + panelShot +
+                ", characterLeft=" + characterLeft +
+                ", characterRight=" + characterRight +
+                ", leftBubbleText='" + leftBubbleText + '\'' +
+                ", rightBubbleText='" + rightBubbleText + '\'' +
+                ", leftBubbleType=" + leftBubbleType +
+                ", rightBubbleType=" + rightBubbleType +
+                ", narrativeTextTop='" + narrativeTextTop + '\'' +
+                ", narrativeTextBottom='" + narrativeTextBottom + '\'' +
+                '}';
+    }
 }

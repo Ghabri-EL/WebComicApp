@@ -1,7 +1,7 @@
 import javafx.scene.paint.Color;
 import javafx.scene.image.*;
 
-public class Character implements CharacterInterface
+public class Character implements CharacterInterface, DefaultColors
 {
     private Color hair;
     private Color lips;
@@ -73,6 +73,10 @@ public class Character implements CharacterInterface
 
     public String getPose() {
         return pose;
+    }
+
+    public boolean isFemale(){
+        return Gender.FEMALE == gender;
     }
 
     public void flipImage(){
@@ -364,7 +368,7 @@ public class Character implements CharacterInterface
     }
 
     // applies visible pixels in mask2 over mask1 and returns the modified mask1
-    public Image combineMasks(Image mask1, Image mask2){
+    private Image combineMasks(Image mask1, Image mask2){
         int width = (int)mask1.getWidth();
         int height = (int)mask1.getHeight();
 

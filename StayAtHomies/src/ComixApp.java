@@ -98,14 +98,25 @@ public class ComixApp extends WorkingPane
         setPanelShot(panel.getPanelShot());
 
         //testing the loading values to match with what's presented on screen
-        System.out.println("LCHAR: "+ getCharacterLeft() + "\n" +
-                        "RCHAR: "+ getCharacterRight() + "\n" +
-                        "LBTxt: "+getLeftBubbleText() + "\n" +
-                        "RBTxt: " + getRightBubbleText() + "\n" +
-                        "LBTp: " + getLeftBubbleType() + "\n"+
-                        "RBTp: " + getRightBubbleType() + "\n" +
-                        "TNT: " + getNarrativeTextTop() + "\n" +
-                        "BNT: " + getNarrativeTextBottom());
+        System.out.println(panel);
+        return true;
+    }
+
+    public boolean loadPanel(Panel panel){
+        if(panel == null){
+            return false;
+        }
+        resetSelectedCharacter();
+        setId(panel.getId());
+        setCharacterLeft(panel.getCharacterLeft());
+        setCharacterRight(panel.getCharacterRight());
+        setLeftBubbleText(panel.getLeftBubbleText());
+        setRightBubbleText(panel.getRightBubbleText());
+        setLeftBubbleType(panel.getLeftBubbleType());
+        setRightBubbleType(panel.getRightBubbleType());
+        setNarrativeTextTop(panel.getNarrativeTextTop());
+        setNarrativeTextBottom(panel.getNarrativeTextBottom());
+        System.out.println(panel);
         return true;
     }
 
