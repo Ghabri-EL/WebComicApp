@@ -24,15 +24,6 @@ public class Controller {
        this.view = view;
    }
    public void execution(){
-       File dr = new File("resources/");
-       System.out.println(dr.isDirectory());
-       if(dr.isDirectory()){
-           File [] fls = dr.listFiles();
-           for(File fl : fls){
-               System.out.println(fl.getName());
-           }
-       }
-
        selectHandler();
        view.getImportLeftCharButton().setOnAction(actionEvent -> importLeftModelEvent());
        view.getImportRightCharButton().setOnAction(actionEvent -> importRightModelEvent());
@@ -239,7 +230,6 @@ public class Controller {
            }
        }
        else{
-           System.out.println("You need to have the two characters imported in order to save the panel");
            view.userInformationAlert("Import characters", "Select the characters on which you want to perform the operation");
        }
    }
@@ -335,12 +325,17 @@ public class Controller {
    }
 
    private void saveComiXML(){
+       if(comixApp.noPanels()){
+           view.userErrorAlert("Failed to save ", "Comic strip is empty");
+           return;
+       }
+
        File xmlFile = view.saveXMLFileWindow();
        if(xmlFile != null){
            boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels(), xmlFile);
            if(!created){
                //log file feature to be added
-               view.userErrorAlert("Failed to save ", "Failed to save the XML file. Comic strip is empty");
+               view.userErrorAlert("Failed to save ", "Failed to save the XML file.");
            }
            else{
                view.userInformationAlert("Saved file", "Project saved in XML format successfully");
@@ -349,7 +344,10 @@ public class Controller {
    }
 
    private void loadComiXML(){
-       boolean load = view.confirmLoadXML();
+       boolean load = true;
+       if(!comixApp.noPanels()){
+           load = view.confirmLoadXML();
+       }
 
        if(load){
            File xmlFile = view.loadXMLFileWindow();
@@ -362,9 +360,13 @@ public class Controller {
                        loadPanel(p);
                        saveNewPanel(p.getId());
                    }
+                   view.userInformationAlert("Loaded successfully", "Xml file loaded successfully." +
+                           " Please check the log file for more details");
+               }
+               else{
+                   view.userInformationAlert("Loading status", "No panels were loaded");
                }
            }
-           view.userInformationAlert("Loaded successfully", "Xml file loaded successfully. Please check the log file for more details");
        }
    }
 

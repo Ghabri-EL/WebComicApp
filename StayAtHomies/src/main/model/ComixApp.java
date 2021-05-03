@@ -43,6 +43,10 @@ public class ComixApp extends WorkingPane
         return getId();
     }
 
+    public boolean noPanels(){
+        return comixStrip.getPanels().isEmpty();
+    }
+
     public void resetWorkingSpace(){
         generateId();
         setPanelShot(null);

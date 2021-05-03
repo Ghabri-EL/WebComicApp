@@ -188,7 +188,7 @@ public class ComiXML implements DefaultColors {
             document.normalizeDocument();
             NodeList listOfPanels = document.getElementsByTagName("panel");
 
-            int id = -1;
+            int id;
             for(int i = 0; i < listOfPanels.getLength(); i++){
                 Node node = listOfPanels.item(i);
                 Panel panel = new Panel();
@@ -201,11 +201,12 @@ public class ComiXML implements DefaultColors {
                     }catch(NumberFormatException ex){
                         //ex.printStackTrace();
                         logger.info("Panel does not contain an id attribute. Id generated: " + i);
-                        panel.setId(i);
+                        id = i;
                     }
                 }else{
-                    panel.setId(i);
+                    id = i;
                 }
+                panel.setId(id);
                 //parse the current panel
                 parsePanel(node, panel, charactersDir);
 
@@ -217,6 +218,9 @@ public class ComiXML implements DefaultColors {
                     //to add error to log
                     logger.log(Level.WARNING, "Panel [" + panel.getId() +"]could not be parsed");
                 }
+            }
+            if(panels.isEmpty()){
+                logger.info("No panels were found in the file provided.");
             }
             return panels;
         }
