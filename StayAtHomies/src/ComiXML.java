@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ComiXML implements DefaultColors {
 
@@ -140,6 +141,7 @@ public class ComiXML implements DefaultColors {
     }
 
     public static ArrayList<Panel> createComicStripFromComiXML(File xmlFile, File charactersDir){
+        xmlFile = new File("./comiXML.xml");
         if(xmlFile == null){
             return null;
         }
@@ -153,7 +155,7 @@ public class ComiXML implements DefaultColors {
                 System.out.println("XML file format could not be parsed properly. Incorrect XML file format.");
                 return null;
             }
-
+            document.normalizeDocument();
             NodeList listOfPanels = document.getElementsByTagName("panel");
 
             for(int i = 0; i < listOfPanels.getLength(); i++){
@@ -165,26 +167,29 @@ public class ComiXML implements DefaultColors {
 
                     id = Integer.parseInt(panelElement.getAttribute("id"));
                     panel.setId(id);
-                    System.out.println("ID: " + id);
+
                     Node topTextNode = panelElement.getElementsByTagName("above").item(0);
                     if(topTextNode != null){
                         String aboveText = topTextNode.getTextContent();
+                        System.out.println("ATXT: " + aboveText);
                         panel.setNarrativeTextTop(aboveText);
                     }
 
-                    NodeList left = panelElement.getElementsByTagName("left");
+                    Node left = panelElement.getElementsByTagName("left").item(0);
                     parseLeftAndRightElement(left, panel, Selected.LEFT, charactersDir);
 
-                    NodeList right = panelElement.getElementsByTagName("right");
+                    Node right = panelElement.getElementsByTagName("right").item(0);
                     parseLeftAndRightElement(right, panel, Selected.RIGHT, charactersDir);
 
-                    Node belowTextNode = panelElement.getElementsByTagName("above").item(0);
+                    Node belowTextNode = panelElement.getElementsByTagName("below").item(0);
                     if(belowTextNode != null){
-                        String belowText = topTextNode.getTextContent();
+                        String belowText = belowTextNode.getTextContent();
+                        System.out.println("BTXT: " + belowText);
                         panel.setNarrativeTextBottom(belowText);
                     }
 
                 }
+
                 if(panel.getCharacterLeft() != null && panel.getCharacterRight() != null){
                     panels.add(panel);
                 }else{
@@ -204,31 +209,37 @@ public class ComiXML implements DefaultColors {
         return null;
     }
 
-    private static void parseLeftAndRightElement(NodeList list, Panel panel, Selected selected, File charactersDir){
-        Character character = null;
-        list = list.item(0).getChildNodes();
-        System.out.println("LIST:" + list.item(0).getNodeName());
-        for(int i = 0; i < list.getLength(); i++){
-            Node node = list.item(0);
-            System.out.println("NODE: " + node.getNodeName());
-
-            if(node.getNodeType() == Node.ELEMENT_NODE){
-                Element element = (Element) node;
-                if(element.getNodeName().toLowerCase() == "figure"){
-                   character = parseFigure(element, charactersDir);
+    //partition refers to the left or right side of the panel
+    private static void parseLeftAndRightElement(Node partition, Panel panel, Selected selected, File charactersDir){
+        NodeList list = partition.getChildNodes();
+        for(int i = 0; i < list.getLength(); i++) {
+            Node node = list.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                System.out.println("Node[" + i + "]:" + node.getNodeName());
+                if(node.getNodeName().equalsIgnoreCase("figure")){
+                    Character character = parseFigure(node, charactersDir);
+                    if(selected == Selected.LEFT){
+                        panel.setCharacterLeft(character);
+                    }else{
+                        panel.setCharacterRight(character);
+                    }
                 }
-                else if(element.getNodeName().toLowerCase() == "balloon"){
+
+                if(node.getNodeName().equalsIgnoreCase("balloon")){
+                    Element element = (Element) node;
                     String bubbleType = element.getAttribute("status");
                     String bubbleText = element.getElementsByTagName("content").item(0).getTextContent();
+                    System.out.println("BTYPE: " + bubbleType);
+                    System.out.println("BTXT: " + bubbleText);
 
                     if(selected == Selected.LEFT){
-                        BubbleType type = parseBubbleType(bubbleType);
+                        BubbleType type = BubbleType.getBubble(bubbleType);
                         panel.setLeftBubbleType(type);
                         if(type != BubbleType.NONE){
                             panel.setLeftBubbleText(bubbleText);
                         }
                     }else if(selected == Selected.RIGHT){
-                        BubbleType type = parseBubbleType(bubbleType);
+                        BubbleType type = BubbleType.getBubble(bubbleType);
                         panel.setRightBubbleType(type);
                         if(type != BubbleType.NONE){
                             panel.setRightBubbleText(bubbleText);
@@ -236,18 +247,15 @@ public class ComiXML implements DefaultColors {
                     }
                 }
                 else{
-                    System.out.println("Cannot parse element: " + element.getNodeName());
+                    System.out.println("Cannot parse element: " + node.getNodeName());
                 }
             }
         }
-        if(selected == Selected.LEFT){
-            panel.setCharacterLeft(character);
-        }else{
-            panel.setCharacterRight(character);
-        }
     }
 
-    private static Character parseFigure(Element figure, File charactersDir){
+    private static Character parseFigure(Node figureNode, File charactersDir){
+        Element figure = (Element)figureNode;
+
         Node appearanceNode = figure.getElementsByTagName("appearance").item(0);
         String appearance = null;
         if(appearanceNode != null){
@@ -305,6 +313,7 @@ public class ComiXML implements DefaultColors {
             return null;
         }
         Image charImage = new Image(imageFile.toURI().toString());
+        System.out.println(imageFile.getName());
         Character character = new Character(charImage, pose);
 
         if(appearance == "female"){
@@ -336,18 +345,6 @@ public class ComiXML implements DefaultColors {
             return files[0];
         }else{
             return new File("/resources/neutral.png");
-        }
-    }
-
-    private static BubbleType parseBubbleType(String type){
-        if(type.toLowerCase() == "speech"){
-            return BubbleType.SPEECH;
-        }
-        else if(type.toLowerCase() == "thought"){
-            return BubbleType.THOUGHT;
-        }
-        else{
-            return BubbleType.NONE;
         }
     }
 }

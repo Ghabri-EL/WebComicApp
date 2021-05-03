@@ -240,6 +240,16 @@ public class Controller {
        resetWorkingPane();
    }
 
+    private void saveNewPanel(int id){
+        PanelView panel = view.createPanel();
+        comixApp.setPanelShot(panel.getImage());
+        comixApp.createPanelAndAddToStrip();
+        panel.setPanelId(id);
+        addPanelEventHandler(panel);
+        view.addPanelToStrip(panel);
+        resetWorkingPane();
+    }
+
    private void editExistingPanel(){
        int id = view.getSelectedPanel().getPanelId();
 
@@ -332,8 +342,8 @@ public class Controller {
 
            for(Panel p : panels){
                System.out.println(p);
-               //loadPanel(p);
-               //saveNewPanel();
+               loadPanel(p);
+               saveNewPanel(p.getId());
            }
        }
    }

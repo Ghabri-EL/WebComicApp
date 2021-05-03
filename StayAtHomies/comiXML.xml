@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<panels>
+    <panel id="0">
+        <above>Top text!!</above>
+        <left>
+            <figure>
+                <appearance>female</appearance>
+                <skin>0xffe8d8ff</skin>
+                <hair>0xf0ff00ff</hair>
+                <lips>0xff0000ff</lips>
+                <pose>embracing</pose>
+                <facing>right</facing>
+            </figure>
+            <balloon status="thought">
+                <content>???????</content>
+            </balloon>
+        </left>
+        <right>
+            <figure>
+                <appearance>male</appearance>
+                <skin>0xffe8d8ff</skin>
+                <hair>0x000000ff</hair>
+                <lips>0xff0000ff</lips>
+                <pose>guiding</pose>
+                <facing>left</facing>
+            </figure>
+            <balloon status="thought">
+                <content>Howdy!!</content>
+            </balloon>
+        </right>
+        <below/>
+    </panel>
+    <panel id="1">
+        <above/>
+        <left>
+            <figure>
+                <appearance>female</appearance>
+                <skin>0xffe8d8ff</skin>
+                <hair>0xf0ff00ff</hair>
+                <lips>0xff0000ff</lips>
+                <pose>disgusting</pose>
+                <facing>right</facing>
+            </figure>
+            <balloon status="speech">
+                <content>This u???</content>
+            </balloon>
+        </left>
+        <right>
+            <figure>
+                <appearance>female</appearance>
+                <skin>0xffe8d8ff</skin>
+                <hair>0xf0ff00ff</hair>
+                <lips>0xff0000ff</lips>
+                <pose>conquering</pose>
+                <facing>left</facing>
+            </figure>
+            <balloon status="thought">
+                <content>I am mighty!!</content>
+            </balloon>
+        </right>
+        <below>Some text!!</below>
+    </panel>
+</panels>
