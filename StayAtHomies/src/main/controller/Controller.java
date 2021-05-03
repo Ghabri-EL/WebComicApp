@@ -340,7 +340,7 @@ public class Controller {
            boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels(), xmlFile);
            if(!created){
                //log file feature to be added
-               view.userErrorAlert("Failed to save ", "Failed to save the XML file. Please check the log file");
+               view.userErrorAlert("Failed to save ", "Failed to save the XML file. Comic strip is empty");
            }
            else{
                view.userInformationAlert("Saved file", "Project saved in XML format successfully");
@@ -364,6 +364,7 @@ public class Controller {
                    }
                }
            }
+           view.userInformationAlert("Loaded successfully", "Xml file loaded successfully. Please check the log file for more details");
        }
    }
 
