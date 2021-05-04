@@ -57,7 +57,8 @@ public class HelpPage {
             +"2.3 To delete a panel you no longer need , select Panel->Delete ." +
                     "A popup will show on screen to make sure you want to delete the panel . By clicking yes the panel will be deleted .\n"
                     + "\n"
-            +"2.4 To save file in xml format select File->Save . Make sure the panel is saved first .\n"
+            +"2.4 To save file in xml format select File->Save and select directory where file should be saved . " +
+                    "The log file is saved in the directory selected . Make sure the panel is saved first .\n"
                     + "\n"
             +"2.5 To load an xml file select File->Load . \n"
 
