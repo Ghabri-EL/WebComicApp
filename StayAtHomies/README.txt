@@ -116,5 +116,5 @@ Story 16:
 
 Niall McGurk: 
 Gabriel Gherasim: Coded the save and load xml features.
-Daiana: 
+Daiana: Coded the Help , about and Getting Started pages for user guidance .
 Ryan: 

@@ -31,11 +31,11 @@ public class HelpPage {
                     + "\n"
             + "1.7 \"Hair Color\" button changes the colour of the model.main.model.Character's hair . A colour has to be selected from the colour palette first .\n" +
                     "model.main.model.Character has to be selected in order for the operation to work .\n"
-                    + "\n"
-            + "1.8 \"Lip Color\" button changes the colour of the model.main.model.Character's lips . A colour has to be selected from the colour palette first .\n" +
-                    "model.main.model.Character has to be selected in order for the operation to work .\n"
                     + "\n",
-            "1.9 \"Speech Bubble\" button allows you to add a speech bubble at the top of the character .\n" +
+            "1.8 \"Lip Color\" button changes the colour of the model.main.model.Character's lips . A colour has to be selected from the colour palette first .\n" +
+                    "model.main.model.Character has to be selected in order for the operation to work .\n"
+                    + "\n"
+            +"1.9 \"Speech Bubble\" button allows you to add a speech bubble at the top of the character .\n" +
                     "model.main.model.Character has to be selected in order for the operation to work .\n"
                     + "\n"
             + "1.10  \"Thought Bubble\" button allows you to add a thought bubble at the top of the character .\n" +
@@ -50,13 +50,16 @@ public class HelpPage {
                     + "\n",
             "2. Top Bar Buttons\n"
                     + "\n"
-            + "2.1 In order to save panels to a list , use the top bar \"model.Panel\" menu . Make sure you have 2 characters into the current panel , then use the \"save\" option" +
-                    "on the model.Panel menu . This will save the panels to the bottom comic strip section .\n"
+            + "2.1 To save a panel select Panel->Save from the Top Bar . Make sure two characters have been selected .\n"
                     + "\n"
             + "2.2 To go back and work on a previous panel , simply click on the panel you desire to open again .\n"
                     + "\n"
-            +"2.3 To delete a panel you no longer need , click on the panel from the comic strip then use the \"model.Panel\" menu in the top bar and press on \"Delete\" ." +
+            +"2.3 To delete a panel you no longer need , select Panel->Delete ." +
                     "A popup will show on screen to make sure you want to delete the panel . By clicking yes the panel will be deleted .\n"
+                    + "\n"
+            +"2.4 To save file in xml format select File->Save . Make sure the panel is saved first .\n"
+                    + "\n"
+            +"2.5 To load an xml file select File->Load . \n"
 
     };
 
