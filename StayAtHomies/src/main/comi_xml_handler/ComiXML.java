@@ -379,7 +379,7 @@ public class ComiXML implements DefaultColors {
         }
         Character character = new Character(charImage, pose);
 
-        //default is female, hence if left change appearance
+        //default is female, hence if male change appearance
         if(appearance.equalsIgnoreCase("male")){
             character.switchGenders();
         }
