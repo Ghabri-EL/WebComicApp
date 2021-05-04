@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<panels>
+    <panel id="0">
+        <top>jhgfjhgf</top>
+        <left>
+            <figure>
+                <appearance>female</appearance>
+                <skin>0xffe8d8ff</skin>
+                <hair>0xf0ff00ff</hair>
+                <lips>0xff0000ff</lips>
+                <pose>accusing</pose>
+                <facing>right</facing>
+            </figure>
+            <balloon status="speech">
+                <content>hgfhjgfg</content>
+            </balloon>
+        </left>
+        <right>
+            <figure>
+                <appearance>female</appearance>
+                <skin>0xffe8d8ff</skin>
+                <hair>0xf0ff00ff</hair>
+                <lips>0xff0000ff</lips>
+                <pose>attacking</pose>
+                <facing>left</facing>
+            </figure>
+            <balloon status="speech">
+                <content>jhgjhg</content>
+            </balloon>
+        </right>
+        <bottom>jhgfjhgf</bottom>
+    </panel>
+    <panel id="1">
+        <top/>
+        <left>
+            <figure>
+                <appearance>female</appearance>
+                <skin>0xffe8d8ff</skin>
+                <hair>0xf0ff00ff</hair>
+                <lips>0xff0000ff</lips>
+                <pose>attacking</pose>
+                <facing>right</facing>
+            </figure>
+            <balloon status="none">
+                <content/>
+            </balloon>
+        </left>
+        <right>
+            <figure>
+                <appearance>female</appearance>
+                <skin>0xffe8d8ff</skin>
+                <hair>0xf0ff00ff</hair>
+                <lips>0xff0000ff</lips>
+                <pose>biting</pose>
+                <facing>left</facing>
+            </figure>
+            <balloon status="none">
+                <content/>
+            </balloon>
+        </right>
+        <bottom/>
+    </panel>
+</panels>
