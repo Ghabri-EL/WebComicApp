@@ -86,6 +86,7 @@ public class AppGUI
     private MenuItem fileMenuSaveXML = new MenuItem("Save");
     private MenuItem fileMenuLoadXML = new MenuItem("Load");
     private MenuItem fileMenuCharactersDir = new MenuItem("Characters Directory");
+    private MenuItem saveAsHtml = new MenuItem("Save as HTML");
     private MenuItem viewMenuOne = new MenuItem("Option1");
     private MenuItem viewMenuTwo = new MenuItem("Option2");
     private MenuItem viewMenuThree = new MenuItem("Option3");
@@ -221,6 +222,7 @@ public class AppGUI
         fileMenu.getItems().add(fileMenuLoadXML);
         fileMenu.getItems().add(fileMenuSaveXML);
         fileMenu.getItems().add(fileMenuCharactersDir);
+        fileMenu.getItems().add(saveAsHtml);
 
         viewMenu.getItems().add(viewMenuOne);
         viewMenu.getItems().add(viewMenuTwo);
@@ -702,6 +704,10 @@ public class AppGUI
 
     public MenuItem getFileMenuSaveXML() {
         return fileMenuSaveXML;
+    }
+
+    public MenuItem getSaveAsHtml() {
+        return saveAsHtml;
     }
 
     public MenuItem getFileMenuCharactersDir() {
