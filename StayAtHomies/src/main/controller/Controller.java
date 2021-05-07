@@ -6,6 +6,8 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import java.io.File;
+
+import javafx.stage.DirectoryChooser;
 import main.comi_xml_handler.ComiXML;
 import main.model.*;
 import main.model.Character;
@@ -319,8 +321,17 @@ public class Controller {
         view.createRightPaneAbout();
    }
 
-   private void saveAsHTML() {
-        recieveSnapshot();
+   private void saveAsHTML()
+   {
+       if(comixApp.noPanels()){
+           view.userErrorAlert("Failed to save ", "Comic strip is empty");
+           return;
+       }
+       File dir = view.setHTMLDirectory();
+       File outputter = view.saveHTMLFileWindow();
+
+       ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
+       new htmlCreator().snapToHTML(arraySnaps, outputter, dir);
     }
 
    private void saveComiXML(){
@@ -379,11 +390,5 @@ public class Controller {
        view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), panel.getLeftBubbleType(),
                 panel.getRightBubbleType(), panel.getLeftBubbleText(), panel.getRightBubbleText(),
                 panel.getNarrativeTextTop(), panel.getNarrativeTextBottom());
-    }
-
-    public void recieveSnapshot()
-    {
-        ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
-        new htmlCreator().snapToHTML(arraySnaps);
     }
 }
