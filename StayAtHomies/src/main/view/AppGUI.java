@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 import main.project_enums.BubbleType;
 import main.project_enums.Selected;
 import java.io.File;
-import java.net.URL;
 
 //main.view.AppGUI.java represents the View following the MVC pattern
 public class AppGUI
@@ -262,7 +261,7 @@ public class AppGUI
         importRightCharButton = new Button("Import Right", setButtonImg( "importRightChar.png"));
         buttonCommonStyles(importRightCharButton);
 
-        flipButton = new Button("Orientation", setButtonImg( "flip.png"));
+        flipButton = new Button("Orientation", setButtonImg("flip.png"));
         buttonCommonStyles(flipButton);
 
         colorPalette = new ColorPicker();
@@ -706,6 +705,10 @@ public class AppGUI
 
     public MenuItem getFileMenuCharactersDir() {
         return fileMenuCharactersDir;
+    }
+
+    public MenuItem getPanelMenu(){
+        return panelMenu;
     }
 
     public MenuItem getPanelMenuSave() {

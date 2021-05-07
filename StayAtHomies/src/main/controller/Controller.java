@@ -200,9 +200,6 @@ public class Controller {
            comixApp.setNarrativeTextTop(narrativeText);
            view.getTopNarrativeText().setText(narrativeText);
        }
-       else{
-           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
-       }
    }
 
    private void addNarrativeTextBottomEvent(){
@@ -210,9 +207,6 @@ public class Controller {
        if(narrativeText != null){
            comixApp.setNarrativeTextBottom(narrativeText);
            view.getBottomNarrativeText().setText(narrativeText);
-       }
-       else{
-           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -230,7 +224,7 @@ public class Controller {
            }
        }
        else{
-           view.userInformationAlert("Import characters", "Select the characters on which you want to perform the operation");
+           view.userInformationAlert("Import characters", "You need two characters on a panel in order to save a panel");
        }
    }
 

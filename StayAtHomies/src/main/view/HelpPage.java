@@ -16,33 +16,33 @@ public class HelpPage {
     final String[] helpTextPages = new String[] {
             "1. Left Bar Buttons\n"
                     + "\n"
-            + "1.1 \"Import Left\" button opens up a window for you to search and select the image model.main.model.Character that is to be placed on the left side of the panel.\n"
+            + "1.1 \"Import Left\" button opens up a window for you to search and select the image Character that is to be placed on the left side of the panel.\n"
                     + "\n"
-            + "1.2 \"Import Right\" button does the same thing, it lets you import a model.main.model.Character for the right side of the panel.\n"
+            + "1.2 \"Import Right\" button does the same thing, it lets you import a Character for the right side of the panel.\n"
                     + "\n"
-            + "1.3 \"Orientation\" button flips the model.main.model.Character image horizontally. model.main.model.Character has to be selected in order for the operation to work.\n"
+            + "1.3 \"Orientation\" button flips the Character image horizontally. Character has to be selected in order for the operation to work.\n"
                     + "\n"
-            + "1.4 \"Gender Swap\" button switches the gender of characters . model.main.model.Character has to be selected in order for the operation to work .\n"
+            + "1.4 \"Gender Swap\" button switches the gender of characters. Character has to be selected in order for the operation to work .\n"
                     + "\n"
             + "1.5 The color palette at the top lets you select a colour for colour changing operations .\n"
                     + "\n"
-            + "1.6 \"Skin Tone\" button changes the colour of the model.main.model.Character's skin . A colour has to be selected from the colour palette first .\n" +
-                    "model.main.model.Character has to be selected in order for the operation to work .\n"
+            + "1.6 \"Skin Tone\" button changes the colour of the Character's skin . A colour has to be selected from the colour palette first .\n" +
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n"
-            + "1.7 \"Hair Color\" button changes the colour of the model.main.model.Character's hair . A colour has to be selected from the colour palette first .\n" +
-                    "model.main.model.Character has to be selected in order for the operation to work .\n"
+            + "1.7 \"Hair Color\" button changes the colour of the Character's hair . A colour has to be selected from the colour palette first .\n" +
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n",
-            "1.8 \"Lip Color\" button changes the colour of the model.main.model.Character's lips . A colour has to be selected from the colour palette first .\n" +
-                    "model.main.model.Character has to be selected in order for the operation to work .\n"
+            "1.8 \"Lip Color\" button changes the colour of the Character's lips . A colour has to be selected from the colour palette first .\n" +
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n"
             +"1.9 \"Speech Bubble\" button allows you to add a speech bubble at the top of the character .\n" +
-                    "model.main.model.Character has to be selected in order for the operation to work .\n"
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n"
             + "1.10  \"Thought Bubble\" button allows you to add a thought bubble at the top of the character .\n" +
-                    "model.main.model.Character has to be selected in order for the operation to work .\n"
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n"
             + "1.11  \"Remove Bubble\" button allows you to remove any speech/thought bubble .\n" +
-                    "model.main.model.Character has to be selected in order for the operation to work .\n"
+                    "Character has to be selected in order for the operation to work .\n"
                     + "\n"
             + "1.12 \"Top Narration\" button allows you to add narrative text at the TOP of the panel .\n"
                     + "\n"
@@ -75,7 +75,7 @@ public class HelpPage {
     };
 
     final String[] gettingStartedTextPages = new String[] {
-            "First Comic model.Panel\n"
+            "First Comic Panel\n"
                     + "\n"
             + "This is a step by step tutorial on how to create your first ever comic panel using our application !\n"
                     + "\n"
