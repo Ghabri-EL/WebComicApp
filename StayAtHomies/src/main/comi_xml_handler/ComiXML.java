@@ -373,7 +373,7 @@ public class ComiXML implements DefaultColors {
             }
         }
 
-        Image charImage = loadCharacterOnPose(charactersDir, pose);
+        Image charImage = loadCharacterPose(charactersDir, pose);
         if(charImage == null){
             return null;
         }
@@ -393,7 +393,7 @@ public class ComiXML implements DefaultColors {
         return character;
     }
 
-    private static Image loadCharacterOnPose(File charDir, String pose){
+    private static Image loadCharacterPose(File charDir, String pose){
         if(pose == null){
             return null;
         }
