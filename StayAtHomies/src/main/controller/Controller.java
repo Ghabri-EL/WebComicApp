@@ -326,7 +326,7 @@ public class Controller {
    }
 
    private void saveAsHTML() {
-        new htmlCreator();
+        recieveSnapshot();
     }
 
    private void saveComiXML(){
@@ -385,5 +385,11 @@ public class Controller {
        view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), panel.getLeftBubbleType(),
                 panel.getRightBubbleType(), panel.getLeftBubbleText(), panel.getRightBubbleText(),
                 panel.getNarrativeTextTop(), panel.getNarrativeTextBottom());
+    }
+
+    public void recieveSnapshot()
+    {
+        ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
+        new htmlCreator().snapToHTML(arraySnaps);
     }
 }
