@@ -13,26 +13,26 @@ import java.util.ArrayList;
 
 public class htmlCreator
 {
-
     public void snapToHTML(ArrayList<Image> images)
     {
         File outputFile = new File("C:\\testFolder\\output.html");
         BufferedImage bi;
         BufferedWriter bw = null;
-
         try {
+            bw = new BufferedWriter(new FileWriter(outputFile, false));
             for(int i=0; i<images.size(); i++)
             {
-                bw = new BufferedWriter(new FileWriter(outputFile));
                 bw.write("<img src='panel" + i + ".png' alt='Panel" + i + "' style='width:100%'>");
-                bw.close();
+                bw.flush();
                 bi = SwingFXUtils.fromFXImage(images.get(i), null);
 
                 File currentPanelSnapshot = new File("C:\\testFolder\\panel" + i + ".png");
                 ImageIO.write(bi, "png", currentPanelSnapshot);
-
             }
-        } catch (IOException e) {
+            bw.close();
+        }
+        catch (IOException e)
+        {
             System.out.println("Error saving Images in snapToHTML method");
         }
         System.out.println("Files saved to HTML successfully");
