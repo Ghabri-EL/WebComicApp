@@ -14,7 +14,9 @@ public class HelpPage {
     private AnchorPane anchor = new AnchorPane();
 
     final String[] helpTextPages = new String[] {
-            "1. Left Bar Buttons\n"
+            "To select the character directory use File->Character Directory and select the folder that contains your characters.\n"
+                    + "\n"
+            +"1. Left Bar Buttons\n"
                     + "\n"
             + "1.1 \"Import Left\" button opens up a window for you to search and select the image model.main.model.Character that is to be placed on the left side of the panel.\n"
                     + "\n"
@@ -28,11 +30,11 @@ public class HelpPage {
                     + "\n"
             + "1.6 \"Skin Tone\" button changes the colour of the model.main.model.Character's skin . A colour has to be selected from the colour palette first .\n" +
                     "model.main.model.Character has to be selected in order for the operation to work .\n"
-                    + "\n"
-            + "1.7 \"Hair Color\" button changes the colour of the model.main.model.Character's hair . A colour has to be selected from the colour palette first .\n" +
-                    "model.main.model.Character has to be selected in order for the operation to work .\n"
                     + "\n",
-            "1.8 \"Lip Color\" button changes the colour of the model.main.model.Character's lips . A colour has to be selected from the colour palette first .\n" +
+            "1.7 \"Hair Color\" button changes the colour of the model.main.model.Character's hair . A colour has to be selected from the colour palette first .\n" +
+                    "model.main.model.Character has to be selected in order for the operation to work .\n"
+                    + "\n"
+            + "1.8 \"Lip Color\" button changes the colour of the model.main.model.Character's lips . A colour has to be selected from the colour palette first .\n" +
                     "model.main.model.Character has to be selected in order for the operation to work .\n"
                     + "\n"
             +"1.9 \"Speech Bubble\" button allows you to add a speech bubble at the top of the character .\n" +
@@ -46,7 +48,7 @@ public class HelpPage {
                     + "\n"
             + "1.12 \"Top Narration\" button allows you to add narrative text at the TOP of the panel .\n"
                     + "\n"
-            + " 1.13 \"Bottom Narration\" button allows you to add narrative text at the BOTTOM of the panel .\n"
+            + "1.13 \"Bottom Narration\" button allows you to add narrative text at the BOTTOM of the panel .\n"
                     + "\n",
             "2. Top Bar Buttons\n"
                     + "\n"
@@ -54,7 +56,7 @@ public class HelpPage {
                     + "\n"
             + "2.2 To go back and work on a previous panel , simply click on the panel you desire to open again .\n"
                     + "\n"
-            +"2.3 To delete a panel you no longer need , select Panel->Delete ." +
+            + "2.3 To delete a panel you no longer need , select Panel->Delete ." +
                     "A popup will show on screen to make sure you want to delete the panel . By clicking yes the panel will be deleted .\n"
                     + "\n"
             +"2.4 To save file in xml format select File->Save and select directory where file should be saved . " +
