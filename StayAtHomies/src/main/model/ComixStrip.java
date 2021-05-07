@@ -1,5 +1,7 @@
 package main.model;
 
+import javafx.scene.image.Image;
+
 import java.util.ArrayList;
 
 public class ComixStrip {
@@ -49,5 +51,18 @@ public class ComixStrip {
 
     public int size(){
         return panels.size();
+    }
+
+    public ArrayList<Image> sendSnapshot()  //This Fills ArrayList with Snapshots of the Panels and sends to controller
+    {
+        ArrayList<Image> picSender = new ArrayList<>();
+
+        for(int i=0; i<panels.size(); i++)
+        {
+           Panel test = getPanel(i);
+           picSender.add(test.getPanelShot());
+        }
+
+        return picSender;
     }
 }

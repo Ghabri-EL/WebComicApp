@@ -13,7 +13,7 @@ import main.project_enums.*;
 import main.view.AppGUI;
 import main.view.PanelView;
 import java.util.ArrayList;
-
+import main.html.htmlCreator;
 //main.controller.Controller.java represents the main.controller.Controller following the MVC pattern
 public class Controller {
    private final ComixApp comixApp;
@@ -46,6 +46,7 @@ public class Controller {
        view.getAboutPage().setOnAction(event -> aboutPage());
        view.getFileMenuSaveXML().setOnAction(event -> saveComiXML());
        view.getFileMenuLoadXML().setOnAction(event -> loadComiXML());
+       view.getSaveAsHtml().setOnAction(event -> saveAsHTML());
    }
 
    private void selectHandler(){
@@ -318,6 +319,10 @@ public class Controller {
         view.createRightPaneAbout();
    }
 
+   private void saveAsHTML() {
+        recieveSnapshot();
+    }
+
    private void saveComiXML(){
        if(comixApp.noPanels()){
            view.userErrorAlert("Failed to save ", "Comic strip is empty");
@@ -374,5 +379,11 @@ public class Controller {
        view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), panel.getLeftBubbleType(),
                 panel.getRightBubbleType(), panel.getLeftBubbleText(), panel.getRightBubbleText(),
                 panel.getNarrativeTextTop(), panel.getNarrativeTextBottom());
+    }
+
+    public void recieveSnapshot()
+    {
+        ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
+        new htmlCreator().snapToHTML(arraySnaps);
     }
 }
