@@ -41,6 +41,7 @@ public class AppGUI
     private final Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
     private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
     private File defaultCharactersDirectory = new File("./");
+    private File defaultHTMLDirectory = new File("./");
 
     private Stage stage;
     private Scene scene;
@@ -742,6 +743,10 @@ public class AppGUI
         return defaultCharactersDirectory;
     }
 
+    public File getDefaultHTMLDirectory() {
+        return defaultHTMLDirectory;
+    }
+
     public boolean isCharacterSelected(){
         return selectedCharacterView != null;
     }
@@ -772,6 +777,27 @@ public class AppGUI
         File file = fileChooser.showSaveDialog(stage);
 
         return file;
+    }
+
+    public File saveHTMLFileWindow()
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files (*.html)","*.html"));
+        File file = fileChooser.showSaveDialog(stage);
+
+        return file;
+    }
+    public File setHTMLDirectory()
+    {
+        DirectoryChooser dirChooser = new DirectoryChooser();
+        dirChooser.setInitialDirectory(defaultHTMLDirectory);
+        File dir = dirChooser.showDialog(stage);
+
+        if(dir != null){
+            defaultHTMLDirectory = dir;
+        }
+
+        return getDefaultHTMLDirectory();
     }
 
     //opens up window to let user select the xml file to load

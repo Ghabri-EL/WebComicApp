@@ -2,6 +2,7 @@ package main.html;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.stage.DirectoryChooser;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,9 +14,9 @@ import java.util.ArrayList;
 
 public class htmlCreator
 {
-    public void snapToHTML(ArrayList<Image> images)
+    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir)
     {
-        File outputFile = new File("C:\\testFolder\\output.html");
+        //File outputFile = new File("C:\\testFolder\\output.html");
         BufferedImage bi;
         BufferedWriter bw = null;
         try {
@@ -27,7 +28,8 @@ public class htmlCreator
                 bw.flush();
                 bi = SwingFXUtils.fromFXImage(images.get(i), null);
 
-                File currentPanelSnapshot = new File("C:\\testFolder\\panel" + i + ".png");
+                convertDirectoryToText();
+                File currentPanelSnapshot = new File(dir + "/panel" + i + ".png"); //Add directory in front of file name here.
                 ImageIO.write(bi, "png", currentPanelSnapshot);
             }
             bw.write("</div>\n" +
@@ -40,6 +42,11 @@ public class htmlCreator
             System.out.println("Error saving Images in snapToHTML method");
         }
         System.out.println("Files saved to HTML successfully");
+    }
+
+    private void convertDirectoryToText()
+    {
+
     }
 
     public String formatHTML()
