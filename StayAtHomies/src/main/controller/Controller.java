@@ -2,12 +2,10 @@ package main.controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
+
 import java.io.File;
 
-import javafx.stage.DirectoryChooser;
 import main.comi_xml_handler.ComiXML;
 import main.model.*;
 import main.model.Character;
@@ -15,7 +13,7 @@ import main.project_enums.*;
 import main.view.AppGUI;
 import main.view.PanelView;
 import java.util.ArrayList;
-import main.html.htmlCreator;
+import main.html.HtmlCreator;
 //main.controller.Controller.java represents the main.controller.Controller following the MVC pattern
 public class Controller {
    private final ComixApp comixApp;
@@ -327,11 +325,14 @@ public class Controller {
            view.userErrorAlert("Failed to save ", "Comic strip is empty");
            return;
        }
+       view.userInformationAlert("Save as HTML", "Please select a directory for the panels, then enter the name of the html file and select file destination");
        File dir = view.setHTMLDirectory();
        File outputter = view.saveHTMLFileWindow();
 
-       ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
-       new htmlCreator().snapToHTML(arraySnaps, outputter, dir);
+       if(dir != null && outputter != null){
+           ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
+           new HtmlCreator().snapToHTML(arraySnaps, outputter, dir);
+       }
     }
 
    private void saveComiXML(){

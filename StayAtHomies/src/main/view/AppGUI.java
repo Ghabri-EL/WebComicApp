@@ -830,14 +830,14 @@ public class AppGUI
         Alert information = new Alert(Alert.AlertType.INFORMATION);
         information.setTitle(title);
         information.setHeaderText(msg);
-        information.show();
+        information.showAndWait();
     }
 
     public void userErrorAlert(String title, String msg){
         Alert information = new Alert(Alert.AlertType.ERROR);
         information.setTitle(title);
         information.setHeaderText(msg);
-        information.show();
+        information.showAndWait();
     }
 }
 
