@@ -2,6 +2,7 @@ package main.view;
 
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -77,25 +78,30 @@ public class AppGUI
 
     //TOP BAR MENU BUTTONS
     private Menu fileMenu;
-    private Menu viewMenu;
     private Menu panelMenu;
     private Menu helpMenu;
     private Menu messageMenu;
 
     //MENU OPTIONS
-    private MenuItem fileMenuSaveXML = new MenuItem("Save");
-    private MenuItem fileMenuLoadXML = new MenuItem("Load");
-    private MenuItem fileMenuCharactersDir = new MenuItem("Characters Directory");
-    private MenuItem saveAsHtml = new MenuItem("Save as HTML");
-    private MenuItem viewMenuOne = new MenuItem("Option1");
-    private MenuItem viewMenuTwo = new MenuItem("Option2");
-    private MenuItem viewMenuThree = new MenuItem("Option3");
-    private MenuItem panelMenuNew = new MenuItem("New");
-    private MenuItem panelMenuSave = new MenuItem("Save");
-    private MenuItem panelMenuDelete = new MenuItem("Delete");
-    private MenuItem help = new MenuItem("Help");
-    private MenuItem about = new MenuItem("About");
-    private MenuItem gettingStarted = new MenuItem("Getting Started");
+    private final MenuItem fileMenuSaveXML = new MenuItem("Save");
+    private final MenuItem fileMenuLoadXML = new MenuItem("Load");
+    private final MenuItem fileMenuCharactersDir = new MenuItem("Characters Directory");
+    private final MenuItem saveAsHtml = new MenuItem("Save as HTML");
+    private final MenuItem panelMenuNew = new MenuItem("New");
+    private final MenuItem panelMenuSave = new MenuItem("Save");
+    private final MenuItem panelMenuDelete = new MenuItem("Delete");
+    private final MenuItem help = new MenuItem("Help");
+    private final MenuItem about = new MenuItem("About");
+    private final MenuItem gettingStarted = new MenuItem("Getting Started");
+
+
+    //SELECTED PANEL CONTEXT MENU
+    private final ContextMenu selectedPanelMenu = new ContextMenu();
+
+    //SELECTED PANEL CONTEXT MENU ITEMS
+    private final MenuItem SAVE_PANEL = new MenuItem("Save");
+    private final MenuItem DELETE_PANEL = new MenuItem("Delete");
+    private final MenuItem CHANGE_PANEL_POSITION = new MenuItem("Change panel position");
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -149,8 +155,8 @@ public class AppGUI
 
         bubbleTextStyle(leftBubbleText);
         bubbleTextStyle(rightBubbleText);
-        narrativeTextStyle(topNarrativeText);
-        narrativeTextStyle(bottomNarrativeText);
+//        narrativeTextStyle(topNarrativeText);
+//        narrativeTextStyle(bottomNarrativeText);
 
         //size for each row and col
         //first & last row: height= 40 & width= gridspan
@@ -178,12 +184,14 @@ public class AppGUI
 
         GridPane.setValignment(leftBubbleWrapper, VPos.BOTTOM);
         GridPane.setValignment(rightBubbleWrapper, VPos.BOTTOM);
+        GridPane.setHalignment(topNarrativeText, HPos.CENTER);
+        GridPane.setHalignment(bottomNarrativeText, HPos.CENTER);
 
         mainPane.setStyle("-fx-background-color: white");
         mainPane.setMinSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setMaxSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setHgap(10);
-        //mainPane.setGridLinesVisible(true);
+        mainPane.setGridLinesVisible(true);
 
         BorderPane.setAlignment(mainPane, Pos.CENTER);
         BorderPane.setMargin(mainPane, new Insets(10, 10, 10, 10));
@@ -207,6 +215,8 @@ public class AppGUI
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setPannable(true);
 
+        createContextMenu();
+
         layout.setBottom(scrollPane);
     }
 
@@ -214,7 +224,6 @@ public class AppGUI
     {
         //Creating the Top Menu bar (File, View, Panel)
         fileMenu = new Menu("File");
-        viewMenu = new Menu("View");
         panelMenu = new Menu("Panel");
         helpMenu = new Menu("Help");
         messageMenu = new Menu("Messages");
@@ -223,10 +232,6 @@ public class AppGUI
         fileMenu.getItems().add(fileMenuSaveXML);
         fileMenu.getItems().add(fileMenuCharactersDir);
         fileMenu.getItems().add(saveAsHtml);
-
-        viewMenu.getItems().add(viewMenuOne);
-        viewMenu.getItems().add(viewMenuTwo);
-        viewMenu.getItems().add(viewMenuThree);
 
         panelMenu.getItems().add(panelMenuNew);
         panelMenu.getItems().add(panelMenuSave);
@@ -237,7 +242,7 @@ public class AppGUI
         helpMenu.getItems().add(about);
 
         MenuBar topMenuBar = new MenuBar();
-        topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu, helpMenu, messageMenu);
+        topMenuBar.getMenus().addAll(fileMenu, panelMenu, helpMenu, messageMenu);
 
         layout.setTop(topMenuBar);
     }
@@ -321,6 +326,10 @@ public class AppGUI
     public void createRightPaneAbout() {
         helpPageClass = new HelpPage();
         layout.setRight(helpPageClass.helpPage("ABOUT"));
+    }
+
+    private void createContextMenu(){
+        selectedPanelMenu.getItems().addAll(SAVE_PANEL, DELETE_PANEL, CHANGE_PANEL_POSITION);
     }
 
     private void buttonCommonStyles(Button btn){
@@ -449,25 +458,36 @@ public class AppGUI
         if(textInput.getResult() != null){
             String text = textInput.getResult();
             //limit the narrative text to 70 characters
-            text = (text.length() <= 70 ? text : text.substring(0 , 70));
+            text = (text.length() <= 200 ? text : text.substring(0 , 200));
+            System.out.println(text.length());
             return text;
         }
         return null;
     }
 
+
     public String addNarrativeTextTop(){
-        return addNarrativeText();
+        String text = addNarrativeText();
+        narrativeTextStyle(topNarrativeText);
+        System.out.println("TOPNarrative width: " + topNarrativeText.getWidth());
+        return text;
     }
 
     public String addNarrativeTextBottom(){
-        return addNarrativeText();
+        String text = addNarrativeText();
+        narrativeTextStyle(bottomNarrativeText);
+        System.out.println("BOTTOmNarrative width: " + bottomNarrativeText.getWidth());
+        return text;
     }
 
     private void narrativeTextStyle(Label narrativeText){
         narrativeText.setAlignment(Pos.CENTER);
-        narrativeText.setPrefSize(WORKING_PANE_WIDTH, 40);
-        narrativeText.setMaxWidth(WORKING_PANE_WIDTH);
-        narrativeText.setFont(Font.font("Arial", 18));
+        narrativeText.setTextAlignment(TextAlignment.CENTER);
+        //narrativeText.setMaxSize(WORKING_PANE_WIDTH, 40);
+        System.out.println("Narrative width: " + narrativeText.getWidth());
+        narrativeText.setWrapText(true);
+        narrativeText.setStyle("-fx-background-color: red");
+        narrativeText.setFont(Font.font("Arial", 12));
     }
     //END NARRATIVE TEXT METHODS
 
@@ -714,8 +734,8 @@ public class AppGUI
         return fileMenuCharactersDir;
     }
 
-    public MenuItem getPanelMenu(){
-        return panelMenu;
+    public ContextMenu getSelectedPanelMenu(){
+        return selectedPanelMenu;
     }
 
     public MenuItem getPanelMenuSave() {
@@ -761,12 +781,26 @@ public class AppGUI
     public boolean isPanelSelected(){
         return selectedPanel != null;
     }
+
+    public MenuItem getSavePanel() {
+        return SAVE_PANEL;
+    }
+
+    public MenuItem getDeletePanel() {
+        return DELETE_PANEL;
+    }
+
+    public MenuItem getChangePanelPosition() {
+        return CHANGE_PANEL_POSITION;
+    }
+
     private void resetSelectedCharacter(){
         if(isCharacterSelected()){
             selectedCharacterView.setEffect(null);
             selectedCharacterView = null;
         }
     }
+
     private void resetSelectedPanel(){
         if(isPanelSelected()){
             selectedPanel.setEffect(null);
@@ -790,6 +824,7 @@ public class AppGUI
 
         return file;
     }
+
     public File setHTMLDirectory()
     {
         DirectoryChooser dirChooser = new DirectoryChooser();

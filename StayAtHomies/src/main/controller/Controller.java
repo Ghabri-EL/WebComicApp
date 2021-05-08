@@ -1,7 +1,9 @@
 package main.controller;
 
 import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
@@ -25,22 +27,24 @@ public class Controller {
    }
    public void execution(){
        selectHandler();
-       view.getImportLeftCharButton().setOnAction(actionEvent -> importLeftModelEvent());
-       view.getImportRightCharButton().setOnAction(actionEvent -> importRightModelEvent());
+       view.getImportLeftCharButton().setOnAction(event -> importLeftModelEvent());
+       view.getImportRightCharButton().setOnAction(event -> importRightModelEvent());
        view.getFlipButton().setOnAction(event -> flipCharacterEvent());
-       view.getGenderSwapButton().setOnAction(actionEvent -> genderSwapEvent());
-       view.getChangeSkinToneButton().setOnAction(actionEvent -> changeSkinToneEvent());
-       view.getChangeHairColorButton().setOnAction(actionEvent -> changeHairColorEvent());
-       view.getChangeLipsColorButton().setOnAction(actionEvent -> changeLipsColorEvent());
-       view.getAddSpeechBubbleButton().setOnAction(actionEvent -> addSpeechBubbleEvent());
-       view.getAddThoughtBubbleButton().setOnAction(actionEvent -> addThoughtBubbleEvent());
-       view.getRemoveBubbleButton().setOnAction(actionEvent -> removeBubbleEvent());
-       view.getAddTextTopButton().setOnAction(actionEvent -> addNarrativeTextTopEvent());
-       view.getAddTextBottomButton().setOnAction(actionEvent -> addNarrativeTextBottomEvent());
-       view.getFileMenuCharactersDir().setOnAction(actionEvent -> openCharacterDirectory());
-       view.getPanelMenuSave().setOnAction(actionEvent -> savePanelEvent());
+       view.getGenderSwapButton().setOnAction(event -> genderSwapEvent());
+       view.getChangeSkinToneButton().setOnAction(event -> changeSkinToneEvent());
+       view.getChangeHairColorButton().setOnAction(event -> changeHairColorEvent());
+       view.getChangeLipsColorButton().setOnAction(event -> changeLipsColorEvent());
+       view.getAddSpeechBubbleButton().setOnAction(event -> addSpeechBubbleEvent());
+       view.getAddThoughtBubbleButton().setOnAction(event -> addThoughtBubbleEvent());
+       view.getRemoveBubbleButton().setOnAction(event -> removeBubbleEvent());
+       view.getAddTextTopButton().setOnAction(event -> addNarrativeTextTopEvent());
+       view.getAddTextBottomButton().setOnAction(event -> addNarrativeTextBottomEvent());
+       view.getFileMenuCharactersDir().setOnAction(event -> openCharacterDirectory());
        view.getPanelMenuNew().setOnAction(event -> newPanelEvent());
+       view.getPanelMenuSave().setOnAction(event -> savePanelEvent());
+       view.getSavePanel().setOnAction(event -> savePanelEvent());
        view.getPanelMenuDelete().setOnAction(event -> deletePanelEvent());
+       view.getDeletePanel().setOnAction(event -> deletePanelEvent());
        view.getHelpPage().setOnAction(event -> helpPage());
        view.getHelpStartedPage().setOnAction(event -> gettingStarted());
        view.getAboutPage().setOnAction(event -> aboutPage());
@@ -275,6 +279,12 @@ public class Controller {
        panel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
            view.selectPanel(panel);
            loadSelectedPanel(panel.getPanelId());
+
+           //right click menu for each panel
+           if(mouseEvent.getButton() == MouseButton.SECONDARY){
+               ContextMenu panelMenu = view.getSelectedPanelMenu();
+               panelMenu.show(panel, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+           }
            mouseEvent.consume();
        });
    }
