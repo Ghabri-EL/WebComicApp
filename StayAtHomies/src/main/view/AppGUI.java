@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import main.project_enums.BubbleType;
 import main.project_enums.Selected;
 import java.io.File;
+import java.util.ArrayList;
 
 //main.view.AppGUI.java represents the View following the MVC pattern
 public class AppGUI
@@ -491,7 +492,7 @@ public class AppGUI
     }
     //END NARRATIVE TEXT METHODS
 
-    //===> BOTTOM PANE(comixStrip) METHODS
+    //===> BOTTOM PANE(comicStrip) METHODS
     private Image snapshotCurrentPanel(){
         WritableImage image = new WritableImage((int)WORKING_PANE_WIDTH, (int)WORKING_PANE_HEIGHT);
         if(isCharacterSelected()){
@@ -506,14 +507,9 @@ public class AppGUI
         return image;
     }
 
-    public void addPanelToStrip(PanelView panel){
-        comixStrip.getChildren().add(panel);
-    }
-
     public PanelView createPanel(){
         Image snapshot = snapshotCurrentPanel();
         PanelView panel = new PanelView(snapshot);
-        setPanelAttributes(panel);
         return panel;
     }
 
@@ -566,19 +562,6 @@ public class AppGUI
         }
     }
 
-    public void resetWorkingPane(){
-        leftBubble.setImage(null);
-        rightBubble.setImage(null);
-        leftCharView.setImage(null);
-        rightCharView.setImage(null);
-        leftBubbleText.setText(null);
-        rightBubbleText.setText(null);
-        topNarrativeText.setText(null);
-        bottomNarrativeText.setText(null);
-        resetSelectedCharacter();
-        resetSelectedPanel();
-    }
-
     public boolean confirmWorkingPaneReset(){
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Create new panel", ButtonType.YES, ButtonType.NO);
         confirmation.setTitle("New Panel");
@@ -590,19 +573,6 @@ public class AppGUI
             return true;
         }
         return false;
-    }
-
-    public int deletePanel(){
-        if(!isPanelSelected()){
-            return -1;
-        }
-        else{
-            int id = selectedPanel.getPanelId();
-            comixStrip.getChildren().remove(selectedPanel);
-            recomputeIds(id);
-            resetWorkingPane();
-            return id;
-        }
     }
 
     public boolean confirmDeletePanel(){
@@ -618,18 +588,41 @@ public class AppGUI
         return false;
     }
 
-    private void recomputeIds(int id){
-        ObservableList list = comixStrip.getChildren();
-
-        for(int i = id; i < list.size(); i++){
-            PanelView panel = (PanelView) list.get(i);
-            panel.setPanelId(panel.getPanelId() - 1);
+    //loads panes based on model
+    public void refreshComicStrip(ArrayList<PanelView> panels){
+        clearComicStrip();
+        for(PanelView panel : panels){
+            setPanelAttributes(panel);
+            comixStrip.getChildren().add(panel);
         }
+    }
+
+    public String changePanelIdWindow(){
+        TextInputDialog textInput = new TextInputDialog();
+        textInput.setTitle("Change panel position");
+        textInput.setHeaderText("Enter the new position for the selected panel");
+        textInput.showAndWait();
+
+        return textInput.getResult();
+    }
+
+    public void resetWorkingPane(){
+        leftBubble.setImage(null);
+        rightBubble.setImage(null);
+        leftCharView.setImage(null);
+        rightCharView.setImage(null);
+        leftBubbleText.setText(null);
+        rightBubbleText.setText(null);
+        topNarrativeText.setText(null);
+        bottomNarrativeText.setText(null);
+        resetSelectedCharacter();
+        resetSelectedPanel();
     }
 
     public void clearComicStrip(){
         comixStrip.getChildren().removeAll(comixStrip.getChildren());
     }
+
     public ImageView getLeftBubble() {
         return leftBubble;
     }

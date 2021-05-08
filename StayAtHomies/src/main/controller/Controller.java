@@ -45,6 +45,7 @@ public class Controller {
        view.getSavePanel().setOnAction(event -> savePanelEvent());
        view.getPanelMenuDelete().setOnAction(event -> deletePanelEvent());
        view.getDeletePanel().setOnAction(event -> deletePanelEvent());
+       view.getChangePanelPosition().setOnAction(event -> changePanelPosition());
        view.getHelpPage().setOnAction(event -> helpPage());
        view.getHelpStartedPage().setOnAction(event -> gettingStarted());
        view.getAboutPage().setOnAction(event -> aboutPage());
@@ -226,6 +227,7 @@ public class Controller {
            }
            else{
                saveNewPanel();
+               refreshViewComicStrip();
            }
        }
        else{
@@ -233,26 +235,13 @@ public class Controller {
        }
    }
 
+   //saves panel into the comic strip and reflects the save operation in the view
    private void saveNewPanel(){
-       int id = comixApp.generateId();
        PanelView panel = view.createPanel();
        comixApp.setPanelShot(panel.getImage());
        comixApp.createPanelAndAddToStrip();
-       panel.setPanelId(id);
-       addPanelEventHandler(panel);
-       view.addPanelToStrip(panel);
        resetWorkingPane();
    }
-
-    private void saveNewPanel(int id){
-        PanelView panel = view.createPanel();
-        comixApp.setPanelShot(panel.getImage());
-        comixApp.createPanelAndAddToStrip();
-        panel.setPanelId(id);
-        addPanelEventHandler(panel);
-        view.addPanelToStrip(panel);
-        resetWorkingPane();
-    }
 
    private void editExistingPanel(){
        int id = view.getSelectedPanel().getPanelId();
@@ -269,18 +258,47 @@ public class Controller {
             resetWorkingPane();
        }
    }
+
    private void resetWorkingPane(){
        comixApp.resetWorkingSpace();
        view.resetWorkingPane();
    }
 
+   private void changePanelPosition(){
+       String newPosition = view.changePanelIdWindow();
+       if(newPosition == null){
+           return;
+       }
+       
+       boolean fail = true;
+       try {
+           int newId = Integer.parseInt(newPosition);
+
+           if(newId >= 0 && newId <= comixApp.getNumberOfPanels()){
+               int panelId = comixApp.getId();
+               comixApp.changePanelPosition(panelId, newId);
+               refreshViewComicStrip();
+               resetWorkingPane();
+               fail = false;
+           }
+
+       }catch (NumberFormatException ex){
+           ex.printStackTrace();
+       }
+       if(fail){
+           view.userErrorAlert("Invalid position",
+                   "Invalid value entered. Please enter an integer value that is in the range [0 - " + comixApp.getNumberOfPanels() + "]");
+       }
+   }
+
    //add handler to panel to select panel and load it in the working pane
    private void addPanelEventHandler(PanelView panel){
        panel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-           view.selectPanel(panel);
-           loadSelectedPanel(panel.getPanelId());
-
-           //right click menu for each panel
+           if(panel != view.getSelectedPanel()){
+               view.selectPanel(panel);
+               loadSelectedPanel(panel.getPanelId());
+           }
+           //right click menu for each panel(save, delete, change position in the strip)
            if(mouseEvent.getButton() == MouseButton.SECONDARY){
                ContextMenu panelMenu = view.getSelectedPanelMenu();
                panelMenu.show(panel, mouseEvent.getScreenX(), mouseEvent.getScreenY());
@@ -295,7 +313,7 @@ public class Controller {
        if(loaded){
            Character leftChar = comixApp.getCharacterLeft();
            Character rightChar = comixApp.getCharacterRight();
-
+           System.out.println("ID: " + id);
            //parameters: Image leftCharacter, Image rightCharacter, main.project_enums.BubbleType leftBubbleType, main.project_enums.BubbleType rightBubbleType,
            //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
            view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),
@@ -304,18 +322,29 @@ public class Controller {
        }
    }
 
-   private void deletePanelEvent(){
-       if(view.confirmDeletePanel()){
-           deletePanel();
-       }
-   }
+    private void deletePanelEvent(){
+        if(view.confirmDeletePanel()){
+            if(view.isPanelSelected()){
+                int id = view.getSelectedPanel().getPanelId();
+                comixApp.deletePanel(id);
+                view.resetWorkingPane();
+                refreshViewComicStrip();
+            }
+        }
+        else{
+            view.userErrorAlert("Panel removal error", "No panel has been selected");
+        }
+    }
 
-   private void deletePanel(){
-       if(view.isPanelSelected()){
-           int id = view.deletePanel();
-           comixApp.deletePanel(id);
+    private void refreshViewComicStrip(){
+       ArrayList<PanelView> panelViewArray = new ArrayList<>();
+       for(Panel p : comixApp.getComixStrip().getPanels()){
+           PanelView panelView = new PanelView(p.getPanelShot(), p.getId());
+           addPanelEventHandler(panelView);
+           panelViewArray.add(panelView);
        }
-   }
+       view.refreshComicStrip(panelViewArray);
+    }
 
    private void helpPage() {
         view.createRightPaneHelp();
@@ -376,13 +405,14 @@ public class Controller {
                ArrayList<Panel> panels = ComiXML.createComicStripFromComiXML(xmlFile, view.getDefaultCharactersDirectory());
                if(!panels.isEmpty()){
                    comixApp.clearComixStrip();
-                   view.clearComicStrip();
                    for(Panel p : panels){
-                       loadPanel(p);
-                       saveNewPanel(p.getId());
+                       loadPanelToWorkingSpace(p);
+                       saveNewPanel();
                    }
                    view.userInformationAlert("Loaded successfully", "Xml file loaded successfully." +
                            " Please check the log file for more details");
+                   //panels loaded in the model, refresh view comic strip based on model
+                   refreshViewComicStrip();
                }
                else{
                    view.userInformationAlert("Loading status", "No panels were loaded");
@@ -391,7 +421,8 @@ public class Controller {
        }
    }
 
-    private void loadPanel(Panel panel){
+   //used to load panels parsed from the xml file into the scene/working space
+    private void loadPanelToWorkingSpace(Panel panel){
        comixApp.loadPanel(panel);
        Character leftChar = panel.getCharacterLeft();
        Character rightChar = panel.getCharacterRight();

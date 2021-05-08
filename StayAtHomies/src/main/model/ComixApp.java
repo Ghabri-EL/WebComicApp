@@ -38,7 +38,7 @@ public class ComixApp extends WorkingPane
         }
     }
 
-    public int generateId(){
+    private int generateId(){
         setId(comixStrip.size());
         return getId();
     }
@@ -63,6 +63,10 @@ public class ComixApp extends WorkingPane
 
     public void clearComixStrip(){
         comixStrip.clearStrip();
+    }
+
+    public int getNumberOfPanels(){
+        return comixStrip.size();
     }
 
     public Panel createPanel(){
@@ -130,6 +134,10 @@ public class ComixApp extends WorkingPane
     public void deletePanel(int id){
         comixStrip.removePanel(id);
         resetWorkingSpace();
+    }
+
+    public void changePanelPosition(int panelId, int newId){
+        comixStrip.changePanelPosition(panelId, newId);
     }
 
     public boolean readyToCreate(){
