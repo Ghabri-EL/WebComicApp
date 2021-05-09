@@ -5,8 +5,15 @@ import main.project_enums.*;
 
 public class ComixApp extends WorkingPane
 {
-    private Character selectedCharacter = null;
-    private ComixStrip comixStrip = new ComixStrip();
+    private Character selectedCharacter;
+    private ComixStrip comixStrip;
+    private String comicTitle;
+
+    public ComixApp(){
+        this.selectedCharacter = null;
+        this.comixStrip = new ComixStrip();
+        this.comicTitle = "HomiesComix";
+    }
 
     public Character getSelectedCharacter() {
         return selectedCharacter;
@@ -36,6 +43,14 @@ public class ComixApp extends WorkingPane
         else if(rightCharSelected()){
             setRightBubbleType(bubbleType);
         }
+    }
+
+    public void setComicTitle(String title){
+        this.comicTitle = title;
+    }
+
+    public String getComicTitle(){
+        return this.comicTitle;
     }
 
     private int generateId(){

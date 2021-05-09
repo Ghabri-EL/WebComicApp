@@ -20,11 +20,12 @@ public class Controller {
    private final ComixApp comixApp;
    private final AppGUI view;
 
-   private boolean isSaved = true;
+   private boolean isSaved;
 
    public Controller(ComixApp comixApp, AppGUI view){
        this.comixApp = comixApp;
        this.view = view;
+       isSaved = true;
    }
    public void execution(){
        selectHandler();
@@ -53,6 +54,7 @@ public class Controller {
        view.getFileMenuSaveXML().setOnAction(event -> saveComiXML());
        view.getFileMenuLoadXML().setOnAction(event -> loadComiXML());
        view.getSaveAsHtml().setOnAction(event -> saveAsHTML());
+       view.getSetComicTitle().setOnAction(event -> setComicTitle());
    }
 
    private void selectHandler(){
@@ -231,6 +233,13 @@ public class Controller {
        }
    }
 
+   private void setComicTitle(){
+       String title = view.setComicTitleDialog();
+       if(title != null){
+           comixApp.setComicTitle(title);
+       }
+   }
+
    private void openCharacterDirectory(){
        view.setCharactersDirectory();
    }
@@ -304,7 +313,7 @@ public class Controller {
        }
        if(fail){
            view.userErrorAlert("Invalid position",
-                   "Invalid value entered. Please enter an integer value that is in the range [0 - " + comixApp.getNumberOfPanels() + "]");
+                   "Invalid value entered. Please enter an integer value in the range [1 - " + comixApp.getNumberOfPanels() + "]");
        }
    }
 
@@ -400,7 +409,7 @@ public class Controller {
 
        if(dir != null && outputter != null){
            ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
-           new HtmlCreator().snapToHTML(arraySnaps, outputter, dir);
+           new HtmlCreator().snapToHTML(arraySnaps, outputter, dir, comixApp.getComicTitle());
        }
     }
 
@@ -412,7 +421,7 @@ public class Controller {
 
        File xmlFile = view.saveXMLFileWindow();
        if(xmlFile != null){
-           boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels(), xmlFile);
+           boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels(), xmlFile, comixApp.getComicTitle());
            if(!created){
                //log file feature to be added
                view.userErrorAlert("Failed to save ", "Failed to save the XML file.");

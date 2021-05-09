@@ -1,6 +1,5 @@
 package main.view;
 
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -26,7 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 //main.view.AppGUI.java represents the View following the MVC pattern
-public class AppGUI
+public class AppGUI implements ViewThemeColors
 {
     private static final double SCENE_WIDTH = 1300;
     private static final double SCENE_HEIGHT = 850;
@@ -38,7 +37,6 @@ public class AppGUI
     private final double COMIX_STRIP_PANE_HEIGHT = 160;
     private final double PANEL_SIZE = COMIX_STRIP_PANE_HEIGHT - 10;
     private final double LEFT_BUTTONS_PANEL_WIDTH = 200;
-    private final String APP_THEME_COLOR = "#103859";
     private final Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
     private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
     private File defaultCharactersDirectory = new File("./");
@@ -77,6 +75,7 @@ public class AppGUI
     private Button removeBubbleButton;
     private Button addTextTopButton;
     private Button addTextBottomButton;
+    private Button setComicTitle;
 
     //TOP BAR MENU BUTTONS
     private Menu fileMenu;
@@ -112,6 +111,7 @@ public class AppGUI
     public void createUI()
     {
         layout = new BorderPane();
+        layout.setStyle("-fx-background-color: " + APP_THEME_COLOR_SCENE);
         createTopMenuBar();
         createButtons();
         createMainPane();
@@ -157,8 +157,6 @@ public class AppGUI
 
         bubbleTextStyle(leftBubbleText);
         bubbleTextStyle(rightBubbleText);
-//        narrativeTextStyle(topNarrativeText);
-//        narrativeTextStyle(bottomNarrativeText);
 
         //size for each row and col
         //first & last row: height= 40 & width= gridspan
@@ -193,7 +191,7 @@ public class AppGUI
         mainPane.setMinSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setMaxSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setHgap(10);
-        mainPane.setGridLinesVisible(true);
+        //mainPane.setGridLinesVisible(true);
 
         BorderPane.setAlignment(mainPane, Pos.CENTER);
         BorderPane.setMargin(mainPane, new Insets(10, 10, 10, 10));
@@ -218,7 +216,7 @@ public class AppGUI
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setPannable(true);
         scrollPane.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" +
-                "-fx-border-color: rgba(240, 240, 240, 0.4); -fx-border-width: 1 2 1 2");
+                "-fx-border-color: rgba(240, 240, 240, 0.2); -fx-border-width: 1 0 0 0");
 
         //creates the 'right click' menu for panels
         createContextMenu();
@@ -227,11 +225,11 @@ public class AppGUI
         //the id of a panel into a vbox
         VBox bottomPaneWrapper = new VBox();
         bottomPaneWrapper.setAlignment(Pos.CENTER);
+        bottomPaneWrapper.setStyle("-fx-border-color: " + BORDER_COLOR + "; -fx-border-width: 1 0 0 0");
         panelPosition = new Label("Panel - / -");
         panelPosition.setPrefSize(SCENE_WIDTH, 30);
         panelPosition.setAlignment(Pos.CENTER);
-        panelPosition.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" +
-                " -fx-text-fill: white; -fx-border-color: rgba(240, 240, 240, 0.4); -fx-border-width: 0 2 0 2");
+        panelPosition.setStyle("-fx-text-fill: white;");
 
         bottomPaneWrapper.getChildren().addAll(panelPosition,scrollPane);
         layout.setBottom(bottomPaneWrapper);
@@ -272,13 +270,15 @@ public class AppGUI
         leftBarButtonsWrapper.setPrefWidth(LEFT_BUTTONS_PANEL_WIDTH);
         leftBarButtonsWrapper.setSpacing(2);
         leftBarButtonsWrapper.setAlignment(Pos.TOP_CENTER);
-        leftBarButtonsWrapper.setStyle("-fx-background-color: #103859");
+        leftBarButtonsWrapper.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" +
+                "-fx-border-color: " + BORDER_COLOR + "; -fx-border-width: 0 1 0 0");
 
         ScrollPane scrollPane = new ScrollPane(leftBarButtonsWrapper);
         scrollPane.setFitToHeight(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setPannable(true);
+        scrollPane.setStyle("-fx-background-color: " + APP_THEME_COLOR);
 
         importLeftCharButton = new Button("Import Left", setButtonImg( "importLeftChar.png"));
         buttonCommonStyles(importLeftCharButton);
@@ -325,8 +325,11 @@ public class AppGUI
         addTextBottomButton = new Button("Bottom Narration", setButtonImg("narrativeTextBottom.png"));
         buttonCommonStyles(addTextBottomButton);
 
+        setComicTitle = new Button("Comic Title", setButtonImg("comicTitleButton.png"));
+        buttonCommonStyles(setComicTitle);
+
         leftBarButtonsWrapper.getChildren().addAll(colorPalette, importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
-                changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton);
+                changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton, setComicTitle);
 
         layout.setLeft(scrollPane);
     }
@@ -477,38 +480,52 @@ public class AppGUI
         if(textInput.getResult() != null){
             String text = textInput.getResult();
             //limit the narrative text to 70 characters
-            text = (text.length() <= 200 ? text : text.substring(0 , 200));
+            text = (text.length() <= 250 ? text : text.substring(0 , 250));
             System.out.println(text.length());
             return text;
         }
         return null;
     }
 
-
     public String addNarrativeTextTop(){
         String text = addNarrativeText();
         narrativeTextStyle(topNarrativeText);
-        System.out.println("TOPNarrative width: " + topNarrativeText.getWidth());
         return text;
     }
 
     public String addNarrativeTextBottom(){
         String text = addNarrativeText();
         narrativeTextStyle(bottomNarrativeText);
-        System.out.println("BOTTOmNarrative width: " + bottomNarrativeText.getWidth());
         return text;
     }
 
     private void narrativeTextStyle(Label narrativeText){
+        System.out.println("Narrative Width: " + topNarrativeText.getWidth());
         narrativeText.setAlignment(Pos.CENTER);
         narrativeText.setTextAlignment(TextAlignment.CENTER);
-        //narrativeText.setMaxSize(WORKING_PANE_WIDTH, 40);
         System.out.println("Narrative width: " + narrativeText.getWidth());
         narrativeText.setWrapText(true);
-        narrativeText.setStyle("-fx-background-color: red");
         narrativeText.setFont(Font.font("Arial", 12));
     }
     //END NARRATIVE TEXT METHODS
+
+    public String setComicTitleDialog(){
+        TextInputDialog textInput = new TextInputDialog();
+        textInput.setTitle("Comic Title");
+        textInput.setHeaderText("Enter comic title...");
+        textInput.showAndWait();
+
+        String title = textInput.getResult();
+        if(title != null){
+            if(title.length() <= 100){
+                return title;
+            }
+            else{
+                userErrorAlert("Set title error", "Failed to set comic title. Over 100 characters entered");
+            }
+        }
+        return null;
+    }
 
     //===> BOTTOM PANE(comicStrip) METHODS
     private Image snapshotCurrentPanel(){
@@ -518,6 +535,8 @@ public class AppGUI
             selectedCharacterView.setEffect(null);
             image = mainPane.snapshot(new SnapshotParameters(), image);
             selectedCharacterView.setEffect(selectedEffect);
+            System.out.println("GRID W X H: " + mainPane.getWidth() + " " + mainPane.getHeight());
+            System.out.println("IMAGE W X H: " + image.getWidth() + " " + image.getHeight());
         }
         else{
              image = mainPane.snapshot(new SnapshotParameters(), image);
@@ -754,6 +773,10 @@ public class AppGUI
 
     public Button getAddTextBottomButton() {
         return addTextBottomButton;
+    }
+
+    public Button getSetComicTitle() {
+        return setComicTitle;
     }
 
     public MenuItem getFileMenuLoadXML() {

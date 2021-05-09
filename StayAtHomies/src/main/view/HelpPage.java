@@ -47,20 +47,24 @@ public class HelpPage {
             + "1.12 \"Top Narration\" button allows you to add narrative text at the TOP of the panel .\n"
                     + "\n"
             + "1.13 \"Bottom Narration\" button allows you to add narrative text at the BOTTOM of the panel .\n"
+                    + "\n"
+            + "1.14 \"Comic Title\" button allows you to set the title of the WebComic. Default name is HomiesComix and the character limit is 100 .\n"
                     + "\n",
             "2. Top Bar Buttons\n"
                     + "\n"
-            + "2.1 To save a panel select Panel->Save from the Top Bar . Make sure two characters have been selected .\n"
+            + "2.1 To save a panel select Panel->Save from the Top Bar or, if the panel exists in the comic strip, right click the panel and select the Save option." +
+                    " Make sure two characters have been selected .\n"
                     + "\n"
             + "2.2 To go back and work on a previous panel , simply click on the panel you desire to open again .\n"
                     + "\n"
-            + "2.3 To delete a panel you no longer need , select Panel->Delete ." +
+            + "2.3 To delete a panel you no longer need , select Panel->Delete or right click the panel and select the Delete option." +
                     "A popup will show on screen to make sure you want to delete the panel . By clicking yes the panel will be deleted .\n"
                     + "\n"
             + "2.4 To save file in xml format select File->Save and select directory where file should be saved . " +
                     "The log file is saved in the directory as the executable file . Make sure the panel is saved first .\n"
                     + "\n"
-            + "2.5 To load an xml file select File->Load . \n"
+            + "2.5 To load an xml file select File->Load. Make sure to set the directory of the character first, File -> Characters Directory." +
+                    " This will allow the app to load the proper pose for each figure in the xml\n"
                     + "\n"
             + "2.6 To save file in html format select File->Save as HTML . A popup will show with instructions on how and where to save " +
                     "the file .\n"

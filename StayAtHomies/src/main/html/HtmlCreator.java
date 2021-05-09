@@ -17,17 +17,18 @@ import java.util.logging.Logger;
 public class HtmlCreator
 {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir)
+    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title)
     {
-        //File outputFile = new File("C:\\testFolder\\output.html");
         BufferedImage bi;
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(outputFile, false));
             bw.write(formatHTML());
+            bw.write("<h2>" + title + "</h2>\n");
+            bw.write("<div id=\"comic\"> \n \t");
+
             for(int i=0; i<images.size(); i++)
             {
-                convertDirectoryToText();
                 File currentPanelSnapshot = new File(dir + "/panel" + i + ".png"); //Add directory in front of file name here.
                 System.out.println(currentPanelSnapshot);
                 bw.write("<div class=\"images\"><img src=\"" + currentPanelSnapshot +"\" alt='Panel" + i + "' style='width:100%'></div> \n");
@@ -47,11 +48,6 @@ public class HtmlCreator
         }
         System.out.println("Files saved to HTML successfully");
         logger.info("HTML file and panels saved successfully");
-    }
-
-    private void convertDirectoryToText()
-    {
-
     }
 
     private String formatHTML()
@@ -86,6 +82,7 @@ public class HtmlCreator
             "                overflow-x: auto;   \n" +
             "                display: flex;\n" +
             "                flex-wrap: nowrap;           \n" +
+            "                justify-content: center;\n"+
             "                border: 2px rgba(94, 94, 94, 0.514) double;\n" +
             "                background-color: rgb(0, 23, 32);\n" +
             "            }\n" +
@@ -103,15 +100,14 @@ public class HtmlCreator
             "                transform: scale(1.04);\n" +
             "            }\n" +
             "\n" +
-            "            h1{\n" +
+            "            h2{\n" +
             "                color: blanchedalmond;\n" +
             "                padding: 20px;\n" +
+            "                text-align: center;\n"+
             "            }\n" +
             "        </style>\n" +
             "    </head>\n" +
-            "    <body>\n" +
-            "        <h1>HomiesComix</h1>\n" +
-            "        <div id=\"comic\"> \n \t";
+            "    <body>\n";
 
         return formatter;
     }

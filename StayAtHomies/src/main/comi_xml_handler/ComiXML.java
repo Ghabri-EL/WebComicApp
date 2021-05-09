@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 public class ComiXML implements DefaultColors {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    public static boolean createXML(ArrayList<Panel> list, File comiXMLFile){
+    public static boolean createXML(ArrayList<Panel> list, File comiXMLFile, String title){
         if(list.isEmpty()){
             return false;
         }
@@ -40,6 +40,11 @@ public class ComiXML implements DefaultColors {
 
             Element comic = document.createElement("comic");
             document.appendChild(comic);
+
+            Element comicTitle = document.createElement("title");
+            comic.appendChild(comicTitle);
+            comicTitle.appendChild(document.createTextNode(title));
+
             Element panels = document.createElement("panels");
             comic.appendChild(panels);
 

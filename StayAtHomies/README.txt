@@ -115,7 +115,7 @@ Story 16:
 	Loads xml comic strip files into the app and populated the app with the panels found in the xml file.
 	
 Gabriel Gherasim: Coded the save and load xml features.
-Daiana Morjolic : Coded the Help , about and Getting Started pages for user guidance .
+Daiana Morjolic : Coded the Help , about and Getting Started pages for user guidance.
 
 === Story 17 ===
 -Command to execute : java -jar StayAtHomies.jar
