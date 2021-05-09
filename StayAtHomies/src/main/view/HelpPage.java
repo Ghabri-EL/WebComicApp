@@ -35,7 +35,7 @@ public class HelpPage {
             "1.8 \"Lip Color\" button changes the colour of the Character's lips . A colour has to be selected from the colour palette first .\n" +
                     "Character has to be selected in order for the operation to work .\n"
                     + "\n"
-            +"1.9 \"Speech Bubble\" button allows you to add a speech bubble at the top of the character .\n" +
+            + "1.9 \"Speech Bubble\" button allows you to add a speech bubble at the top of the character .\n" +
                     "Character has to be selected in order for the operation to work .\n"
                     + "\n"
             + "1.10  \"Thought Bubble\" button allows you to add a thought bubble at the top of the character .\n" +
@@ -46,7 +46,7 @@ public class HelpPage {
                     + "\n"
             + "1.12 \"Top Narration\" button allows you to add narrative text at the TOP of the panel .\n"
                     + "\n"
-            + " 1.13 \"Bottom Narration\" button allows you to add narrative text at the BOTTOM of the panel .\n"
+            + "1.13 \"Bottom Narration\" button allows you to add narrative text at the BOTTOM of the panel .\n"
                     + "\n",
             "2. Top Bar Buttons\n"
                     + "\n"
@@ -54,13 +54,19 @@ public class HelpPage {
                     + "\n"
             + "2.2 To go back and work on a previous panel , simply click on the panel you desire to open again .\n"
                     + "\n"
-            +"2.3 To delete a panel you no longer need , select Panel->Delete ." +
+            + "2.3 To delete a panel you no longer need , select Panel->Delete ." +
                     "A popup will show on screen to make sure you want to delete the panel . By clicking yes the panel will be deleted .\n"
                     + "\n"
-            +"2.4 To save file in xml format select File->Save and select directory where file should be saved . " +
-                    "The log file is saved in the directory selected . Make sure the panel is saved first .\n"
+            + "2.4 To save file in xml format select File->Save and select directory where file should be saved . " +
+                    "The log file is saved in the directory as the executable file . Make sure the panel is saved first .\n"
                     + "\n"
-            +"2.5 To load an xml file select File->Load . \n"
+            + "2.5 To load an xml file select File->Load . \n"
+                    + "\n"
+            + "2.6 To save file in html format select File->Save as HTML . A popup will show with instructions on how and where to save " +
+                    "the file .\n"
+                    + "\n"
+            + "2.7 To change panel position in the comic strip right click on the panel you wish to re-arrange and select Change Panel Position ." +
+                    "Then introduce the new position of the panel .\n"
 
     };
 

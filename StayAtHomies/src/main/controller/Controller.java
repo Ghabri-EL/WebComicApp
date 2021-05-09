@@ -328,7 +328,7 @@ public class Controller {
    private void savePanelPrompt(){
        //this method prompts the user to save panel if changes have been made to the current panel
        //before switching to the next panel
-       if(!isSaved && view.getSelectedPanel() != null) {
+       if(!isSaved) {
            if (view.confirmChangingPanel()) {
                savePanelEvent();
            }
