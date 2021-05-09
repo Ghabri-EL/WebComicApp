@@ -606,6 +606,20 @@ public class AppGUI
         return false;
     }
 
+    public boolean confirmChangingPanel() {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Change Panel", ButtonType.YES, ButtonType.NO);
+        confirmation.setTitle("Change Panel");
+        confirmation.setHeaderText("Unsaved changes will be lost when changing the panel.");
+        confirmation.setContentText("Do you wish to save panel before continuing ?");
+        confirmation.showAndWait();
+
+        if(confirmation.getResult() == ButtonType.YES) {
+            return true;
+        }
+
+        return false;
+    }
+
     //loads panes based on model
     public void refreshComicStrip(ArrayList<PanelView> panels){
         clearComicStrip();

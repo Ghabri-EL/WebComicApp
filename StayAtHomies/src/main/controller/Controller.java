@@ -21,6 +21,8 @@ public class Controller {
    private final ComixApp comixApp;
    private final AppGUI view;
 
+   private boolean isSaved = true;
+
    public Controller(ComixApp comixApp, AppGUI view){
        this.comixApp = comixApp;
        this.view = view;
@@ -81,6 +83,8 @@ public class Controller {
            comixApp.selectCharacter(Selected.LEFT);
            view.selectFrame(Selected.LEFT);
        }
+
+       isSaved = false;
    }
 
    private void importRightModelEvent(){
@@ -94,6 +98,8 @@ public class Controller {
            comixApp.selectCharacter(Selected.RIGHT);
            view.selectFrame(Selected.RIGHT);
        }
+
+       isSaved = false;
    }
 
    private void flipCharacterEvent(){
@@ -106,6 +112,8 @@ public class Controller {
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
+
+       isSaved = false;
    }
 
    private void genderSwapEvent(){
@@ -117,6 +125,8 @@ public class Controller {
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
+
+       isSaved = false;
    }
 
    private void changeSkinToneEvent(){
@@ -128,6 +138,8 @@ public class Controller {
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
+
+       isSaved = false;
    }
 
    private void changeHairColorEvent(){
@@ -140,6 +152,8 @@ public class Controller {
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
+
+       isSaved = false;
    }
 
    private void changeLipsColorEvent(){
@@ -152,6 +166,8 @@ public class Controller {
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
+
+       isSaved = false;
    }
 
    private void addSpeechBubbleEvent(){
@@ -166,6 +182,8 @@ public class Controller {
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
+
+       isSaved = false;
    }
 
    private void addThoughtBubbleEvent(){
@@ -180,6 +198,8 @@ public class Controller {
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
+
+       isSaved = false;
    }
 
    private void removeBubbleEvent(){
@@ -198,6 +218,8 @@ public class Controller {
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
+
+       isSaved = false;
    }
 
    private void addNarrativeTextTopEvent(){
@@ -206,6 +228,8 @@ public class Controller {
            comixApp.setNarrativeTextTop(narrativeText);
            view.getTopNarrativeText().setText(narrativeText);
        }
+
+       isSaved = false;
    }
 
    private void addNarrativeTextBottomEvent(){
@@ -214,6 +238,8 @@ public class Controller {
            comixApp.setNarrativeTextBottom(narrativeText);
            view.getBottomNarrativeText().setText(narrativeText);
        }
+
+       isSaved = false;
    }
 
    private void openCharacterDirectory(){
@@ -241,6 +267,8 @@ public class Controller {
        comixApp.setPanelShot(panel.getImage());
        comixApp.createPanelAndAddToStrip();
        resetWorkingPane();
+
+       isSaved = true;
    }
 
    private void editExistingPanel(){
@@ -296,6 +324,11 @@ public class Controller {
    private void addPanelEventHandler(PanelView panel){
        panel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
            if(panel != view.getSelectedPanel()){
+               if(!isSaved && view.getSelectedPanel() != null) {
+                   if (view.confirmChangingPanel()) {
+                       savePanelEvent();
+                   }
+               }
                view.selectPanel(panel);
                loadSelectedPanel(panel.getPanelId());
            }
@@ -311,16 +344,36 @@ public class Controller {
    private void loadSelectedPanel(int id){
        boolean loaded = comixApp.loadSelectedPanel(id);
 
-       if(loaded){
-           Character leftChar = comixApp.getCharacterLeft();
-           Character rightChar = comixApp.getCharacterRight();
-           System.out.println("ID: " + id);
-           //parameters: Image leftCharacter, Image rightCharacter, main.project_enums.BubbleType leftBubbleType, main.project_enums.BubbleType rightBubbleType,
-           //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
-           view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),
-                   comixApp.getRightBubbleType(), comixApp.getLeftBubbleText(), comixApp.getRightBubbleText(),
-                   comixApp.getNarrativeTextTop(), comixApp.getNarrativeTextBottom());
-       }
+//       if(isSaved != true){
+//           if(view.confirmChangingPanel()) {
+//               savePanelEvent();
+//           }
+//           else {
+               if (loaded) {
+                   Character leftChar = comixApp.getCharacterLeft();
+                   Character rightChar = comixApp.getCharacterRight();
+                   System.out.println("ID: " + id);
+
+                   //parameters: Image leftCharacter, Image rightCharacter, main.project_enums.BubbleType leftBubbleType, main.project_enums.BubbleType rightBubbleType,
+                   //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
+                   view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),
+                           comixApp.getRightBubbleType(), comixApp.getLeftBubbleText(), comixApp.getRightBubbleText(),
+                           comixApp.getNarrativeTextTop(), comixApp.getNarrativeTextBottom());
+               }
+//           }
+//       }
+//       else {
+//           if(loaded){
+//               Character leftChar = comixApp.getCharacterLeft();
+//               Character rightChar = comixApp.getCharacterRight();
+//               System.out.println("ID: " + id);
+//               //parameters: Image leftCharacter, Image rightCharacter, main.project_enums.BubbleType leftBubbleType, main.project_enums.BubbleType rightBubbleType,
+//               //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
+//               view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),
+//                       comixApp.getRightBubbleType(), comixApp.getLeftBubbleText(), comixApp.getRightBubbleText(),
+//                       comixApp.getNarrativeTextTop(), comixApp.getNarrativeTextBottom());
+//           }
+//       }
    }
 
     private void deletePanelEvent(){
