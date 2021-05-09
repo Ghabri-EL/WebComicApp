@@ -287,7 +287,7 @@ public class Controller {
 
    private void loadSelectedPanel(int id){
        boolean loaded = comixApp.loadSelectedPanel(id);
-
+       
        if(view.confirmChangingPanel()) {
            saveNewPanel();
        }
@@ -299,8 +299,8 @@ public class Controller {
                //parameters: Image leftCharacter, Image rightCharacter, main.project_enums.BubbleType leftBubbleType, main.project_enums.BubbleType rightBubbleType,
                //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
                view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),
-                       comixApp.getRightBubbleType(), comixApp.getLeftBubbleText(), comixApp.getRightBubbleText(),
-                       comixApp.getNarrativeTextTop(), comixApp.getNarrativeTextBottom());
+               comixApp.getRightBubbleType(), comixApp.getLeftBubbleText(), comixApp.getRightBubbleText(),
+               comixApp.getNarrativeTextTop(), comixApp.getNarrativeTextBottom());
            }
        }
    }
