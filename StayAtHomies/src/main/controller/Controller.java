@@ -269,12 +269,13 @@ public class Controller {
        if(newPosition == null){
            return;
        }
-       
+
        boolean fail = true;
        try {
            int newId = Integer.parseInt(newPosition);
 
-           if(newId >= 0 && newId <= comixApp.getNumberOfPanels()){
+           if(newId >= 1 && newId <= comixApp.getNumberOfPanels()){
+               newId -= 1;
                int panelId = comixApp.getId();
                comixApp.changePanelPosition(panelId, newId);
                refreshViewComicStrip();

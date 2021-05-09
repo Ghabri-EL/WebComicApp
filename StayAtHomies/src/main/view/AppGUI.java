@@ -61,6 +61,7 @@ public class AppGUI
     private HBox comixStrip;
     private PanelView selectedPanel;
     private HelpPage helpPageClass;
+    private Label panelPosition;
 
     //SIDE BUTTONS
     private ColorPicker colorPalette;
@@ -200,13 +201,14 @@ public class AppGUI
     }
     public void createBottomPane()
     {
-        //Hbox
+        //Hbox containing the panels(the comic strip)
         comixStrip = new HBox();
         comixStrip.setSpacing(15);
         comixStrip.setPadding(new Insets(5, 5, 5, 5));
-        comixStrip.setStyle("-fx-background-color: " + APP_THEME_COLOR + "; -fx-border-color: #d4d4d4");
+        comixStrip.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";");
         comixStrip.setMinHeight(COMIX_STRIP_PANE_HEIGHT);
 
+        //scroll pane wrapper for the comic strip
         ScrollPane scrollPane = new ScrollPane(comixStrip);
         //the value of 15 added to the default height is to account for the scroll bar
         scrollPane.setMinHeight(COMIX_STRIP_PANE_HEIGHT + 15);
@@ -215,10 +217,24 @@ public class AppGUI
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setPannable(true);
+        scrollPane.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" +
+                "-fx-border-color: rgba(240, 240, 240, 0.4); -fx-border-width: 1 2 1 2");
 
+        //creates the 'right click' menu for panels
         createContextMenu();
 
-        layout.setBottom(scrollPane);
+        //add the scroll pane, containing the comic strip pane, and the bar/label showing
+        //the id of a panel into a vbox
+        VBox bottomPaneWrapper = new VBox();
+        bottomPaneWrapper.setAlignment(Pos.CENTER);
+        panelPosition = new Label("Panel - / -");
+        panelPosition.setPrefSize(SCENE_WIDTH, 30);
+        panelPosition.setAlignment(Pos.CENTER);
+        panelPosition.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" +
+                " -fx-text-fill: white; -fx-border-color: rgba(240, 240, 240, 0.4); -fx-border-width: 0 2 0 2");
+
+        bottomPaneWrapper.getChildren().addAll(panelPosition,scrollPane);
+        layout.setBottom(bottomPaneWrapper);
     }
 
     public void createTopMenuBar()
@@ -276,7 +292,8 @@ public class AppGUI
         colorPalette = new ColorPicker();
         colorPalette.setMinHeight(30);
         colorPalette.setMinWidth(LEFT_BUTTONS_PANEL_WIDTH);
-        colorPalette.setStyle("-fx-background-color: rgba(30, 194, 227, 0.5); -fx-background-radius: 1;-fx-highlight-fill: white;-fx-cursor: hand");
+        colorPalette.setStyle("-fx-background-color: rgba(30, 194, 227, 0.5); -fx-background-radius: 1;" +
+                "-fx-highlight-fill: white;-fx-cursor: hand");
         colorPalette.setOnAction(event ->{
             selectedColor = colorPalette.getValue();
         });
@@ -402,6 +419,7 @@ public class AppGUI
         }
         selectedPanel = panel;
         selectedPanel.setEffect(new DropShadow(15, Color.TURQUOISE));
+        refreshPanelPositionLabel();
     }
 
     //====> BUBBLE IMPORT METHODS
@@ -595,6 +613,18 @@ public class AppGUI
             setPanelAttributes(panel);
             comixStrip.getChildren().add(panel);
         }
+        refreshPanelPositionLabel();
+    }
+
+    public void refreshPanelPositionLabel(){
+        int numberOfPanels = comixStrip.getChildren().size();
+        int panelId = 0;
+
+        if(isPanelSelected()){
+            panelId = selectedPanel.getPanelId() + 1;
+        }
+        String text = "Panel " + panelId + " / " + numberOfPanels;
+        panelPosition.setText(text);
     }
 
     public String changePanelIdWindow(){
