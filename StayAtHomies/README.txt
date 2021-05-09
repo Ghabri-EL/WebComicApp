@@ -113,8 +113,15 @@ Story 15:
 
 Story 16:
 	Loads xml comic strip files into the app and populated the app with the panels found in the xml file.
-
-Niall McGurk: 
+	
 Gabriel Gherasim: Coded the save and load xml features.
 Daiana: Coded the Help , about and Getting Started pages for user guidance .
-Ryan: 
+=== Story 17 ===
+-Command to execute : java -jar StayAtHomies.jar
+-Required to execute: JDK version 13 or above
+
+Story 17:
+	Saves the comic strip in the form of an HTML file.
+Niall McGurk: Coded the conversion from comic strip to HTML (main features)
+Gabriel Gherasim: 
+Daiana: 
