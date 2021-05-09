@@ -20,6 +20,8 @@ public class Controller {
    private final ComixApp comixApp;
    private final AppGUI view;
 
+   private boolean isSaved = true;
+
    public Controller(ComixApp comixApp, AppGUI view){
        this.comixApp = comixApp;
        this.view = view;
@@ -80,6 +82,8 @@ public class Controller {
            comixApp.selectCharacter(Selected.LEFT);
            view.selectFrame(Selected.LEFT);
        }
+
+       isSaved = false;
    }
 
    private void importRightModelEvent(){
@@ -93,6 +97,8 @@ public class Controller {
            comixApp.selectCharacter(Selected.RIGHT);
            view.selectFrame(Selected.RIGHT);
        }
+
+       isSaved = false;
    }
 
    private void flipCharacterEvent(){
@@ -101,6 +107,7 @@ public class Controller {
            selectedCharacter.flipImage();
            Image newCharImage = selectedCharacter.getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
+           isSaved = false;
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -112,6 +119,7 @@ public class Controller {
            comixApp.getSelectedCharacter().switchGenders();
            Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
+           isSaved = false;
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -123,6 +131,7 @@ public class Controller {
            comixApp.getSelectedCharacter().skinChange(view.getSelectedColor());
            Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
+           isSaved = false;
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -135,6 +144,7 @@ public class Controller {
            selectedCharacter.hairChange(view.getSelectedColor());
            Image newCharImage = selectedCharacter.getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
+           isSaved = false;
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -147,6 +157,7 @@ public class Controller {
            selectedCharacter.changeLipsColor(view.getSelectedColor());
            Image newCharImage = selectedCharacter.getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
+           isSaved = false;
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -161,6 +172,7 @@ public class Controller {
                comixApp.setBubbleText(bubbleText);
                comixApp.setBubbleType(BubbleType.SPEECH);
            }
+           isSaved = false;
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -175,6 +187,7 @@ public class Controller {
                comixApp.setBubbleText(bubbleText);
                comixApp.setBubbleType(BubbleType.THOUGHT);
            }
+           isSaved = false;
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -193,6 +206,7 @@ public class Controller {
            }
            comixApp.setBubbleText(null);
            comixApp.setBubbleType(BubbleType.NONE);
+           isSaved = false;
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -204,6 +218,7 @@ public class Controller {
        if(narrativeText != null){
            comixApp.setNarrativeTextTop(narrativeText);
            view.getTopNarrativeText().setText(narrativeText);
+           isSaved = false;
        }
    }
 
@@ -212,6 +227,7 @@ public class Controller {
        if(narrativeText != null){
            comixApp.setNarrativeTextBottom(narrativeText);
            view.getBottomNarrativeText().setText(narrativeText);
+           isSaved = false;
        }
    }
 
@@ -228,6 +244,7 @@ public class Controller {
                saveNewPanel();
                refreshViewComicStrip();
            }
+           isSaved = true;
        }
        else{
            view.userInformationAlert("Import characters", "You need two characters on a panel in order to save a panel");
@@ -295,6 +312,7 @@ public class Controller {
    private void addPanelEventHandler(PanelView panel){
        panel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
            if(panel != view.getSelectedPanel()){
+               savePanelPrompt();
                view.selectPanel(panel);
                loadSelectedPanel(panel.getPanelId());
            }
@@ -305,6 +323,19 @@ public class Controller {
            }
            mouseEvent.consume();
        });
+   }
+
+   private void savePanelPrompt(){
+       //this method prompts the user to save panel if changes have been made to the current panel
+       //before switching to the next panel
+       if(!isSaved && view.getSelectedPanel() != null) {
+           if (view.confirmChangingPanel()) {
+               savePanelEvent();
+           }
+           else{
+               isSaved = true;
+           }
+       }
    }
 
    private void loadSelectedPanel(int id){
