@@ -124,5 +124,6 @@ Daiana Morjolic : Coded the Help , about and Getting Started pages for user guid
 Story 17:
 	Saves the comic strip in the form of an HTML file.
 Niall McGurk: Coded the conversion from comic strip to HTML (main features)
-Gabriel Gherasim: 
+Gabriel Gherasim: Worked on implementing the feature to change panel position in the strip, designed the html structure for the html file generation,
+		added feature to set the comic title and fixed a few bugs.
 Daiana Morjolic : Worked on implementing sprint 6 feedback and added new information to help page .
