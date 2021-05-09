@@ -5,9 +5,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-
 import java.io.File;
-
 import main.comi_xml_handler.ComiXML;
 import main.model.*;
 import main.model.Character;
@@ -16,6 +14,7 @@ import main.view.AppGUI;
 import main.view.PanelView;
 import java.util.ArrayList;
 import main.html.HtmlCreator;
+
 //main.controller.Controller.java represents the main.controller.Controller following the MVC pattern
 public class Controller {
    private final ComixApp comixApp;
@@ -314,7 +313,6 @@ public class Controller {
        if(loaded){
            Character leftChar = comixApp.getCharacterLeft();
            Character rightChar = comixApp.getCharacterRight();
-           System.out.println("ID: " + id);
            //parameters: Image leftCharacter, Image rightCharacter, main.project_enums.BubbleType leftBubbleType, main.project_enums.BubbleType rightBubbleType,
            //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
            view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),

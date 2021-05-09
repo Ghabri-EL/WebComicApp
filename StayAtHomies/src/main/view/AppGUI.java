@@ -647,6 +647,7 @@ public class AppGUI
         bottomNarrativeText.setText(null);
         resetSelectedCharacter();
         resetSelectedPanel();
+        refreshPanelPositionLabel();
     }
 
     public void clearComicStrip(){
