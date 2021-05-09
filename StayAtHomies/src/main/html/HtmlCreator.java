@@ -2,6 +2,7 @@ package main.html;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.stage.DirectoryChooser;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -10,12 +11,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class htmlCreator
+public class HtmlCreator
 {
-    public void snapToHTML(ArrayList<Image> images)
+    private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir)
     {
-        File outputFile = new File("C:\\testFolder\\output.html");
+        //File outputFile = new File("C:\\testFolder\\output.html");
         BufferedImage bi;
         BufferedWriter bw = null;
         try {
@@ -23,11 +27,12 @@ public class htmlCreator
             bw.write(formatHTML());
             for(int i=0; i<images.size(); i++)
             {
-                bw.write("<div class=\"images\"><img src='panel" + i + ".png' alt='Panel" + i + "' style='width:100%'></div> \n");
+                convertDirectoryToText();
+                File currentPanelSnapshot = new File(dir + "/panel" + i + ".png"); //Add directory in front of file name here.
+                System.out.println(currentPanelSnapshot);
+                bw.write("<div class=\"images\"><img src=\"" + currentPanelSnapshot +"\" alt='Panel" + i + "' style='width:100%'></div> \n");
                 bw.flush();
                 bi = SwingFXUtils.fromFXImage(images.get(i), null);
-
-                File currentPanelSnapshot = new File("C:\\testFolder\\panel" + i + ".png");
                 ImageIO.write(bi, "png", currentPanelSnapshot);
             }
             bw.write("</div>\n" +
@@ -38,11 +43,18 @@ public class htmlCreator
         catch (IOException e)
         {
             System.out.println("Error saving Images in snapToHTML method");
+            logger.log(Level.WARNING, "An error was encountered while saving the panels.");
         }
         System.out.println("Files saved to HTML successfully");
+        logger.info("HTML file and panels saved successfully");
     }
 
-    public String formatHTML()
+    private void convertDirectoryToText()
+    {
+
+    }
+
+    private String formatHTML()
     {
         String formatter = "<!DOCTYPE html>\n" +
             "<html>\n" +
@@ -82,8 +94,8 @@ public class htmlCreator
             "                flex: 0 0 auto;\n" +
             "                background-color: rgb(255, 255, 255);\n" +
             "                margin: 10px 20px 10px 20px;\n" +
-            "                width: 400px;\n" +
-            "                height: 400px;\n" +
+            "                width: 500px;\n" +
+            "                height: 500px;\n" +
             "                transition: linear 0.1s;\n" +
             "            }\n" +
             "\n" +

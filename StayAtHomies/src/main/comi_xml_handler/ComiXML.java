@@ -22,28 +22,13 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class ComiXML implements DefaultColors {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private static void loggerInitialize(){
-        try{
-            FileHandler fileHandler = new FileHandler("./logfile.log");
-            fileHandler.setLevel(Level.ALL);
-            fileHandler.setFormatter(new SimpleFormatter());
-            logger.addHandler(fileHandler);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public static boolean createXML(ArrayList<Panel> list, File comiXMLFile){
-        loggerInitialize();
         if(list.isEmpty()){
             return false;
         }
@@ -170,7 +155,6 @@ public class ComiXML implements DefaultColors {
     }
 
     public static ArrayList<Panel> createComicStripFromComiXML(File xmlFile, File charactersDir){
-        loggerInitialize();
         if(xmlFile == null){
             return null;
         }
@@ -344,11 +328,11 @@ public class ComiXML implements DefaultColors {
                         hairColor = Color.web(hair);
                     }catch(IllegalArgumentException ex){
                         //to add error message to logger
-                        logger.log(Level.WARNING, "Hair color invalid. Skin tone set to default");
+                        logger.log(Level.WARNING, "Hair color invalid. Hair color set to default");
                     }catch(NullPointerException ex){
                         //ex.printStackTrace();
                         //add error to logger
-                        logger.log(Level.WARNING, "Hair color invalid. Skin tone set to default");
+                        logger.log(Level.WARNING, "Hair color invalid. Hair color set to default");
                     }
                 }else if(node.getNodeName().equalsIgnoreCase("lips")){
                     String lips = node.getTextContent();
@@ -356,11 +340,11 @@ public class ComiXML implements DefaultColors {
                         lipsColor = Color.web(lips);
                     }catch(IllegalArgumentException ex){
                         //to add error message to logger
-                        logger.log(Level.WARNING, "Lips color invalid. Skin tone set to default");
+                        logger.log(Level.WARNING, "Lips color invalid. Lips color set to default");
                     }catch(NullPointerException ex){
                         //ex.printStackTrace();
                         //add error to logger
-                        logger.log(Level.WARNING, "Lips color invalid. Skin tone set to default");
+                        logger.log(Level.WARNING, "Lips color invalid. Lips color set to default");
                     }
                 }else if(node.getNodeName().equalsIgnoreCase("pose")){
                     pose = node.getTextContent();
@@ -373,7 +357,7 @@ public class ComiXML implements DefaultColors {
             }
         }
 
-        Image charImage = loadCharacterOnPose(charactersDir, pose);
+        Image charImage = loadCharacterPose(charactersDir, pose);
         if(charImage == null){
             return null;
         }
@@ -393,7 +377,7 @@ public class ComiXML implements DefaultColors {
         return character;
     }
 
-    private static Image loadCharacterOnPose(File charDir, String pose){
+    private static Image loadCharacterPose(File charDir, String pose){
         if(pose == null){
             return null;
         }

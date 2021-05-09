@@ -1,11 +1,13 @@
 package main.controller;
 
 import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
+
 import java.io.File;
+
 import main.comi_xml_handler.ComiXML;
 import main.model.*;
 import main.model.Character;
@@ -13,7 +15,7 @@ import main.project_enums.*;
 import main.view.AppGUI;
 import main.view.PanelView;
 import java.util.ArrayList;
-import main.html.htmlCreator;
+import main.html.HtmlCreator;
 //main.controller.Controller.java represents the main.controller.Controller following the MVC pattern
 public class Controller {
    private final ComixApp comixApp;
@@ -25,22 +27,25 @@ public class Controller {
    }
    public void execution(){
        selectHandler();
-       view.getImportLeftCharButton().setOnAction(actionEvent -> importLeftModelEvent());
-       view.getImportRightCharButton().setOnAction(actionEvent -> importRightModelEvent());
+       view.getImportLeftCharButton().setOnAction(event -> importLeftModelEvent());
+       view.getImportRightCharButton().setOnAction(event -> importRightModelEvent());
        view.getFlipButton().setOnAction(event -> flipCharacterEvent());
-       view.getGenderSwapButton().setOnAction(actionEvent -> genderSwapEvent());
-       view.getChangeSkinToneButton().setOnAction(actionEvent -> changeSkinToneEvent());
-       view.getChangeHairColorButton().setOnAction(actionEvent -> changeHairColorEvent());
-       view.getChangeLipsColorButton().setOnAction(actionEvent -> changeLipsColorEvent());
-       view.getAddSpeechBubbleButton().setOnAction(actionEvent -> addSpeechBubbleEvent());
-       view.getAddThoughtBubbleButton().setOnAction(actionEvent -> addThoughtBubbleEvent());
-       view.getRemoveBubbleButton().setOnAction(actionEvent -> removeBubbleEvent());
-       view.getAddTextTopButton().setOnAction(actionEvent -> addNarrativeTextTopEvent());
-       view.getAddTextBottomButton().setOnAction(actionEvent -> addNarrativeTextBottomEvent());
-       view.getFileMenuCharactersDir().setOnAction(actionEvent -> openCharacterDirectory());
-       view.getPanelMenuSave().setOnAction(actionEvent -> savePanelEvent());
+       view.getGenderSwapButton().setOnAction(event -> genderSwapEvent());
+       view.getChangeSkinToneButton().setOnAction(event -> changeSkinToneEvent());
+       view.getChangeHairColorButton().setOnAction(event -> changeHairColorEvent());
+       view.getChangeLipsColorButton().setOnAction(event -> changeLipsColorEvent());
+       view.getAddSpeechBubbleButton().setOnAction(event -> addSpeechBubbleEvent());
+       view.getAddThoughtBubbleButton().setOnAction(event -> addThoughtBubbleEvent());
+       view.getRemoveBubbleButton().setOnAction(event -> removeBubbleEvent());
+       view.getAddTextTopButton().setOnAction(event -> addNarrativeTextTopEvent());
+       view.getAddTextBottomButton().setOnAction(event -> addNarrativeTextBottomEvent());
+       view.getFileMenuCharactersDir().setOnAction(event -> openCharacterDirectory());
        view.getPanelMenuNew().setOnAction(event -> newPanelEvent());
+       view.getPanelMenuSave().setOnAction(event -> savePanelEvent());
+       view.getSavePanel().setOnAction(event -> savePanelEvent());
        view.getPanelMenuDelete().setOnAction(event -> deletePanelEvent());
+       view.getDeletePanel().setOnAction(event -> deletePanelEvent());
+       view.getChangePanelPosition().setOnAction(event -> changePanelPosition());
        view.getHelpPage().setOnAction(event -> helpPage());
        view.getHelpStartedPage().setOnAction(event -> gettingStarted());
        view.getAboutPage().setOnAction(event -> aboutPage());
@@ -201,9 +206,6 @@ public class Controller {
            comixApp.setNarrativeTextTop(narrativeText);
            view.getTopNarrativeText().setText(narrativeText);
        }
-       else{
-           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
-       }
    }
 
    private void addNarrativeTextBottomEvent(){
@@ -211,9 +213,6 @@ public class Controller {
        if(narrativeText != null){
            comixApp.setNarrativeTextBottom(narrativeText);
            view.getBottomNarrativeText().setText(narrativeText);
-       }
-       else{
-           view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
        }
    }
 
@@ -228,42 +227,30 @@ public class Controller {
            }
            else{
                saveNewPanel();
+               refreshViewComicStrip();
            }
        }
        else{
-           view.userInformationAlert("Import characters", "Select the characters on which you want to perform the operation");
+           view.userInformationAlert("Import characters", "You need two characters on a panel in order to save a panel");
        }
    }
 
+   //saves panel into the comic strip and reflects the save operation in the view
    private void saveNewPanel(){
-       int id = comixApp.generateId();
        PanelView panel = view.createPanel();
        comixApp.setPanelShot(panel.getImage());
        comixApp.createPanelAndAddToStrip();
-       panel.setPanelId(id);
-       addPanelEventHandler(panel);
-       view.addPanelToStrip(panel);
        resetWorkingPane();
    }
 
-    private void saveNewPanel(int id){
-        PanelView panel = view.createPanel();
-        comixApp.setPanelShot(panel.getImage());
-        comixApp.createPanelAndAddToStrip();
-        panel.setPanelId(id);
-        addPanelEventHandler(panel);
-        view.addPanelToStrip(panel);
-        resetWorkingPane();
-    }
-
    private void editExistingPanel(){
-        int id = view.getSelectedPanel().getPanelId();
+       int id = view.getSelectedPanel().getPanelId();
 
-        PanelView viewPanel = view.editSelectedPanel();
-        comixApp.setPanelShot(viewPanel.getImage());
+       PanelView viewPanel = view.editSelectedPanel();
+       comixApp.setPanelShot(viewPanel.getImage());
 
-        Panel basePanel = comixApp.createPanel();
-        comixApp.editPanel(id, basePanel);
+       Panel basePanel = comixApp.createPanel();
+       comixApp.editPanel(id, basePanel);
    }
 
    private void newPanelEvent(){
@@ -271,52 +258,94 @@ public class Controller {
             resetWorkingPane();
        }
    }
+
    private void resetWorkingPane(){
        comixApp.resetWorkingSpace();
        view.resetWorkingPane();
    }
 
+   private void changePanelPosition(){
+       String newPosition = view.changePanelIdWindow();
+       if(newPosition == null){
+           return;
+       }
+
+       boolean fail = true;
+       try {
+           int newId = Integer.parseInt(newPosition);
+
+           if(newId >= 1 && newId <= comixApp.getNumberOfPanels()){
+               newId -= 1;
+               int panelId = comixApp.getId();
+               comixApp.changePanelPosition(panelId, newId);
+               refreshViewComicStrip();
+               resetWorkingPane();
+               fail = false;
+           }
+
+       }catch (NumberFormatException ex){
+           ex.printStackTrace();
+       }
+       if(fail){
+           view.userErrorAlert("Invalid position",
+                   "Invalid value entered. Please enter an integer value that is in the range [0 - " + comixApp.getNumberOfPanels() + "]");
+       }
+   }
+
    //add handler to panel to select panel and load it in the working pane
    private void addPanelEventHandler(PanelView panel){
        panel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-           view.selectPanel(panel);
-           loadSelectedPanel(panel.getPanelId());
+           if(panel != view.getSelectedPanel()){
+               view.selectPanel(panel);
+               loadSelectedPanel(panel.getPanelId());
+           }
+           //right click menu for each panel(save, delete, change position in the strip)
+           if(mouseEvent.getButton() == MouseButton.SECONDARY){
+               ContextMenu panelMenu = view.getSelectedPanelMenu();
+               panelMenu.show(panel, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+           }
            mouseEvent.consume();
        });
    }
 
    private void loadSelectedPanel(int id){
        boolean loaded = comixApp.loadSelectedPanel(id);
-       
-       if(view.confirmChangingPanel()) {
-           saveNewPanel();
-       }
-       else {
-           if (loaded) {
-               Character leftChar = comixApp.getCharacterLeft();
-               Character rightChar = comixApp.getCharacterRight();
 
-               //parameters: Image leftCharacter, Image rightCharacter, main.project_enums.BubbleType leftBubbleType, main.project_enums.BubbleType rightBubbleType,
-               //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
-               view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),
-               comixApp.getRightBubbleType(), comixApp.getLeftBubbleText(), comixApp.getRightBubbleText(),
-               comixApp.getNarrativeTextTop(), comixApp.getNarrativeTextBottom());
-           }
+       if(loaded){
+           Character leftChar = comixApp.getCharacterLeft();
+           Character rightChar = comixApp.getCharacterRight();
+           System.out.println("ID: " + id);
+           //parameters: Image leftCharacter, Image rightCharacter, main.project_enums.BubbleType leftBubbleType, main.project_enums.BubbleType rightBubbleType,
+           //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
+           view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),
+                   comixApp.getRightBubbleType(), comixApp.getLeftBubbleText(), comixApp.getRightBubbleText(),
+                   comixApp.getNarrativeTextTop(), comixApp.getNarrativeTextBottom());
        }
    }
 
-   private void deletePanelEvent(){
-       if(view.confirmDeletePanel()){
-           deletePanel();
-       }
-   }
+    private void deletePanelEvent(){
+        if(view.confirmDeletePanel()){
+            if(view.isPanelSelected()){
+                int id = view.getSelectedPanel().getPanelId();
+                comixApp.deletePanel(id);
+                view.resetWorkingPane();
+                refreshViewComicStrip();
+            }
+        }
+        else{
+            view.userErrorAlert("Panel removal error", "No panel has been selected");
+        }
+    }
 
-   private void deletePanel(){
-       if(view.isPanelSelected()){
-           int id = view.deletePanel();
-           comixApp.deletePanel(id);
+    private void refreshViewComicStrip(){
+       ArrayList<PanelView> panelViewArray = new ArrayList<>();
+       for(Panel p : comixApp.getComixStrip().getPanels()){
+           PanelView panelView = new PanelView(p.getPanelShot(), p.getId());
+           addPanelEventHandler(panelView);
+           panelViewArray.add(panelView);
        }
-   }
+       view.refreshComicStrip(panelViewArray);
+    }
 
    private void helpPage() {
         view.createRightPaneHelp();
@@ -330,8 +359,20 @@ public class Controller {
         view.createRightPaneAbout();
    }
 
-   private void saveAsHTML() {
-        recieveSnapshot();
+   private void saveAsHTML()
+   {
+       if(comixApp.noPanels()){
+           view.userErrorAlert("Failed to save ", "Comic strip is empty");
+           return;
+       }
+       view.userInformationAlert("Save as HTML", "Please select a directory for the panels, then enter the name of the html file and select file destination");
+       File dir = view.setHTMLDirectory();
+       File outputter = view.saveHTMLFileWindow();
+
+       if(dir != null && outputter != null){
+           ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
+           new HtmlCreator().snapToHTML(arraySnaps, outputter, dir);
+       }
     }
 
    private void saveComiXML(){
@@ -365,13 +406,14 @@ public class Controller {
                ArrayList<Panel> panels = ComiXML.createComicStripFromComiXML(xmlFile, view.getDefaultCharactersDirectory());
                if(!panels.isEmpty()){
                    comixApp.clearComixStrip();
-                   view.clearComicStrip();
                    for(Panel p : panels){
-                       loadPanel(p);
-                       saveNewPanel(p.getId());
+                       loadPanelToWorkingSpace(p);
+                       saveNewPanel();
                    }
                    view.userInformationAlert("Loaded successfully", "Xml file loaded successfully." +
                            " Please check the log file for more details");
+                   //panels loaded in the model, refresh view comic strip based on model
+                   refreshViewComicStrip();
                }
                else{
                    view.userInformationAlert("Loading status", "No panels were loaded");
@@ -380,7 +422,8 @@ public class Controller {
        }
    }
 
-    private void loadPanel(Panel panel){
+   //used to load panels parsed from the xml file into the scene/working space
+    private void loadPanelToWorkingSpace(Panel panel){
        comixApp.loadPanel(panel);
        Character leftChar = panel.getCharacterLeft();
        Character rightChar = panel.getCharacterRight();
@@ -390,11 +433,5 @@ public class Controller {
        view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), panel.getLeftBubbleType(),
                 panel.getRightBubbleType(), panel.getLeftBubbleText(), panel.getRightBubbleText(),
                 panel.getNarrativeTextTop(), panel.getNarrativeTextBottom());
-    }
-
-    public void recieveSnapshot()
-    {
-        ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
-        new htmlCreator().snapToHTML(arraySnaps);
     }
 }

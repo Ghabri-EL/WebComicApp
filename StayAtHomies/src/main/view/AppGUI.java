@@ -2,6 +2,7 @@ package main.view;
 
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -22,7 +23,7 @@ import javafx.stage.Stage;
 import main.project_enums.BubbleType;
 import main.project_enums.Selected;
 import java.io.File;
-import java.net.URL;
+import java.util.ArrayList;
 
 //main.view.AppGUI.java represents the View following the MVC pattern
 public class AppGUI
@@ -41,6 +42,7 @@ public class AppGUI
     private final Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
     private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
     private File defaultCharactersDirectory = new File("./");
+    private File defaultHTMLDirectory = new File("./");
 
     private Stage stage;
     private Scene scene;
@@ -59,6 +61,7 @@ public class AppGUI
     private HBox comixStrip;
     private PanelView selectedPanel;
     private HelpPage helpPageClass;
+    private Label panelPosition;
 
     //SIDE BUTTONS
     private ColorPicker colorPalette;
@@ -77,25 +80,30 @@ public class AppGUI
 
     //TOP BAR MENU BUTTONS
     private Menu fileMenu;
-    private Menu viewMenu;
     private Menu panelMenu;
     private Menu helpMenu;
     private Menu messageMenu;
 
     //MENU OPTIONS
-    private MenuItem fileMenuSaveXML = new MenuItem("Save");
-    private MenuItem fileMenuLoadXML = new MenuItem("Load");
-    private MenuItem fileMenuCharactersDir = new MenuItem("Characters Directory");
-    private MenuItem saveAsHtml = new MenuItem("Save as HTML");
-    private MenuItem viewMenuOne = new MenuItem("Option1");
-    private MenuItem viewMenuTwo = new MenuItem("Option2");
-    private MenuItem viewMenuThree = new MenuItem("Option3");
-    private MenuItem panelMenuNew = new MenuItem("New");
-    private MenuItem panelMenuSave = new MenuItem("Save");
-    private MenuItem panelMenuDelete = new MenuItem("Delete");
-    private MenuItem help = new MenuItem("Help");
-    private MenuItem about = new MenuItem("About");
-    private MenuItem gettingStarted = new MenuItem("Getting Started");
+    private final MenuItem fileMenuSaveXML = new MenuItem("Save");
+    private final MenuItem fileMenuLoadXML = new MenuItem("Load");
+    private final MenuItem fileMenuCharactersDir = new MenuItem("Characters Directory");
+    private final MenuItem saveAsHtml = new MenuItem("Save as HTML");
+    private final MenuItem panelMenuNew = new MenuItem("New");
+    private final MenuItem panelMenuSave = new MenuItem("Save");
+    private final MenuItem panelMenuDelete = new MenuItem("Delete");
+    private final MenuItem help = new MenuItem("Help");
+    private final MenuItem about = new MenuItem("About");
+    private final MenuItem gettingStarted = new MenuItem("Getting Started");
+
+
+    //SELECTED PANEL CONTEXT MENU
+    private final ContextMenu selectedPanelMenu = new ContextMenu();
+
+    //SELECTED PANEL CONTEXT MENU ITEMS
+    private final MenuItem SAVE_PANEL = new MenuItem("Save");
+    private final MenuItem DELETE_PANEL = new MenuItem("Delete");
+    private final MenuItem CHANGE_PANEL_POSITION = new MenuItem("Change panel position");
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -149,8 +157,8 @@ public class AppGUI
 
         bubbleTextStyle(leftBubbleText);
         bubbleTextStyle(rightBubbleText);
-        narrativeTextStyle(topNarrativeText);
-        narrativeTextStyle(bottomNarrativeText);
+//        narrativeTextStyle(topNarrativeText);
+//        narrativeTextStyle(bottomNarrativeText);
 
         //size for each row and col
         //first & last row: height= 40 & width= gridspan
@@ -178,12 +186,14 @@ public class AppGUI
 
         GridPane.setValignment(leftBubbleWrapper, VPos.BOTTOM);
         GridPane.setValignment(rightBubbleWrapper, VPos.BOTTOM);
+        GridPane.setHalignment(topNarrativeText, HPos.CENTER);
+        GridPane.setHalignment(bottomNarrativeText, HPos.CENTER);
 
         mainPane.setStyle("-fx-background-color: white");
         mainPane.setMinSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setMaxSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setHgap(10);
-        //mainPane.setGridLinesVisible(true);
+        mainPane.setGridLinesVisible(true);
 
         BorderPane.setAlignment(mainPane, Pos.CENTER);
         BorderPane.setMargin(mainPane, new Insets(10, 10, 10, 10));
@@ -191,13 +201,14 @@ public class AppGUI
     }
     public void createBottomPane()
     {
-        //Hbox
+        //Hbox containing the panels(the comic strip)
         comixStrip = new HBox();
         comixStrip.setSpacing(15);
         comixStrip.setPadding(new Insets(5, 5, 5, 5));
-        comixStrip.setStyle("-fx-background-color: " + APP_THEME_COLOR + "; -fx-border-color: #d4d4d4");
+        comixStrip.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";");
         comixStrip.setMinHeight(COMIX_STRIP_PANE_HEIGHT);
 
+        //scroll pane wrapper for the comic strip
         ScrollPane scrollPane = new ScrollPane(comixStrip);
         //the value of 15 added to the default height is to account for the scroll bar
         scrollPane.setMinHeight(COMIX_STRIP_PANE_HEIGHT + 15);
@@ -206,15 +217,30 @@ public class AppGUI
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setPannable(true);
+        scrollPane.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" +
+                "-fx-border-color: rgba(240, 240, 240, 0.4); -fx-border-width: 1 2 1 2");
 
-        layout.setBottom(scrollPane);
+        //creates the 'right click' menu for panels
+        createContextMenu();
+
+        //add the scroll pane, containing the comic strip pane, and the bar/label showing
+        //the id of a panel into a vbox
+        VBox bottomPaneWrapper = new VBox();
+        bottomPaneWrapper.setAlignment(Pos.CENTER);
+        panelPosition = new Label("Panel - / -");
+        panelPosition.setPrefSize(SCENE_WIDTH, 30);
+        panelPosition.setAlignment(Pos.CENTER);
+        panelPosition.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" +
+                " -fx-text-fill: white; -fx-border-color: rgba(240, 240, 240, 0.4); -fx-border-width: 0 2 0 2");
+
+        bottomPaneWrapper.getChildren().addAll(panelPosition,scrollPane);
+        layout.setBottom(bottomPaneWrapper);
     }
 
     public void createTopMenuBar()
     {
         //Creating the Top Menu bar (File, View, Panel)
         fileMenu = new Menu("File");
-        viewMenu = new Menu("View");
         panelMenu = new Menu("Panel");
         helpMenu = new Menu("Help");
         messageMenu = new Menu("Messages");
@@ -223,10 +249,6 @@ public class AppGUI
         fileMenu.getItems().add(fileMenuSaveXML);
         fileMenu.getItems().add(fileMenuCharactersDir);
         fileMenu.getItems().add(saveAsHtml);
-
-        viewMenu.getItems().add(viewMenuOne);
-        viewMenu.getItems().add(viewMenuTwo);
-        viewMenu.getItems().add(viewMenuThree);
 
         panelMenu.getItems().add(panelMenuNew);
         panelMenu.getItems().add(panelMenuSave);
@@ -237,7 +259,7 @@ public class AppGUI
         helpMenu.getItems().add(about);
 
         MenuBar topMenuBar = new MenuBar();
-        topMenuBar.getMenus().addAll(fileMenu, viewMenu, panelMenu, helpMenu, messageMenu);
+        topMenuBar.getMenus().addAll(fileMenu, panelMenu, helpMenu, messageMenu);
 
         layout.setTop(topMenuBar);
     }
@@ -264,13 +286,14 @@ public class AppGUI
         importRightCharButton = new Button("Import Right", setButtonImg( "importRightChar.png"));
         buttonCommonStyles(importRightCharButton);
 
-        flipButton = new Button("Orientation", setButtonImg( "flip.png"));
+        flipButton = new Button("Orientation", setButtonImg("flip.png"));
         buttonCommonStyles(flipButton);
 
         colorPalette = new ColorPicker();
         colorPalette.setMinHeight(30);
         colorPalette.setMinWidth(LEFT_BUTTONS_PANEL_WIDTH);
-        colorPalette.setStyle("-fx-background-color: rgba(30, 194, 227, 0.5); -fx-background-radius: 1;-fx-highlight-fill: white;-fx-cursor: hand");
+        colorPalette.setStyle("-fx-background-color: rgba(30, 194, 227, 0.5); -fx-background-radius: 1;" +
+                "-fx-highlight-fill: white;-fx-cursor: hand");
         colorPalette.setOnAction(event ->{
             selectedColor = colorPalette.getValue();
         });
@@ -321,6 +344,10 @@ public class AppGUI
     public void createRightPaneAbout() {
         helpPageClass = new HelpPage();
         layout.setRight(helpPageClass.helpPage("ABOUT"));
+    }
+
+    private void createContextMenu(){
+        selectedPanelMenu.getItems().addAll(SAVE_PANEL, DELETE_PANEL, CHANGE_PANEL_POSITION);
     }
 
     private void buttonCommonStyles(Button btn){
@@ -392,6 +419,7 @@ public class AppGUI
         }
         selectedPanel = panel;
         selectedPanel.setEffect(new DropShadow(15, Color.TURQUOISE));
+        refreshPanelPositionLabel();
     }
 
     //====> BUBBLE IMPORT METHODS
@@ -449,29 +477,40 @@ public class AppGUI
         if(textInput.getResult() != null){
             String text = textInput.getResult();
             //limit the narrative text to 70 characters
-            text = (text.length() <= 70 ? text : text.substring(0 , 70));
+            text = (text.length() <= 200 ? text : text.substring(0 , 200));
+            System.out.println(text.length());
             return text;
         }
         return null;
     }
 
+
     public String addNarrativeTextTop(){
-        return addNarrativeText();
+        String text = addNarrativeText();
+        narrativeTextStyle(topNarrativeText);
+        System.out.println("TOPNarrative width: " + topNarrativeText.getWidth());
+        return text;
     }
 
     public String addNarrativeTextBottom(){
-        return addNarrativeText();
+        String text = addNarrativeText();
+        narrativeTextStyle(bottomNarrativeText);
+        System.out.println("BOTTOmNarrative width: " + bottomNarrativeText.getWidth());
+        return text;
     }
 
     private void narrativeTextStyle(Label narrativeText){
         narrativeText.setAlignment(Pos.CENTER);
-        narrativeText.setPrefSize(WORKING_PANE_WIDTH, 40);
-        narrativeText.setMaxWidth(WORKING_PANE_WIDTH);
-        narrativeText.setFont(Font.font("Arial", 18));
+        narrativeText.setTextAlignment(TextAlignment.CENTER);
+        //narrativeText.setMaxSize(WORKING_PANE_WIDTH, 40);
+        System.out.println("Narrative width: " + narrativeText.getWidth());
+        narrativeText.setWrapText(true);
+        narrativeText.setStyle("-fx-background-color: red");
+        narrativeText.setFont(Font.font("Arial", 12));
     }
     //END NARRATIVE TEXT METHODS
 
-    //===> BOTTOM PANE(comixStrip) METHODS
+    //===> BOTTOM PANE(comicStrip) METHODS
     private Image snapshotCurrentPanel(){
         WritableImage image = new WritableImage((int)WORKING_PANE_WIDTH, (int)WORKING_PANE_HEIGHT);
         if(isCharacterSelected()){
@@ -486,14 +525,9 @@ public class AppGUI
         return image;
     }
 
-    public void addPanelToStrip(PanelView panel){
-        comixStrip.getChildren().add(panel);
-    }
-
     public PanelView createPanel(){
         Image snapshot = snapshotCurrentPanel();
         PanelView panel = new PanelView(snapshot);
-        setPanelAttributes(panel);
         return panel;
     }
 
@@ -546,19 +580,6 @@ public class AppGUI
         }
     }
 
-    public void resetWorkingPane(){
-        leftBubble.setImage(null);
-        rightBubble.setImage(null);
-        leftCharView.setImage(null);
-        rightCharView.setImage(null);
-        leftBubbleText.setText(null);
-        rightBubbleText.setText(null);
-        topNarrativeText.setText(null);
-        bottomNarrativeText.setText(null);
-        resetSelectedCharacter();
-        resetSelectedPanel();
-    }
-
     public boolean confirmWorkingPaneReset(){
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Create new panel", ButtonType.YES, ButtonType.NO);
         confirmation.setTitle("New Panel");
@@ -570,19 +591,6 @@ public class AppGUI
             return true;
         }
         return false;
-    }
-
-    public int deletePanel(){
-        if(!isPanelSelected()){
-            return -1;
-        }
-        else{
-            int id = selectedPanel.getPanelId();
-            comixStrip.getChildren().remove(selectedPanel);
-            recomputeIds(id);
-            resetWorkingPane();
-            return id;
-        }
     }
 
     public boolean confirmDeletePanel(){
@@ -598,32 +606,53 @@ public class AppGUI
         return false;
     }
 
-    public boolean confirmChangingPanel() {
-        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Change Panel", ButtonType.YES, ButtonType.NO);
-        confirmation.setTitle("Change Panel");
-        confirmation.setHeaderText("Unsaved changes will be lost when changing the panel.");
-        confirmation.setContentText("Do you wish to save panel before continuing ?");
-        confirmation.showAndWait();
-
-        if(confirmation.getResult() == ButtonType.YES) {
-            return true;
+    //loads panes based on model
+    public void refreshComicStrip(ArrayList<PanelView> panels){
+        clearComicStrip();
+        for(PanelView panel : panels){
+            setPanelAttributes(panel);
+            comixStrip.getChildren().add(panel);
         }
-
-        return false;
+        refreshPanelPositionLabel();
     }
 
-    private void recomputeIds(int id){
-        ObservableList list = comixStrip.getChildren();
+    public void refreshPanelPositionLabel(){
+        int numberOfPanels = comixStrip.getChildren().size();
+        int panelId = 0;
 
-        for(int i = id; i < list.size(); i++){
-            PanelView panel = (PanelView) list.get(i);
-            panel.setPanelId(panel.getPanelId() - 1);
+        if(isPanelSelected()){
+            panelId = selectedPanel.getPanelId() + 1;
         }
+        String text = "Panel " + panelId + " / " + numberOfPanels;
+        panelPosition.setText(text);
+    }
+
+    public String changePanelIdWindow(){
+        TextInputDialog textInput = new TextInputDialog();
+        textInput.setTitle("Change panel position");
+        textInput.setHeaderText("Enter the new position for the selected panel");
+        textInput.showAndWait();
+
+        return textInput.getResult();
+    }
+
+    public void resetWorkingPane(){
+        leftBubble.setImage(null);
+        rightBubble.setImage(null);
+        leftCharView.setImage(null);
+        rightCharView.setImage(null);
+        leftBubbleText.setText(null);
+        rightBubbleText.setText(null);
+        topNarrativeText.setText(null);
+        bottomNarrativeText.setText(null);
+        resetSelectedCharacter();
+        resetSelectedPanel();
     }
 
     public void clearComicStrip(){
         comixStrip.getChildren().removeAll(comixStrip.getChildren());
     }
+
     public ImageView getLeftBubble() {
         return leftBubble;
     }
@@ -728,6 +757,10 @@ public class AppGUI
         return fileMenuCharactersDir;
     }
 
+    public ContextMenu getSelectedPanelMenu(){
+        return selectedPanelMenu;
+    }
+
     public MenuItem getPanelMenuSave() {
         return panelMenuSave;
     }
@@ -756,6 +789,10 @@ public class AppGUI
         return defaultCharactersDirectory;
     }
 
+    public File getDefaultHTMLDirectory() {
+        return defaultHTMLDirectory;
+    }
+
     public boolean isCharacterSelected(){
         return selectedCharacterView != null;
     }
@@ -767,12 +804,26 @@ public class AppGUI
     public boolean isPanelSelected(){
         return selectedPanel != null;
     }
+
+    public MenuItem getSavePanel() {
+        return SAVE_PANEL;
+    }
+
+    public MenuItem getDeletePanel() {
+        return DELETE_PANEL;
+    }
+
+    public MenuItem getChangePanelPosition() {
+        return CHANGE_PANEL_POSITION;
+    }
+
     private void resetSelectedCharacter(){
         if(isCharacterSelected()){
             selectedCharacterView.setEffect(null);
             selectedCharacterView = null;
         }
     }
+
     private void resetSelectedPanel(){
         if(isPanelSelected()){
             selectedPanel.setEffect(null);
@@ -786,6 +837,28 @@ public class AppGUI
         File file = fileChooser.showSaveDialog(stage);
 
         return file;
+    }
+
+    public File saveHTMLFileWindow()
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files (*.html)","*.html"));
+        File file = fileChooser.showSaveDialog(stage);
+
+        return file;
+    }
+
+    public File setHTMLDirectory()
+    {
+        DirectoryChooser dirChooser = new DirectoryChooser();
+        dirChooser.setInitialDirectory(defaultHTMLDirectory);
+        File dir = dirChooser.showDialog(stage);
+
+        if(dir != null){
+            defaultHTMLDirectory = dir;
+        }
+
+        return getDefaultHTMLDirectory();
     }
 
     //opens up window to let user select the xml file to load
@@ -815,14 +888,14 @@ public class AppGUI
         Alert information = new Alert(Alert.AlertType.INFORMATION);
         information.setTitle(title);
         information.setHeaderText(msg);
-        information.show();
+        information.showAndWait();
     }
 
     public void userErrorAlert(String title, String msg){
         Alert information = new Alert(Alert.AlertType.ERROR);
         information.setTitle(title);
         information.setHeaderText(msg);
-        information.show();
+        information.showAndWait();
     }
 }
 

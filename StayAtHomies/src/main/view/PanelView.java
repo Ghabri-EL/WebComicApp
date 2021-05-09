@@ -10,6 +10,11 @@ public class PanelView extends ImageView {
         super(image);
     }
 
+    public PanelView(Image image,int panelId){
+        super(image);
+        this.panelId = panelId;
+    }
+
     public int getPanelId() {
         return panelId;
     }

@@ -11,15 +11,17 @@ public class ComixStrip {
         panels.add(panel);
     }
 
+    public void changePanelPosition(int panelId, int newId){
+        Panel panel = panels.remove(panelId);
+        panels.add(newId, panel);
+        recomputeIds();
+    }
+
     public Panel removePanel(Panel panel){
         if(panels.remove(panel)){
             return panel;
         }
         return null;
-    }
-
-    public ArrayList<Panel> getPanels(){
-        return panels;
     }
 
     public Panel removePanel(int id){
@@ -43,6 +45,10 @@ public class ComixStrip {
 
     public Panel getPanel(int id){
         return panels.get(id);
+    }
+
+    public ArrayList<Panel> getPanels(){
+        return panels;
     }
 
     public void setPanel(int id, Panel panel){
