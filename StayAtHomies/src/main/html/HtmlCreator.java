@@ -26,7 +26,6 @@ public class HtmlCreator
             bw.write(formatHTML());
             bw.write("<h2>" + title + "</h2>\n");
             bw.write("<div id=\"comic\"> \n \t");
-            bw.write("<h2>" + credits + "</h2>\n");
 
             for(int i=0; i<images.size(); i++)
             {
@@ -37,7 +36,7 @@ public class HtmlCreator
                 bi = SwingFXUtils.fromFXImage(images.get(i), null);
                 ImageIO.write(bi, "png", currentPanelSnapshot);
             }
-            bw.write("</div>\n" +
+            bw.write("</div>\n" + "<h2>" + credits + "</h2>\n" +
                     "    </body>\n" +
                     "</html>");
             bw.close();
