@@ -143,7 +143,7 @@ public class HelpPage {
     }
 
     public AnchorPane helpPage(String page) {
-        pagination = new Pagination(3, 0);
+        pagination = new Pagination();
         pagination.setStyle("fx-border-color:red;");
         pagination.setPageFactory(new Callback<Integer, Node>() {
             @Override
@@ -153,6 +153,7 @@ public class HelpPage {
                         return null;
                     }
                     else {
+                        pagination.setPageCount(3);
                         return createPage(pageIndex, helpTextPages);
                     }
                 }
@@ -161,6 +162,7 @@ public class HelpPage {
                         return null;
                     }
                     else {
+                        pagination.setPageCount(3);
                         return createPage(pageIndex, gettingStartedTextPages);
                     }
                 }
@@ -169,10 +171,12 @@ public class HelpPage {
                         return null;
                     }
                     else {
+                        pagination.setPageCount(1);
                         return createPage(pageIndex, aboutTextPages);
                     }
                 }
                 else {
+                    pagination.setPageCount(3);
                     return createPage(pageIndex, helpTextPages);
                 }
             }
