@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class HtmlCreator
 {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title)
+    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title, String credits)
     {
         BufferedImage bi;
         BufferedWriter bw = null;
@@ -26,6 +26,7 @@ public class HtmlCreator
             bw.write(formatHTML());
             bw.write("<h2>" + title + "</h2>\n");
             bw.write("<div id=\"comic\"> \n \t");
+            bw.write("<h2>" + credits + "</h2>\n");
 
             for(int i=0; i<images.size(); i++)
             {

@@ -55,6 +55,7 @@ public class Controller {
        view.getFileMenuLoadXML().setOnAction(event -> loadComiXML());
        view.getSaveAsHtml().setOnAction(event -> saveAsHTML());
        view.getSetComicTitle().setOnAction(event -> setComicTitle());
+       view.getSetComicCredits().setOnAction(event -> setComicCredits());
    }
 
    private void selectHandler(){
@@ -240,6 +241,13 @@ public class Controller {
        }
    }
 
+   private void setComicCredits() {
+       String credits = view.setComicCreditsDialog();
+       if(credits != null) {
+           comixApp.setComicCredits(credits);
+       }
+   }
+
    private void openCharacterDirectory(){
        view.setCharactersDirectory();
    }
@@ -409,7 +417,7 @@ public class Controller {
 
        if(dir != null && outputter != null){
            ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
-           new HtmlCreator().snapToHTML(arraySnaps, outputter, dir, comixApp.getComicTitle());
+           new HtmlCreator().snapToHTML(arraySnaps, outputter, dir, comixApp.getComicTitle(), comixApp.getComicCredits());
        }
     }
 
@@ -421,7 +429,7 @@ public class Controller {
 
        File xmlFile = view.saveXMLFileWindow();
        if(xmlFile != null){
-           boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels(), xmlFile, comixApp.getComicTitle());
+           boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels(), xmlFile, comixApp.getComicTitle(), comixApp.getComicCredits());
            if(!created){
                //log file feature to be added
                view.userErrorAlert("Failed to save ", "Failed to save the XML file.");
