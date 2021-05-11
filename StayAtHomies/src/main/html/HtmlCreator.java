@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class HtmlCreator
 {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title)
+    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title, String credits)
     {
         BufferedImage bi;
         BufferedWriter bw = null;
@@ -36,7 +36,7 @@ public class HtmlCreator
                 bi = SwingFXUtils.fromFXImage(images.get(i), null);
                 ImageIO.write(bi, "png", currentPanelSnapshot);
             }
-            bw.write("</div>\n" +
+            bw.write("</div>\n" + "<h2>" + credits + "</h2>\n" +
                     "    </body>\n" +
                     "</html>");
             bw.close();

@@ -76,6 +76,7 @@ public class AppGUI implements ViewThemeColors
     private Button addTextTopButton;
     private Button addTextBottomButton;
     private Button setComicTitle;
+    private Button setComicCredits;
 
     //TOP BAR MENU BUTTONS
     private Menu fileMenu;
@@ -328,8 +329,11 @@ public class AppGUI implements ViewThemeColors
         setComicTitle = new Button("Comic Title", setButtonImg("comicTitleButton.png"));
         buttonCommonStyles(setComicTitle);
 
+        setComicCredits = new Button("Comic Credits");
+        buttonCommonStyles(setComicCredits);
+
         leftBarButtonsWrapper.getChildren().addAll(colorPalette, importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
-                changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton, setComicTitle);
+                changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton, setComicTitle, setComicCredits);
 
         layout.setLeft(scrollPane);
     }
@@ -522,6 +526,24 @@ public class AppGUI implements ViewThemeColors
             }
             else{
                 userErrorAlert("Set title error", "Failed to set comic title. Over 100 characters entered");
+            }
+        }
+        return null;
+    }
+
+    public String setComicCreditsDialog() {
+        TextInputDialog textInput = new TextInputDialog();
+        textInput.setTitle("Comic Credits");
+        textInput.setHeaderText("Enter comic credits...");
+        textInput.showAndWait();
+
+        String credits = textInput.getResult();
+        if(credits != null){
+            if(credits.length() <= 100){
+                return credits;
+            }
+            else{
+                userErrorAlert("Set credits error", "Failed to set comic credits. Over 100 characters entered");
             }
         }
         return null;
@@ -777,6 +799,10 @@ public class AppGUI implements ViewThemeColors
 
     public Button getSetComicTitle() {
         return setComicTitle;
+    }
+
+    public Button getSetComicCredits() {
+        return setComicCredits;
     }
 
     public MenuItem getFileMenuLoadXML() {

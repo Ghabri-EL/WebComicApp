@@ -8,6 +8,7 @@ public class ComixApp extends WorkingPane
     private Character selectedCharacter;
     private ComixStrip comixStrip;
     private String comicTitle;
+    private String comicCredits;
 
     public ComixApp(){
         this.selectedCharacter = null;
@@ -51,6 +52,14 @@ public class ComixApp extends WorkingPane
 
     public String getComicTitle(){
         return this.comicTitle;
+    }
+
+    public void setComicCredits(String credits) {
+        this.comicCredits = credits;
+    }
+
+    public String getComicCredits() {
+        return this.comicCredits;
     }
 
     private int generateId(){
