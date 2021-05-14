@@ -82,7 +82,6 @@ public class HtmlCreator
             "                overflow-x: auto;   \n" +
             "                display: flex;\n" +
             "                flex-wrap: nowrap;           \n" +
-            "                justify-content: center;\n"+
             "                border: 2px rgba(94, 94, 94, 0.514) double;\n" +
             "                background-color: rgb(0, 23, 32);\n" +
             "            }\n" +
@@ -105,6 +104,21 @@ public class HtmlCreator
             "                padding: 20px;\n" +
             "                text-align: center;\n"+
             "            }\n" +
+            "           ::-webkit-scrollbar {\n"+
+            "            width: 11px;\n"+
+            "            }\n"+
+
+            "            ::-webkit-scrollbar-track {\n"+
+            "                background: #cacaca;\n"+
+            "            }\n"+
+
+            "            ::-webkit-scrollbar-thumb {\n"+
+            "                background:#023246;\n"+
+            "            }\n"+
+
+            "           ::-webkit-scrollbar-thumb:hover {\n" +
+            "            background:#111;\n" +
+            "            }\n"+
             "        </style>\n" +
             "    </head>\n" +
             "    <body>\n";

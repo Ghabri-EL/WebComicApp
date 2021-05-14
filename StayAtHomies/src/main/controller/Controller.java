@@ -221,6 +221,8 @@ public class Controller {
        if(narrativeText != null){
            comixApp.setNarrativeTextTop(narrativeText);
            view.getTopNarrativeText().setText(narrativeText);
+           System.out.println("TNarrative width: " + view.getTopNarrativeText().getLayoutBounds().getWidth());
+           System.out.println("TNarrative height: " + view.getTopNarrativeText().getLayoutBounds().getHeight());
            isSaved = false;
        }
    }
@@ -230,6 +232,8 @@ public class Controller {
        if(narrativeText != null){
            comixApp.setNarrativeTextBottom(narrativeText);
            view.getBottomNarrativeText().setText(narrativeText);
+           System.out.println("BNarrative width: " + view.getBottomNarrativeText().getLayoutBounds().getWidth());
+           System.out.println("BNarrative height: " + view.getBottomNarrativeText().getLayoutBounds().getHeight());
            isSaved = false;
        }
    }

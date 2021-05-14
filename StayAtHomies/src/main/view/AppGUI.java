@@ -15,7 +15,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextBoundsType;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -50,10 +52,10 @@ public class AppGUI implements ViewThemeColors
     private ImageView rightBubble = new ImageView();
     private ImageView leftCharView = new ImageView();
     private ImageView rightCharView = new ImageView();
-    private Label leftBubbleText = new Label();
-    private Label rightBubbleText = new Label();
-    private Label topNarrativeText = new Label();
-    private Label bottomNarrativeText = new Label();
+    private Text leftBubbleText = new Text();
+    private Text rightBubbleText = new Text();
+    private Text topNarrativeText = new Text();
+    private Text bottomNarrativeText = new Text();
     private ImageView selectedCharacterView = null;
     private Color selectedColor = Color.WHITE;
     private HBox comixStrip;
@@ -437,14 +439,14 @@ public class AppGUI implements ViewThemeColors
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Bubble Text");
         textInput.setGraphic(bubble);
-        textInput.setHeaderText("Enter bubble text...");
+        textInput.setHeaderText("Enter bubble text. The limit is 200 characters.");
         textInput.showAndWait();
 
         if(textInput.getResult() != null){
             String text = textInput.getResult();
 
             //if the entered string is longer than 60 characters, get only the first 60 chars
-            text = (text.length() < 120 ? text : text.substring(0 , 120));
+            text = (text.length() < 200 ? text : text.substring(0 , 200));
             if(selectedCharacterView == leftCharView){
                 leftBubble.setImage(bubble.getImage());
                 leftBubbleText.setText(text);
@@ -465,11 +467,10 @@ public class AppGUI implements ViewThemeColors
         return importBubble(THOUGHT_BUBBLE_IMAGE);
     }
 
-    private void bubbleTextStyle(Label text){
-        text.setAlignment(Pos.CENTER);
-        text.setWrapText(true);
-        text.setMaxSize(250, 150);
+    private void bubbleTextStyle(Text text){
         text.setTextAlignment(TextAlignment.CENTER);
+        text.setWrappingWidth(250);
+        text.setStyle("-fx-border-color: blue");
         text.setFont(Font.font("Arial", 18));
     }
     //===> END BUBBLE IMPORT METHODS
@@ -478,7 +479,7 @@ public class AppGUI implements ViewThemeColors
     private String addNarrativeText() {
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Narrative Text");
-        textInput.setHeaderText("Enter narrative text...");
+        textInput.setHeaderText("Enter narrative text. The limit is 250 characters.");
         textInput.showAndWait();
 
         if(textInput.getResult() != null){
@@ -503,12 +504,10 @@ public class AppGUI implements ViewThemeColors
         return text;
     }
 
-    private void narrativeTextStyle(Label narrativeText){
-        System.out.println("Narrative Width: " + topNarrativeText.getWidth());
-        narrativeText.setAlignment(Pos.CENTER);
+    private void narrativeTextStyle(Text narrativeText){
         narrativeText.setTextAlignment(TextAlignment.CENTER);
-        System.out.println("Narrative width: " + narrativeText.getWidth());
-        narrativeText.setWrapText(true);
+        narrativeText.setStyle("-fx-background-color: red");
+        narrativeText.setWrappingWidth(WORKING_PANE_WIDTH);
         narrativeText.setFont(Font.font("Arial", 12));
     }
     //END NARRATIVE TEXT METHODS
@@ -516,7 +515,7 @@ public class AppGUI implements ViewThemeColors
     public String setComicTitleDialog(){
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Comic Title");
-        textInput.setHeaderText("Enter comic title...");
+        textInput.setHeaderText("Enter comic title. Max 100 characters.");
         textInput.showAndWait();
 
         String title = textInput.getResult();
@@ -729,19 +728,19 @@ public class AppGUI implements ViewThemeColors
         return selectedCharacterView;
     }
 
-    public Label getLeftBubbleText() {
+    public Text getLeftBubbleText() {
         return leftBubbleText;
     }
 
-    public Label getRightBubbleText() {
+    public Text getRightBubbleText() {
         return rightBubbleText;
     }
 
-    public Label getTopNarrativeText() {
+    public Text getTopNarrativeText() {
         return topNarrativeText;
     }
 
-    public Label getBottomNarrativeText() {
+    public Text getBottomNarrativeText() {
         return bottomNarrativeText;
     }
 
