@@ -329,7 +329,7 @@ public class AppGUI implements ViewThemeColors
         setComicTitle = new Button("Comic Title", setButtonImg("comicTitleButton.png"));
         buttonCommonStyles(setComicTitle);
 
-        setComicCredits = new Button("Comic Credits");
+        setComicCredits = new Button("Comic Credits", setButtonImg("comicTitleButton.png"));
         buttonCommonStyles(setComicCredits);
 
         leftBarButtonsWrapper.getChildren().addAll(colorPalette, importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
