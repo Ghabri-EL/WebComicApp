@@ -14,6 +14,7 @@ public class ComixApp extends WorkingPane
         this.selectedCharacter = null;
         this.comixStrip = new ComixStrip();
         this.comicTitle = "HomiesComix";
+        this.comicCredits = "HomiesComix";
     }
 
     public Character getSelectedCharacter() {
@@ -59,7 +60,7 @@ public class ComixApp extends WorkingPane
     }
 
     public String getComicCredits() {
-        return this.comicCredits;
+        return "By " + this.comicCredits;
     }
 
     private int generateId(){

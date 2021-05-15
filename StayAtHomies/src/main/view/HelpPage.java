@@ -49,6 +49,8 @@ public class HelpPage {
             + "1.13 \"Bottom Narration\" button allows you to add narrative text at the BOTTOM of the panel .\n"
                     + "\n"
             + "1.14 \"Comic Title\" button allows you to set the title of the WebComic. Default name is HomiesComix and the character limit is 100 .\n"
+                    + "\n"
+            + "1.15 \"Comic Credits\" button allows you to set the final credits of the Webcomic . Default name is Homiescomix and the character limit is 100 .\n"
                     + "\n",
             "2. Top Bar Buttons\n"
                     + "\n"
@@ -114,8 +116,8 @@ public class HelpPage {
                     + "\n"
             + "If a joke is not what you had in mind , you can always use the \"Remove Bubble\" button to delete the speech bubble " +
                     "and create a new one .\n"
-                    + "\n",
-            "Step 6 : Now that our first panel looks done , we can save it in the comic strip by selecting model.Panel->Save from the " +
+                    + "\n"
+            + "Step 6 : Now that our first panel looks done , we can save it in the comic strip by selecting model.Panel->Save from the " +
                     "top bar . It is up to you to continue this story line , or delete it and start all over again !\n"
                     + "\n"
             + "For more help on what each button does , select Help->Help from the Top Bar .\n"
@@ -162,7 +164,7 @@ public class HelpPage {
                         return null;
                     }
                     else {
-                        pagination.setPageCount(3);
+                        pagination.setPageCount(2);
                         return createPage(pageIndex, gettingStartedTextPages);
                     }
                 }
