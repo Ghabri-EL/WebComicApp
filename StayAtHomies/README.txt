@@ -129,6 +129,14 @@ Gabriel Gherasim: Worked on implementing the feature to change panel position in
 		added feature to set the comic title and fixed a few bugs.
 Daiana Morjolic : Worked on implementing sprint 6 feedback and added new information to help page .
 
+=== FINAL SUBMISSION ===
+-Command to execute : java -jar StayAtHomies.jar
+-Required to execute: JDK version 13 or above
+
+Niall McGurk:
+Gabriel Gherasim:
+Daiana Morjolic: implemented Comic Credits button, title and credits prompts from sprint 7 feedback, new information for help page added .
+
 === COMPLAINTS ===
 
 I am writing in regards to our team contribution throughout the project , specifically about a team member Ryan Daly that has done no

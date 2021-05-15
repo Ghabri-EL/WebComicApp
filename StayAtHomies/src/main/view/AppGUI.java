@@ -343,7 +343,7 @@ public class AppGUI implements ViewThemeColors
         setComicTitle = new Button("Comic Title", setButtonImg("comicTitleButton.png"));
         buttonCommonStyles(setComicTitle);
 
-        setComicCredits = new Button("Comic Credits");
+        setComicCredits = new Button("Comic Credits", setButtonImg("comicTitleButton.png"));
         buttonCommonStyles(setComicCredits);
 
         leftBarButtonsWrapper.getChildren().addAll(colorPalette, importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
@@ -1011,6 +1011,32 @@ public class AppGUI implements ViewThemeColors
         information.setTitle(title);
         information.setHeaderText(msg);
         information.showAndWait();
+    }
+
+    public boolean confirmTitleChange() {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Comic Title Change", ButtonType.YES, ButtonType.NO);
+        confirmation.setTitle("Comic Title");
+        confirmation.setHeaderText("Comic title is set to default .");
+        confirmation.setContentText("Do you wish to change title before continuing ?");
+        confirmation.showAndWait();
+
+        if(confirmation.getResult() == ButtonType.YES){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean confirmCreditsChange() {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Comic Credits Change", ButtonType.YES, ButtonType.NO);
+        confirmation.setTitle("Comic Credits");
+        confirmation.setHeaderText("Comic credits is set to default .");
+        confirmation.setContentText("Do you wish to change credits before continuing ?");
+        confirmation.showAndWait();
+
+        if(confirmation.getResult() == ButtonType.YES){
+            return true;
+        }
+        return false;
     }
 }
 
