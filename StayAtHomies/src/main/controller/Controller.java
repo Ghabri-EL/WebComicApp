@@ -318,8 +318,8 @@ public class Controller {
            ex.printStackTrace();
        }
        if(fail){
-           view.userErrorAlert("Invalid position",
-                   "Invalid value entered. Please enter an integer value in the range [1 - " + comixApp.getNumberOfPanels() + "]");
+           view.userErrorAlert("Invalid position ", "Invalid value entered. " +
+                   "Please enter an integer value in the range [1 - " + comixApp.getNumberOfPanels() + "]");
        }
    }
 
