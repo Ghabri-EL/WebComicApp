@@ -416,8 +416,26 @@ public class Controller {
        File outputter = view.saveHTMLFileWindow();
 
        if(dir != null && outputter != null){
+           changeTitlePrompt();
+           changeCreditsPrompt();
            ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
            new HtmlCreator().snapToHTML(arraySnaps, outputter, dir, comixApp.getComicTitle(), comixApp.getComicCredits());
+       }
+    }
+
+    private void changeTitlePrompt() {
+       if(comixApp.getComicTitle() == "HomiesComix"){
+           if(view.confirmTitleChange()){
+               setComicTitle();
+           }
+       }
+    }
+
+    private void changeCreditsPrompt() {
+       if(comixApp.getComicCredits() == "HomiesComix"){
+           if(view.confirmCreditsChange()){
+               setComicCredits();
+           }
        }
     }
 
@@ -429,6 +447,9 @@ public class Controller {
 
        File xmlFile = view.saveXMLFileWindow();
        if(xmlFile != null){
+           changeTitlePrompt();
+           changeCreditsPrompt();
+
            boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels(), xmlFile, comixApp.getComicTitle(), comixApp.getComicCredits());
            if(!created){
                //log file feature to be added

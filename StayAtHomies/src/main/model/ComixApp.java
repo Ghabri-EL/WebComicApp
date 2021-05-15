@@ -60,7 +60,7 @@ public class ComixApp extends WorkingPane
     }
 
     public String getComicCredits() {
-        return "By " + this.comicCredits;
+        return this.comicCredits;
     }
 
     private int generateId(){

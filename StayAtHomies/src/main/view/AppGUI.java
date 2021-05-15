@@ -961,5 +961,31 @@ public class AppGUI implements ViewThemeColors
         information.setHeaderText(msg);
         information.showAndWait();
     }
+
+    public boolean confirmTitleChange() {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Comic Title Change", ButtonType.YES, ButtonType.NO);
+        confirmation.setTitle("Comic Title");
+        confirmation.setHeaderText("Comic title is set to default .");
+        confirmation.setContentText("Do you wish to change title before continuing ?");
+        confirmation.showAndWait();
+
+        if(confirmation.getResult() == ButtonType.YES){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean confirmCreditsChange() {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Comic Credits Change", ButtonType.YES, ButtonType.NO);
+        confirmation.setTitle("Comic Credits");
+        confirmation.setHeaderText("Comic credits is set to default .");
+        confirmation.setContentText("Do you wish to change credits before continuing ?");
+        confirmation.showAndWait();
+
+        if(confirmation.getResult() == ButtonType.YES){
+            return true;
+        }
+        return false;
+    }
 }
 
