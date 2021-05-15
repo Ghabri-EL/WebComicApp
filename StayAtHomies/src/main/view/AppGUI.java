@@ -17,7 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextBoundsType;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -100,12 +99,22 @@ public class AppGUI implements ViewThemeColors
 
 
     //SELECTED PANEL CONTEXT MENU
-    private final ContextMenu selectedPanelMenu = new ContextMenu();
+    private final ContextMenu SELECTED_PANEL_MENU = new ContextMenu();
 
     //SELECTED PANEL CONTEXT MENU ITEMS
     private final MenuItem SAVE_PANEL = new MenuItem("Save");
     private final MenuItem DELETE_PANEL = new MenuItem("Delete");
     private final MenuItem CHANGE_PANEL_POSITION = new MenuItem("Change panel position");
+
+    //NARRATIVE TEXT CONTEXT MENU (right click menu)
+    private final ContextMenu TOP_NARRATIVE_TEXT_MENU = new ContextMenu();
+    private final ContextMenu BOTTOM_NARRATIVE_TEXT_MENU = new ContextMenu();
+
+    //NARRATIVE TEXT CONTEXT MENU OPTIONS
+    private final MenuItem SINGLE_LINE_OPTION_TOP = new MenuItem("Single line");
+    private final MenuItem MULTI_LINES_OPTION_TOP = new MenuItem("Wrap text");
+    private final MenuItem SINGLE_LINE_OPTION_BOTTOM = new MenuItem("Single line");
+    private final MenuItem MULTI_LINES_OPTION_BOTTOM = new MenuItem("Wrap text");
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -119,6 +128,8 @@ public class AppGUI implements ViewThemeColors
         createButtons();
         createMainPane();
         createBottomPane();
+        //creates the 'right click' menus
+        createContextMenu();
         scene = new Scene(layout);
         stage.setScene(scene);
         stage.setWidth(SCENE_WIDTH);
@@ -221,9 +232,6 @@ public class AppGUI implements ViewThemeColors
         scrollPane.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" +
                 "-fx-border-color: rgba(240, 240, 240, 0.2); -fx-border-width: 1 0 0 0");
 
-        //creates the 'right click' menu for panels
-        createContextMenu();
-
         //add the scroll pane, containing the comic strip pane, and the bar/label showing
         //the id of a panel into a vbox
         VBox bottomPaneWrapper = new VBox();
@@ -324,9 +332,13 @@ public class AppGUI implements ViewThemeColors
 
         addTextTopButton = new Button("Top Narration", setButtonImg( "narrativeTextTop.png"));
         buttonCommonStyles(addTextTopButton);
+        addTextTopButton.setContextMenu(TOP_NARRATIVE_TEXT_MENU);
+        setTopTextMenu();
 
         addTextBottomButton = new Button("Bottom Narration", setButtonImg("narrativeTextBottom.png"));
         buttonCommonStyles(addTextBottomButton);
+        addTextBottomButton.setContextMenu(BOTTOM_NARRATIVE_TEXT_MENU);
+        setBottomTextMenu();
 
         setComicTitle = new Button("Comic Title", setButtonImg("comicTitleButton.png"));
         buttonCommonStyles(setComicTitle);
@@ -356,7 +368,9 @@ public class AppGUI implements ViewThemeColors
     }
 
     private void createContextMenu(){
-        selectedPanelMenu.getItems().addAll(SAVE_PANEL, DELETE_PANEL, CHANGE_PANEL_POSITION);
+        SELECTED_PANEL_MENU.getItems().addAll(SAVE_PANEL, DELETE_PANEL, CHANGE_PANEL_POSITION);
+        TOP_NARRATIVE_TEXT_MENU.getItems().addAll(SINGLE_LINE_OPTION_TOP, MULTI_LINES_OPTION_TOP);
+        BOTTOM_NARRATIVE_TEXT_MENU.getItems().addAll(SINGLE_LINE_OPTION_BOTTOM, MULTI_LINES_OPTION_BOTTOM);
     }
 
     private void buttonCommonStyles(Button btn){
@@ -384,6 +398,7 @@ public class AppGUI implements ViewThemeColors
             defaultCharactersDirectory = dir;
         }
     }
+
     public File importModel()    //Uploads character to workspace pane
     {
         FileChooser fileChooser = new FileChooser();
@@ -439,14 +454,14 @@ public class AppGUI implements ViewThemeColors
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Bubble Text");
         textInput.setGraphic(bubble);
-        textInput.setHeaderText("Enter bubble text. The limit is 200 characters.");
+        textInput.setHeaderText("Enter bubble text. The limit is 250 characters.");
         textInput.showAndWait();
 
         if(textInput.getResult() != null){
             String text = textInput.getResult();
 
             //if the entered string is longer than 60 characters, get only the first 60 chars
-            text = (text.length() < 200 ? text : text.substring(0 , 200));
+            text = (text.length() < 250 ? text : text.substring(0 , 250));
             if(selectedCharacterView == leftCharView){
                 leftBubble.setImage(bubble.getImage());
                 leftBubbleText.setText(text);
@@ -470,7 +485,6 @@ public class AppGUI implements ViewThemeColors
     private void bubbleTextStyle(Text text){
         text.setTextAlignment(TextAlignment.CENTER);
         text.setWrappingWidth(250);
-        text.setStyle("-fx-border-color: blue");
         text.setFont(Font.font("Arial", 18));
     }
     //===> END BUBBLE IMPORT METHODS
@@ -485,7 +499,7 @@ public class AppGUI implements ViewThemeColors
         if(textInput.getResult() != null){
             String text = textInput.getResult();
             //limit the narrative text to 70 characters
-            text = (text.length() <= 250 ? text : text.substring(0 , 250));
+            text = (text.length() <= 300 ? text : text.substring(0 , 300));
             System.out.println(text.length());
             return text;
         }
@@ -494,21 +508,67 @@ public class AppGUI implements ViewThemeColors
 
     public String addNarrativeTextTop(){
         String text = addNarrativeText();
-        narrativeTextStyle(topNarrativeText);
-        return text;
+
+        if(text != null){
+            topNarrativeText.setText(text);
+            narrativeTextStyle(topNarrativeText);
+            narrativeTextFormat(topNarrativeText);
+            return text;
+        }
+        return null;
     }
 
     public String addNarrativeTextBottom(){
         String text = addNarrativeText();
-        narrativeTextStyle(bottomNarrativeText);
-        return text;
+
+        if(text != null){
+            bottomNarrativeText.setText(text);
+            narrativeTextStyle(bottomNarrativeText);
+            narrativeTextFormat(bottomNarrativeText);
+            return text;
+        }
+        return null;
     }
 
     private void narrativeTextStyle(Text narrativeText){
         narrativeText.setTextAlignment(TextAlignment.CENTER);
-        narrativeText.setStyle("-fx-background-color: red");
+        narrativeText.setFont(Font.font("Arial"));
+    }
+
+    private void setTopTextMenu(){
+        MULTI_LINES_OPTION_TOP.setOnAction(event -> narrativeTextFormatTextWrapping(topNarrativeText));
+        SINGLE_LINE_OPTION_TOP.setOnAction(event -> narrativeTextFormat(topNarrativeText));
+    }
+
+    private void setBottomTextMenu(){
+        MULTI_LINES_OPTION_BOTTOM.setOnAction(event -> narrativeTextFormatTextWrapping(bottomNarrativeText));
+        SINGLE_LINE_OPTION_BOTTOM.setOnAction(event -> narrativeTextFormat(bottomNarrativeText));
+    }
+
+    private void narrativeTextFormat(Text narrativeText){
+        int fontSize = (int)WORKING_PANE_WIDTH / 30;
+        narrativeText.setFont(Font.font(fontSize));
+        narrativeText.setWrappingWidth(0.0);
+        while(narrativeText.getLayoutBounds().getHeight() > 40 || narrativeText.getLayoutBounds().getWidth() > WORKING_PANE_WIDTH){
+            System.out.println("THE HEIGHT IS: " + narrativeText.getLayoutBounds().getHeight() + "\t FONT SIZE: " + fontSize);
+            fontSize -= 1;
+            narrativeText.setFont(Font.font(fontSize));
+        }
+        System.out.println("BNarrative width: " + narrativeText.getLayoutBounds().getWidth());
+        System.out.println("BNarrative height: " + narrativeText.getLayoutBounds().getHeight());
+    }
+
+    private void narrativeTextFormatTextWrapping(Text narrativeText){
         narrativeText.setWrappingWidth(WORKING_PANE_WIDTH);
-        narrativeText.setFont(Font.font("Arial", 12));
+        int fontSize = (int)WORKING_PANE_WIDTH / 30;
+        narrativeText.setFont(Font.font(fontSize));
+        while(narrativeText.getLayoutBounds().getHeight() > 40){
+            System.out.println("THE HEIGHT IS: " + narrativeText.getLayoutBounds().getHeight() + "\t FONT SIZE: " + fontSize);
+            fontSize -= 1;
+            narrativeText.setFont(Font.font(fontSize));
+        }
+        System.out.println("BNarrative width: " + narrativeText.getLayoutBounds().getWidth());
+        System.out.println("BNarrative height: " + narrativeText.getLayoutBounds().getHeight());
     }
     //END NARRATIVE TEXT METHODS
 
@@ -736,14 +796,6 @@ public class AppGUI implements ViewThemeColors
         return rightBubbleText;
     }
 
-    public Text getTopNarrativeText() {
-        return topNarrativeText;
-    }
-
-    public Text getBottomNarrativeText() {
-        return bottomNarrativeText;
-    }
-
     public Color getSelectedColor() {
         return selectedColor;
     }
@@ -821,7 +873,7 @@ public class AppGUI implements ViewThemeColors
     }
 
     public ContextMenu getSelectedPanelMenu(){
-        return selectedPanelMenu;
+        return SELECTED_PANEL_MENU;
     }
 
     public MenuItem getPanelMenuSave() {
