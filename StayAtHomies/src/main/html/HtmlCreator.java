@@ -24,7 +24,7 @@ public class HtmlCreator
         try {
             bw = new BufferedWriter(new FileWriter(outputFile, false));
             bw.write(formatHTML());
-            bw.write("<h2>" + title + "</h2>\n");
+            bw.write("<h1>" + title + "</h1>\n");
             bw.write("<div id=\"comic\"> \n \t");
 
             for(int i=0; i<images.size(); i++)
@@ -36,7 +36,7 @@ public class HtmlCreator
                 bi = SwingFXUtils.fromFXImage(images.get(i), null);
                 ImageIO.write(bi, "png", currentPanelSnapshot);
             }
-            bw.write("</div>\n" + "<h2>" + credits + "</h2>\n" +
+            bw.write("</div>\n" + "<h1>" + credits + "</h1>\n" +
                     "    </body>\n" +
                     "</html>");
             bw.close();
@@ -69,37 +69,33 @@ public class HtmlCreator
             "            }\n" +
             "\n" +
             "            body{\n" +
-            "                width: 100%;\n" +
-            "                display: flex;                   \n" +
-            "                flex-flow: column;\n" +
-            "                align-items: center;\n" +
-            "                justify-content: center;\n" +
-            "                background-color: rgb(4, 22, 31);\n" +
-            "            }\n" +
+                "           background-image: url(\"https://cdn.discordapp.com/attachments/819876082156699691/843441140434862100/CJRDaz.png\");\n" +
+                "           background-position: center;\n" +
+                "           background-size: auto;\n" +
+                "           background-repeat: no-repeat;\n" +
+                "           background-attachment: fixed;\n" +
+                "            }\n" +
             "\n" +
             "            #comic{\n" +
-            "                width: 100%;\n" +
-            "                overflow-x: auto;   \n" +
-            "                display: flex;\n" +
-            "                flex-wrap: nowrap;           \n" +
-            "                border: 2px rgba(94, 94, 94, 0.514) double;\n" +
-            "                background-color: rgb(0, 23, 32);\n" +
+            "                display: grid;\n" +
+            "                grid-template-columns: auto auto;   \n" +
+            "                padding: 10px;\n" +
             "            }\n" +
             "\n" +
             "            .images{\n" +
-            "                flex: 0 0 auto;\n" +
-            "                background-color: rgb(255, 255, 255);\n" +
             "                margin: 10px 20px 10px 20px;\n" +
-            "                width: 500px;\n" +
-            "                height: 500px;\n" +
+            "                width: 750px;\n" +
+            "                height: 750px;\n" +
             "                transition: linear 0.1s;\n" +
+            "                margin-left: auto;\n" +
+            "                margin-right: auto;\n" +
             "            }\n" +
             "\n" +
             "            .images:hover{\n" +
             "                transform: scale(1.04);\n" +
             "            }\n" +
             "\n" +
-            "            h2{\n" +
+            "            h1{\n" +
             "                color: blanchedalmond;\n" +
             "                padding: 20px;\n" +
             "                text-align: center;\n"+
