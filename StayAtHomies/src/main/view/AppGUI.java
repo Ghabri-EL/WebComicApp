@@ -489,17 +489,13 @@ public class AppGUI implements ViewThemeColors
     }
 
     private void setLeftBubbleText(String text) {
-        if(text != null){
-            leftBubbleText.setText(text);
-            bubbleTextFormatting(leftBubbleText);
-        }
+        leftBubbleText.setText(text);
+        bubbleTextFormatting(leftBubbleText);
     }
 
     private void setRightBubbleText(String text){
-        if(text != null){
-            rightBubbleText.setText(text);
-            bubbleTextFormatting(rightBubbleText);
-        }
+        rightBubbleText.setText(text);
+        bubbleTextFormatting(rightBubbleText);
     }
 
     private void bubbleTextStyle(Label text){
@@ -576,17 +572,13 @@ public class AppGUI implements ViewThemeColors
     }
 
     private void setNarrativeTextTop(String text){
-        if(text != null){
-            topNarrativeText.setText(text);
-            narrativeTextFormat(topNarrativeText);
-        }
+        topNarrativeText.setText(text);
+        narrativeTextFormat(topNarrativeText);
     }
 
     private void setNarrativeTextBottom(String text){
-        if(text != null){
-            bottomNarrativeText.setText(text);
-            narrativeTextFormat(bottomNarrativeText);
-        }
+        bottomNarrativeText.setText(text);
+        narrativeTextFormat(bottomNarrativeText);
     }
 
     private void narrativeTextStyle(){
