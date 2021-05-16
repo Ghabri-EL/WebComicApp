@@ -65,7 +65,7 @@ public class HtmlCreator
             "\n" +
             "            html, body{\n" +
             "                width: 100%;\n" +
-            "                height: 100%;\n" +
+            "                min-height: 100%;\n" +
             "            }\n" +
             "\n" +
             "            body{\n" +
@@ -74,25 +74,54 @@ public class HtmlCreator
                 "           background-size: auto;\n" +
                 "           background-repeat: no-repeat;\n" +
                 "           background-attachment: fixed;\n" +
+                "width: 100%;\n" +
+                "height: 100%;\n" +
+                "display: flex;   \n" +
+                "flex-flow: column;\n" +
+                "align-items: center;\n" +
                 "            }\n" +
             "\n" +
             "            #comic{\n" +
-            "                display: grid;\n" +
-            "                grid-template-columns: auto auto;   \n" +
-            "                padding: 10px;\n" +
+            "                 width: 90%;\n" +
+                            "max-width: 80%;  \n" +
+                            "display: flex;\n" +
+                            "justify-content: center;  \n" +
+                            "flex-wrap: wrap;   \n" +
+                            "border: 2px rgba(94, 94, 94, 0.514) double;\n" +
+
             "            }\n" +
             "\n" +
             "            .images{\n" +
-            "                margin: 10px 20px 10px 20px;\n" +
-            "                width: 750px;\n" +
-            "                height: 750px;\n" +
-            "                transition: linear 0.1s;\n" +
-            "                margin-left: auto;\n" +
-            "                margin-right: auto;\n" +
+            "                flex: 0 0 auto;\n" +
+                            "background-color: rgb(255, 255, 255);\n" +
+                            "margin: 10px 20px 10px 20px;\n" +
+                            "min-width: 400px;\n" +
+                            "min-height: 400px;\n" +
+                            "width: 45%;\n" +
+                            "transition: linear 0.1s;\n" +
             "            }\n" +
             "\n" +
+            "    @media screen and (max-width: 900px) { \n" +
+            "    .images{\n" +
+            "width: 95%;\n" +
+       " }\n" +
+
+           "     #comic{\n" +
+          " max-width: 90%;\n" +
+       " }\n" +
+ "   }\n" +
+
+       " @media screen and (max-width: 1100px) {\n" +
+        "        .images{\n" +
+       "     width: 80%;\n" +
+      "  }\n" +
+
+        "        #comic{\n" +
+     "       max-width: 90%;\n" +
+    "    }\n" +
+  "  }\n" +
             "            .images:hover{\n" +
-            "                transform: scale(1.04);\n" +
+            "                transform: scale(1.02);\n" +
             "            }\n" +
             "\n" +
             "            h1{\n" +
