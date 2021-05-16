@@ -1,6 +1,7 @@
 package main.model;
 
 //model.ComixApp.java represents the Model following the MVC pattern
+import javafx.scene.image.Image;
 import main.project_enums.*;
 
 public class ComixApp extends WorkingPane
@@ -9,6 +10,7 @@ public class ComixApp extends WorkingPane
     private ComixStrip comixStrip;
     private String comicTitle;
     private String comicCredits;
+    private Image endPanel = new Image("/resources/theEnd.png");
 
     public ComixApp(){
         this.selectedCharacter = null;
@@ -61,6 +63,14 @@ public class ComixApp extends WorkingPane
 
     public String getComicCredits() {
         return this.comicCredits;
+    }
+
+    public void setEndPanel(Image endPanel) {
+        this.endPanel = endPanel;
+    }
+
+    public Image getEndPanel() {
+        return this.endPanel;
     }
 
     private int generateId(){

@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class HtmlCreator
 {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title, String credits)
+    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title, String credits, Image endPanel)
     {
         BufferedImage bi;
         BufferedWriter bw = null;

@@ -1097,5 +1097,18 @@ public class AppGUI implements ViewThemeColors
         }
         return false;
     }
+
+    public boolean confirmEndPanel() {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Comic End Panel", ButtonType.YES, ButtonType.NO);
+        confirmation.setTitle("End Panel");
+        confirmation.setHeaderText("Saving in HTML format without an end panel .");
+        confirmation.setContentText("Do you wish to add an End Panel before saving ?");
+        confirmation.showAndWait();
+
+        if(confirmation.getResult() == ButtonType.YES){
+            return true;
+        }
+        return false;
+    }
 }
 
