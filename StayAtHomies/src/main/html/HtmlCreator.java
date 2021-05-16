@@ -69,7 +69,7 @@ public class HtmlCreator
             "            }\n" +
             "\n" +
             "            body{\n" +
-                "           background-image: url(\"htmlBackground.png\");\n" +
+                "           background-image: url(\"https://cdn.discordapp.com/attachments/819876082156699691/843441140434862100/CJRDaz.png\");\n" +
                 "           background-position: center;\n" +
                 "           background-size: auto;\n" +
                 "           background-repeat: no-repeat;\n" +
