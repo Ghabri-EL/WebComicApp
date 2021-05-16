@@ -35,8 +35,8 @@ public class AppGUI implements ViewThemeColors
     private final double BUBBLE_WIDTH = 290;
     private final double BUBBLE_HEIGHT = 220;
     private final double CHARACTER_VIEW_SIZE = 300;
-    private final double COMIX_STRIP_PANE_HEIGHT = 160;
-    private final double PANEL_SIZE = COMIX_STRIP_PANE_HEIGHT - 10;
+    private final double COMIC_STRIP_PANE_HEIGHT = 160;
+    private final double PANEL_SIZE = COMIC_STRIP_PANE_HEIGHT - 10;
     private final double LEFT_BUTTONS_PANEL_WIDTH = 200;
     private final Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
     private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
@@ -51,8 +51,8 @@ public class AppGUI implements ViewThemeColors
     private ImageView rightBubble = new ImageView();
     private ImageView leftCharView = new ImageView();
     private ImageView rightCharView = new ImageView();
-    private Text leftBubbleText = new Text();
-    private Text rightBubbleText = new Text();
+    private Label leftBubbleText = new Label();
+    private Label rightBubbleText = new Label();
     private Text topNarrativeText = new Text();
     private Text bottomNarrativeText = new Text();
     private ImageView selectedCharacterView = null;
@@ -166,11 +166,12 @@ public class AppGUI implements ViewThemeColors
         rightBubbleWrapper.setMaxSize(300, 220);
         rightBubbleWrapper.setAlignment(Pos.TOP_CENTER);
 
-        StackPane.setMargin(leftBubbleText, new Insets(15, 0, 0,0));
-        StackPane.setMargin(rightBubbleText, new Insets(15, 0, 0,0));
+        StackPane.setMargin(leftBubbleText, new Insets(10, 0, 0,0));
+        StackPane.setMargin(rightBubbleText, new Insets(10, 0, 0,0));
 
         bubbleTextStyle(leftBubbleText);
         bubbleTextStyle(rightBubbleText);
+        narrativeTextStyle();
 
         //size for each row and col
         //first & last row: height= 40 & width= gridspan
@@ -205,7 +206,6 @@ public class AppGUI implements ViewThemeColors
         mainPane.setMinSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setMaxSize(WORKING_PANE_WIDTH, WORKING_PANE_HEIGHT);
         mainPane.setHgap(10);
-        //mainPane.setGridLinesVisible(true);
 
         BorderPane.setAlignment(mainPane, Pos.CENTER);
         BorderPane.setMargin(mainPane, new Insets(10, 10, 10, 10));
@@ -218,12 +218,12 @@ public class AppGUI implements ViewThemeColors
         comixStrip.setSpacing(15);
         comixStrip.setPadding(new Insets(5, 5, 5, 5));
         comixStrip.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";");
-        comixStrip.setMinHeight(COMIX_STRIP_PANE_HEIGHT);
+        comixStrip.setMinHeight(COMIC_STRIP_PANE_HEIGHT);
 
         //scroll pane wrapper for the comic strip
         ScrollPane scrollPane = new ScrollPane(comixStrip);
         //the value of 15 added to the default height is to account for the scroll bar
-        scrollPane.setMinHeight(COMIX_STRIP_PANE_HEIGHT + 15);
+        scrollPane.setMinHeight(COMIC_STRIP_PANE_HEIGHT + 15);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -237,12 +237,18 @@ public class AppGUI implements ViewThemeColors
         VBox bottomPaneWrapper = new VBox();
         bottomPaneWrapper.setAlignment(Pos.CENTER);
         bottomPaneWrapper.setStyle("-fx-border-color: " + BORDER_COLOR + "; -fx-border-width: 1 0 0 0");
-        panelPosition = new Label("Panel - / -");
-        panelPosition.setPrefSize(SCENE_WIDTH, 30);
+
+        HBox hbox = new HBox();
+        panelPosition = new Label("No Panels");
+        panelPosition.setPrefSize(100, 30);
         panelPosition.setAlignment(Pos.CENTER);
         panelPosition.setStyle("-fx-text-fill: white;");
 
-        bottomPaneWrapper.getChildren().addAll(panelPosition,scrollPane);
+        hbox.setAlignment(Pos.CENTER);
+        Button b1 = new Button("LEFT");
+        Button b2 = new Button("RIGHT");
+        hbox.getChildren().addAll(b1, panelPosition, b2);
+        bottomPaneWrapper.getChildren().addAll(hbox,scrollPane);
         layout.setBottom(bottomPaneWrapper);
     }
 
@@ -309,7 +315,7 @@ public class AppGUI implements ViewThemeColors
             selectedColor = colorPalette.getValue();
         });
 
-        genderSwapButton = new Button("Gender Swap", setButtonImg( "changeGender.png"));
+        genderSwapButton = new Button("Appearance", setButtonImg( "changeGender.png"));
         buttonCommonStyles(genderSwapButton);
 
         changeSkinToneButton = new Button("Skin Tone", setButtonImg( "bodyColor.png"));
@@ -343,7 +349,7 @@ public class AppGUI implements ViewThemeColors
         setComicTitle = new Button("Comic Title", setButtonImg("comicTitleButton.png"));
         buttonCommonStyles(setComicTitle);
 
-        setComicCredits = new Button("Comic Credits", setButtonImg("comicTitleButton.png"));
+        setComicCredits = new Button("Comic Credits", setButtonImg("comicCreditsButton.png"));
         buttonCommonStyles(setComicCredits);
 
         leftBarButtonsWrapper.getChildren().addAll(colorPalette, importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
@@ -460,15 +466,15 @@ public class AppGUI implements ViewThemeColors
         if(textInput.getResult() != null){
             String text = textInput.getResult();
 
-            //if the entered string is longer than 60 characters, get only the first 60 chars
+            //if the entered string is longer than 250 characters, get only the first 250 chars
             text = (text.length() < 250 ? text : text.substring(0 , 250));
             if(selectedCharacterView == leftCharView){
                 leftBubble.setImage(bubble.getImage());
-                leftBubbleText.setText(text);
+                setLeftBubbleText(text);
             }
             else if(selectedCharacterView == rightCharView){
                 rightBubble.setImage(bubble.getImage());
-                rightBubbleText.setText(text);
+                setRightBubbleText(text);
             }
             return text;
         }
@@ -482,10 +488,55 @@ public class AppGUI implements ViewThemeColors
         return importBubble(THOUGHT_BUBBLE_IMAGE);
     }
 
-    private void bubbleTextStyle(Text text){
+    private void setLeftBubbleText(String text) {
+        if(text != null){
+            leftBubbleText.setText(text);
+            bubbleTextFormatting(leftBubbleText);
+        }
+    }
+
+    private void setRightBubbleText(String text){
+        if(text != null){
+            rightBubbleText.setText(text);
+            bubbleTextFormatting(rightBubbleText);
+        }
+    }
+
+    private void bubbleTextStyle(Label text){
         text.setTextAlignment(TextAlignment.CENTER);
-        text.setWrappingWidth(250);
-        text.setFont(Font.font("Arial", 18));
+        text.setAlignment(Pos.CENTER);
+        text.setMaxSize(250, 150);
+        text.setWrapText(true);
+        text.setFont(Font.font("Arial"));
+    }
+
+    private void bubbleTextFormatting(Label textBox){
+        //sets the starting font to 10 then based iteratively increase the font
+        //until the height of the text box is greater than 135 px or the font size
+        //is greater or equal to 40
+        //A temporary Text object is used to preform the calculations, then the correct
+        //font size is applied to the bubble text(obj of type label)
+        int fontSize = 10;
+        Text measurementsTextBox = new Text(textBox.getText());
+        measurementsTextBox.setWrappingWidth(240);
+        measurementsTextBox.setFont(Font.font(fontSize));
+
+        while(measurementsTextBox.getLayoutBounds().getHeight() < 130 && fontSize <= 40){
+            measurementsTextBox.setFont(Font.font(fontSize));
+            int height = (int)measurementsTextBox.getLayoutBounds().getHeight();
+            System.out.println("BEFORE::: \tFNT: " + fontSize + "\t" + "HEIGHT: " + height);
+            System.out.println("BCHARS: " + measurementsTextBox.getText().length());
+            if(height > 135){
+                fontSize--;
+                measurementsTextBox.setFont(Font.font(fontSize));
+                height = (int)measurementsTextBox.getLayoutBounds().getHeight();
+                System.out.println("FNT: " + fontSize + "\t" + "HEIGHT: " + height);
+                System.out.println("CHARS: " + measurementsTextBox.getText().length());
+                break;
+            }
+            fontSize++;
+        }
+        textBox.setFont(Font.font(fontSize));
     }
     //===> END BUBBLE IMPORT METHODS
 
@@ -493,12 +544,12 @@ public class AppGUI implements ViewThemeColors
     private String addNarrativeText() {
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Narrative Text");
-        textInput.setHeaderText("Enter narrative text. The limit is 250 characters.");
+        textInput.setHeaderText("Enter narrative text. The limit is 300 characters.");
         textInput.showAndWait();
 
         if(textInput.getResult() != null){
             String text = textInput.getResult();
-            //limit the narrative text to 70 characters
+            //limit the narrative text to 300 characters
             text = (text.length() <= 300 ? text : text.substring(0 , 300));
             System.out.println(text.length());
             return text;
@@ -508,11 +559,8 @@ public class AppGUI implements ViewThemeColors
 
     public String addNarrativeTextTop(){
         String text = addNarrativeText();
-
         if(text != null){
-            topNarrativeText.setText(text);
-            narrativeTextStyle(topNarrativeText);
-            narrativeTextFormat(topNarrativeText);
+            setNarrativeTextTop(text);
             return text;
         }
         return null;
@@ -520,19 +568,32 @@ public class AppGUI implements ViewThemeColors
 
     public String addNarrativeTextBottom(){
         String text = addNarrativeText();
-
         if(text != null){
-            bottomNarrativeText.setText(text);
-            narrativeTextStyle(bottomNarrativeText);
-            narrativeTextFormat(bottomNarrativeText);
+            setNarrativeTextBottom(text);
             return text;
         }
         return null;
     }
 
-    private void narrativeTextStyle(Text narrativeText){
-        narrativeText.setTextAlignment(TextAlignment.CENTER);
-        narrativeText.setFont(Font.font("Arial"));
+    private void setNarrativeTextTop(String text){
+        if(text != null){
+            topNarrativeText.setText(text);
+            narrativeTextFormat(topNarrativeText);
+        }
+    }
+
+    private void setNarrativeTextBottom(String text){
+        if(text != null){
+            bottomNarrativeText.setText(text);
+            narrativeTextFormat(bottomNarrativeText);
+        }
+    }
+
+    private void narrativeTextStyle(){
+        topNarrativeText.setTextAlignment(TextAlignment.CENTER);
+        topNarrativeText.setFont(Font.font("Arial"));
+        bottomNarrativeText.setTextAlignment(TextAlignment.CENTER);
+        bottomNarrativeText.setFont(Font.font("Arial"));
     }
 
     private void setTopTextMenu(){
@@ -550,12 +611,9 @@ public class AppGUI implements ViewThemeColors
         narrativeText.setFont(Font.font(fontSize));
         narrativeText.setWrappingWidth(0.0);
         while(narrativeText.getLayoutBounds().getHeight() > 40 || narrativeText.getLayoutBounds().getWidth() > WORKING_PANE_WIDTH){
-            System.out.println("THE HEIGHT IS: " + narrativeText.getLayoutBounds().getHeight() + "\t FONT SIZE: " + fontSize);
             fontSize -= 1;
             narrativeText.setFont(Font.font(fontSize));
         }
-        System.out.println("BNarrative width: " + narrativeText.getLayoutBounds().getWidth());
-        System.out.println("BNarrative height: " + narrativeText.getLayoutBounds().getHeight());
     }
 
     private void narrativeTextFormatTextWrapping(Text narrativeText){
@@ -575,7 +633,7 @@ public class AppGUI implements ViewThemeColors
     public String setComicTitleDialog(){
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Comic Title");
-        textInput.setHeaderText("Enter comic title. Max 100 characters.");
+        textInput.setHeaderText("Enter comic title. Max 150 characters.");
         textInput.showAndWait();
 
         String title = textInput.getResult();
@@ -584,7 +642,7 @@ public class AppGUI implements ViewThemeColors
                 return title;
             }
             else{
-                userErrorAlert("Set title error", "Failed to set comic title. Over 100 characters entered");
+                userErrorAlert("Set title error", "Failed to set comic title. Over 150 characters entered");
             }
         }
         return null;
@@ -649,9 +707,10 @@ public class AppGUI implements ViewThemeColors
                                   String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText){
         this.leftCharView.setImage(leftCharacter);
         this.rightCharView.setImage(rightCharacter);
-        this.leftBubbleText.setText(leftBubbleText);
-        this.rightBubbleText.setText(rightBubbleText);
-        this.topNarrativeText.setText(topNarrativeText);
+        setLeftBubbleText(leftBubbleText);
+        setRightBubbleText(rightBubbleText);
+        setNarrativeTextTop(topNarrativeText);
+        setNarrativeTextBottom(bottomNarrativeText);
         this.bottomNarrativeText.setText(bottomNarrativeText);
 
         if(leftBubbleType == BubbleType.SPEECH){
@@ -788,11 +847,11 @@ public class AppGUI implements ViewThemeColors
         return selectedCharacterView;
     }
 
-    public Text getLeftBubbleText() {
+    public Label getLeftBubbleText() {
         return leftBubbleText;
     }
 
-    public Text getRightBubbleText() {
+    public Label getRightBubbleText() {
         return rightBubbleText;
     }
 

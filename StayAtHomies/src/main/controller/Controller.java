@@ -6,6 +6,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import java.io.File;
+
+import javafx.scene.text.Font;
 import main.comi_xml_handler.ComiXML;
 import main.model.*;
 import main.model.Character;
