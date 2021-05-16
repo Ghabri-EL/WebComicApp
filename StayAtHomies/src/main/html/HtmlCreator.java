@@ -111,7 +111,6 @@ public class HtmlCreator
             "            ::-webkit-scrollbar-thumb {\n"+
             "                background:#023246;\n"+
             "            }\n"+
-
             "           ::-webkit-scrollbar-thumb:hover {\n" +
             "            background:#111;\n" +
             "            }\n"+
