@@ -5,10 +5,8 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import main.comi_xml_handler.ComiXML;
 import main.comi_xml_handler.LoadComiXML;
 import main.model.*;
@@ -16,14 +14,12 @@ import main.model.Character;
 import main.project_enums.*;
 import main.view.AppGUI;
 import main.view.PanelView;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import main.html.HtmlCreator;
-
 import javax.imageio.ImageIO;
 
-//main.controller.Controller.java represents the main.controller.Controller following the MVC pattern
+//Controller represents the Controller following the MVC pattern
 public class Controller {
    private final ComixApp comixApp;
    private final AppGUI view;
@@ -80,6 +76,8 @@ public class Controller {
        view.getSavePanel().setOnAction(event -> savePanelEvent());
        view.getDeletePanel().setOnAction(event -> deletePanelEvent());
        view.getChangePanelPosition().setOnAction(event -> changePanelPosition());
+       view.getPositionToLeft().setOnAction(event -> changePanelPositionLeft());
+       view.getPositionToRight().setOnAction(event -> changePanelPositionRight());
    }
 
    private void selectCharacterAddEventHandler(){
@@ -372,6 +370,28 @@ public class Controller {
        }
    }
 
+   private void changePanelPositionLeft(){
+        int panelId = comixApp.getId();
+        if(comixApp.noPanels() || panelId < 1){
+            return;
+        }
+        int newId = panelId--;
+        comixApp.changePanelPosition(panelId, newId);
+        refreshViewComicStrip();
+        resetWorkingPane();
+   }
+
+    private void changePanelPositionRight(){
+        int panelId = comixApp.getId();
+        if(comixApp.noPanels() || panelId >= (comixApp.getNumberOfPanels() - 1)){
+            return;
+        }
+        int newId = panelId++;
+        comixApp.changePanelPosition(panelId, newId);
+        refreshViewComicStrip();
+        resetWorkingPane();
+    }
+
    //add handler to panel to select panel and load it in the working pane
    private void addPanelEventHandler(PanelView panel){
        panel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
@@ -504,7 +524,8 @@ public class Controller {
             view.userErrorAlert("Failed to save ", "Comic strip is empty");
             return;
         }
-        view.userInformationAlert("Save as HTML", "Please select a directory for the panels, then enter the name of the html file and select file destination");
+        view.userInformationAlert("Save as HTML", "Please select a directory for the panels," +
+                " then enter the name of the html file and select file destination");
         File dir = view.setHTMLDirectory();
         File outputter = view.saveHTMLFileWindow();
 
