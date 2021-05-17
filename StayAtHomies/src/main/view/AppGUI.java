@@ -75,7 +75,7 @@ public class AppGUI implements ViewDefaultValues
     private Menu helpMenu;
     private Menu messageMenu;
 
-    //MENU OPTIONS
+    //TOP BAR MENU OPTIONS
     private final MenuItem fileMenuSaveXML = new MenuItem("Save");
     private final MenuItem fileMenuLoadXML = new MenuItem("Load");
     private final MenuItem fileMenuCharactersDir = new MenuItem("Characters Directory");
@@ -86,7 +86,6 @@ public class AppGUI implements ViewDefaultValues
     private final MenuItem help = new MenuItem("Help");
     private final MenuItem about = new MenuItem("About");
     private final MenuItem gettingStarted = new MenuItem("Getting Started");
-
 
     //SELECTED PANEL CONTEXT MENU
     private final ContextMenu SELECTED_PANEL_MENU = new ContextMenu();
@@ -105,6 +104,10 @@ public class AppGUI implements ViewDefaultValues
     private final MenuItem MULTI_LINES_OPTION_TOP = new MenuItem("Wrap text");
     private final MenuItem SINGLE_LINE_OPTION_BOTTOM = new MenuItem("Single line");
     private final MenuItem MULTI_LINES_OPTION_BOTTOM = new MenuItem("Wrap text");
+
+    //PANEL POSITION BAR
+    private Button POSITION_TO_LEFT_BUTTON = new Button();
+    private Button POSITION_TO_RIGHT_BUTTON = new Button();
 
     public AppGUI(Stage stage){
         this.stage = stage;
@@ -241,17 +244,22 @@ public class AppGUI implements ViewDefaultValues
         bottomPaneWrapper.setAlignment(Pos.CENTER);
         bottomPaneWrapper.setStyle("-fx-border-color: " + BORDER_COLOR + "; -fx-border-width: 1 0 0 0");
 
-        HBox hbox = new HBox();
+        //contains the buttons and label for the panel position (aka. the panelPositionBar)
+        HBox panelPositionBar = new HBox();
+        panelPositionBar.setMaxHeight(50);
+        panelPositionBar.setAlignment(Pos.CENTER);
+
         panelPosition = new Label("No Panels");
         panelPosition.setPrefSize(100, 30);
         panelPosition.setAlignment(Pos.CENTER);
         panelPosition.setStyle("-fx-text-fill: white;");
 
-        hbox.setAlignment(Pos.CENTER);
-        Button b1 = new Button("LEFT");
-        Button b2 = new Button("RIGHT");
-        hbox.getChildren().addAll(b1, panelPosition, b2);
-        bottomPaneWrapper.getChildren().addAll(hbox,scrollPane);
+        setPositionButtonsAttributes();
+        POSITION_TO_LEFT_BUTTON.setDisable(true);
+        POSITION_TO_RIGHT_BUTTON.setDisable(true);
+
+        panelPositionBar.getChildren().addAll(POSITION_TO_LEFT_BUTTON, panelPosition, POSITION_TO_RIGHT_BUTTON);
+        bottomPaneWrapper.getChildren().addAll(panelPositionBar,scrollPane);
         layout.setBottom(bottomPaneWrapper);
     }
 
@@ -396,6 +404,32 @@ public class AppGUI implements ViewDefaultValues
         });
     }
 
+    private void setPositionButtonsAttributes(){
+        ImageView leftButtonGraphic = new ImageView("/resources/positionPanelLeft.png");
+        leftButtonGraphic.setFitHeight(20);
+        leftButtonGraphic.setPreserveRatio(true);
+        POSITION_TO_LEFT_BUTTON.setGraphic(leftButtonGraphic);
+        POSITION_TO_LEFT_BUTTON.setStyle("-fx-background-color: transparent; -fx-cursor: hand");
+        POSITION_TO_LEFT_BUTTON.setOnMouseEntered(mouseEvent -> {
+            POSITION_TO_LEFT_BUTTON.setEffect(new DropShadow(5, Color.TURQUOISE));
+        });
+        POSITION_TO_LEFT_BUTTON.setOnMouseExited(mouseEvent -> {
+            POSITION_TO_LEFT_BUTTON.setEffect(null);
+        });
+
+        ImageView rightButtonGraphic = new ImageView("/resources/positionPanelRight.png");
+        rightButtonGraphic.setFitHeight(20);
+        rightButtonGraphic.setPreserveRatio(true);
+        POSITION_TO_RIGHT_BUTTON.setGraphic(rightButtonGraphic);
+        POSITION_TO_RIGHT_BUTTON.setStyle("-fx-background-color: transparent; -fx-cursor: hand");
+        POSITION_TO_RIGHT_BUTTON.setOnMouseEntered(mouseEvent -> {
+            POSITION_TO_RIGHT_BUTTON.setEffect(new DropShadow(5, Color.TURQUOISE));
+        });
+        POSITION_TO_RIGHT_BUTTON.setOnMouseExited(mouseEvent -> {
+            POSITION_TO_RIGHT_BUTTON.setEffect(null);
+        });
+    }
+
     public void setCharactersDirectory(){
         DirectoryChooser dirChooser = new DirectoryChooser();
         dirChooser.setInitialDirectory(defaultCharactersDirectory);
@@ -450,7 +484,7 @@ public class AppGUI implements ViewDefaultValues
         }
         selectedPanel = panel;
         selectedPanel.setEffect(new DropShadow(15, Color.TURQUOISE));
-        refreshPanelPositionLabel();
+        refreshPanelPositionBar();
     }
 
     //====> BUBBLE IMPORT METHODS
@@ -773,25 +807,53 @@ public class AppGUI implements ViewDefaultValues
         return false;
     }
 
-    //loads panes based on model
+    //loads panels based on model
     public void refreshComicStrip(ArrayList<PanelView> panels){
         clearComicStrip();
         for(PanelView panel : panels){
             setPanelAttributes(panel);
             comicStrip.getChildren().add(panel);
         }
-        refreshPanelPositionLabel();
+        refreshPanelPositionBar();
     }
 
-    public void refreshPanelPositionLabel(){
+    public void refreshPanelPositionBar(){
         int numberOfPanels = comicStrip.getChildren().size();
         int panelId = 0;
 
         if(isPanelSelected()){
             panelId = selectedPanel.getPanelId() + 1;
         }
-        String text = "Panel " + panelId + " / " + numberOfPanels;
+
+        String text;
+        if(numberOfPanels < 1){
+            text = "No panels";
+        }
+        else{
+            text = "Panel " + panelId + " / " + numberOfPanels;
+        }
+        panelPositionButtonsState();
         panelPosition.setText(text);
+    }
+
+    private void panelPositionButtonsState(){
+        if(comicStripEmpty() || panelsInStrip() == 1){
+            POSITION_TO_LEFT_BUTTON.setDisable(true);
+            POSITION_TO_RIGHT_BUTTON.setDisable(true);
+        }
+        else{
+            if(isPanelSelected()){
+                POSITION_TO_LEFT_BUTTON.setDisable(false);
+                POSITION_TO_RIGHT_BUTTON.setDisable(false);
+                if(selectedPanel.getPanelId() == 0){
+                    POSITION_TO_LEFT_BUTTON.setDisable(true);
+                }
+
+                if(selectedPanel.getPanelId() == (panelsInStrip() - 1)){
+                    POSITION_TO_RIGHT_BUTTON.setDisable(true);
+                }
+            }
+        }
     }
 
     public String changePanelIdWindow(){
@@ -814,7 +876,7 @@ public class AppGUI implements ViewDefaultValues
         bottomNarrativeText.setText(null);
         resetSelectedCharacter();
         resetSelectedPanel();
-        refreshPanelPositionLabel();
+        refreshPanelPositionBar();
     }
 
     public void clearComicStrip(){
@@ -1009,6 +1071,14 @@ public class AppGUI implements ViewDefaultValues
         return CHANGE_PANEL_POSITION;
     }
 
+    public Button getPositionToLeft() {
+        return POSITION_TO_LEFT_BUTTON;
+    }
+
+    public Button getPositionToRight() {
+        return POSITION_TO_RIGHT_BUTTON;
+    }
+
     private void resetSelectedCharacter(){
         if(isCharacterSelected()){
             selectedCharacterView.setEffect(null);
@@ -1022,7 +1092,13 @@ public class AppGUI implements ViewDefaultValues
             selectedPanel = null;
         }
     }
+    private boolean comicStripEmpty(){
+        return comicStrip.getChildren().isEmpty();
+    }
 
+    private int panelsInStrip(){
+        return comicStrip.getChildren().size();
+    }
     public File saveXMLFileWindow(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
