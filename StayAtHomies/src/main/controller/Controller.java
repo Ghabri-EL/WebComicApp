@@ -458,8 +458,9 @@ public class Controller {
        if(dir != null && outputter != null){
            changeTitlePrompt();
            changeCreditsPrompt();
+           endPanelPrompt();
            ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
-           new HtmlCreator().snapToHTML(arraySnaps, outputter, dir, comixApp.getComicTitle(), comixApp.getComicCredits());
+           new HtmlCreator().snapToHTML(arraySnaps, outputter, dir, comixApp.getComicTitle(), comixApp.getComicCredits(), comixApp.getEndPanel());
        }
     }
 
@@ -476,6 +477,12 @@ public class Controller {
            if(view.confirmCreditsChange()){
                setComicCredits();
            }
+       }
+    }
+
+    private void endPanelPrompt() {
+       if(view.confirmEndPanel()) {
+           comixApp.getEndPanel();
        }
     }
 
