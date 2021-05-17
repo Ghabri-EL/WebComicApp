@@ -518,7 +518,7 @@ public class AppGUI implements ViewDefaultValues
         measurementsTextBox.setWrappingWidth(240);
         measurementsTextBox.setFont(Font.font(fontSize));
 
-        int maxHeight = 135;
+        int maxHeight = 130;
         while(measurementsTextBox.getLayoutBounds().getHeight() < maxHeight && fontSize <= 40){
             measurementsTextBox.setFont(Font.font(fontSize));
             int height = (int)measurementsTextBox.getLayoutBounds().getHeight();
@@ -1127,6 +1127,14 @@ public class AppGUI implements ViewDefaultValues
             return true;
         }
         return false;
+    }
+
+    public File getEndPanelWindow(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(defaultCharactersDirectory);
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png"));
+        File file = fileChooser.showOpenDialog(stage);
+        return file;
     }
 }
 

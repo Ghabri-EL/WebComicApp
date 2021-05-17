@@ -2,8 +2,6 @@ package main.html;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import javafx.stage.DirectoryChooser;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
@@ -13,12 +11,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.awt.*;
 
 public class HtmlCreator
 {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title, String credits, Image endPanel)
+    public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title, String credits, BufferedImage endPanel)
     {
+        System.out.println("Filename: " + new File("/resources/neutral.png").getName());
         BufferedImage bi;
         BufferedWriter bw = null;
         try {
@@ -30,12 +30,22 @@ public class HtmlCreator
             for(int i=0; i<images.size(); i++)
             {
                 File currentPanelSnapshot = new File(dir + "/panel" + i + ".png"); //Add directory in front of file name here.
-                System.out.println(currentPanelSnapshot);
-                bw.write("<div class=\"images\"><img src=\"" + currentPanelSnapshot +"\" alt='Panel" + i + "' style='width:100%'></div> \n");
+                bw.write("<div class=\"images\"><img src=\"" + currentPanelSnapshot +"\" alt='Panel'" + i + " style='width:100%'></div> \n");
                 bw.flush();
-                bi = SwingFXUtils.fromFXImage(images.get(i), null);
-                ImageIO.write(bi, "png", currentPanelSnapshot);
+                Image image = images.get(i);
+                bi = SwingFXUtils.fromFXImage(image, null);
+                int width = (int)image.getWidth();
+                int height = (int)image.getHeight();
+                java.awt.Image scaledImg = bi.getScaledInstance(width * 2, height * 2, java.awt.Image.SCALE_SMOOTH);
+                ImageIO.write(convertToBufferedImage(scaledImg), "png", currentPanelSnapshot);
             }
+
+            File closingPanelFile = new File(dir + "/closingPanel.png");
+            bw.write("<div class=\"images\"><img src=\"" + closingPanelFile +"\" alt='ClosingPanel' style='width:100%'></div> \n");
+            bw.flush();
+            java.awt.Image scaledClosingPanel = endPanel.getScaledInstance(1220, 1200, java.awt.Image.SCALE_SMOOTH);
+            ImageIO.write(convertToBufferedImage(scaledClosingPanel), "png", closingPanelFile);
+
             bw.write("</div>\n" + "<h1>" + credits + "</h1>\n" +
                     "    </body>\n" +
                     "</html>");
@@ -50,103 +60,131 @@ public class HtmlCreator
         logger.info("HTML file and panels saved successfully");
     }
 
+    public static BufferedImage convertToBufferedImage(java.awt.Image img) {
+
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage bi = new BufferedImage(
+                img.getWidth(null), img.getHeight(null),
+                BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D graphics2D = bi.createGraphics();
+        graphics2D.drawImage(img, 0, 0, null);
+        graphics2D.dispose();
+
+        return bi;
+    }
+
     private String formatHTML()
     {
         String formatter = "<!DOCTYPE html>\n" +
-            "<html>\n" +
-            "    <head>\n" +
-            "        <title>HomiesComix</title>\n" +
-            "\n" +
-            "        <style>\n" +
-            "            *{\n" +
-            "                margin: 0;\n" +
-            "                padding: 0;\n" +
-            "            }\n" +
-            "\n" +
-            "            html, body{\n" +
-            "                width: 100%;\n" +
-            "                min-height: 100%;\n" +
-            "            }\n" +
-            "\n" +
-            "            body{\n" +
-                "           background-image: url(\"https://cdn.discordapp.com/attachments/819876082156699691/843441140434862100/CJRDaz.png\");\n" +
-                "           background-position: center;\n" +
-                "           background-size: auto;\n" +
-                "           background-repeat: no-repeat;\n" +
-                "           background-attachment: fixed;\n" +
-                "width: 100%;\n" +
-                "height: 100%;\n" +
-                "display: flex;   \n" +
-                "flex-flow: column;\n" +
-                "align-items: center;\n" +
+                "<html>\n" +
+                "    <head>\n" +
+                "        <title>HomiesComix</title>\n" +
+                "\n" +
+                "        <style>\n" +
+                "            *{\n" +
+                "                margin: 0;\n" +
+                "                padding: 0;\n" +
                 "            }\n" +
-            "\n" +
-            "            #comic{\n" +
-            "                 width: 90%;\n" +
-                            "max-width: 80%;  \n" +
-                            "display: flex;\n" +
-                            "justify-content: center;  \n" +
-                            "flex-wrap: wrap;   \n" +
-                            "border: 2px rgba(94, 94, 94, 0.514) double;\n" +
-
-            "            }\n" +
-            "\n" +
-            "            .images{\n" +
-            "                flex: 0 0 auto;\n" +
-                            "background-color: rgb(255, 255, 255);\n" +
-                            "margin: 10px 20px 10px 20px;\n" +
-                            "min-width: 400px;\n" +
-                            "min-height: 400px;\n" +
-                            "width: 45%;\n" +
-                            "transition: linear 0.1s;\n" +
-            "            }\n" +
-            "\n" +
-            "    @media screen and (max-width: 900px) { \n" +
-            "    .images{\n" +
-            "width: 95%;\n" +
-       " }\n" +
-
-           "     #comic{\n" +
-          " max-width: 90%;\n" +
-       " }\n" +
- "   }\n" +
-
-       " @media screen and (max-width: 1100px) {\n" +
-        "        .images{\n" +
-       "     width: 80%;\n" +
-      "  }\n" +
-
-        "        #comic{\n" +
-     "       max-width: 90%;\n" +
-    "    }\n" +
-  "  }\n" +
-            "            .images:hover{\n" +
-            "                transform: scale(1.02);\n" +
-            "            }\n" +
-            "\n" +
-            "            h1{\n" +
-            "                color: blanchedalmond;\n" +
-            "                padding: 20px;\n" +
-            "                text-align: center;\n"+
-            "            }\n" +
-            "           ::-webkit-scrollbar {\n"+
-            "            width: 11px;\n"+
-            "            }\n"+
-
-            "            ::-webkit-scrollbar-track {\n"+
-            "                background: #cacaca;\n"+
-            "            }\n"+
-
-            "            ::-webkit-scrollbar-thumb {\n"+
-            "                background:#023246;\n"+
-            "            }\n"+
-            "           ::-webkit-scrollbar-thumb:hover {\n" +
-            "            background:#111;\n" +
-            "            }\n"+
-            "        </style>\n" +
-            "    </head>\n" +
-            "    <body>\n";
-
+                "\n" +
+                "            html, body{\n" +
+                "                width: 100%;\n" +
+                "                min-height: 100%;\n" +
+                "            }\n" +
+                "\n" +
+                "            body{\n" +
+                "                width: 100%;\n" +
+                "                height: 100%;\n" +
+                "                display: flex;                   \n" +
+                "                flex-flow: column;\n" +
+                "                align-items: center;\n" +
+                "                justify-content: center;\n" +
+                "                background-image: linear-gradient(rgb(33, 142, 156),rgb(187, 192, 163),rgb(192, 186, 98),rgb(187, 192, 163),rgb(4, 66, 82));\n" +
+                "            }\n" +
+                "\n" +
+                "            #comic{\n" +
+                "                width: 90%;\n" +
+                "                max-width: 80%;  \n" +
+                "                display: flex;\n" +
+                "                justify-content: center;  \n" +
+                "                flex-wrap: wrap;   \n" +
+                "                border: 2px rgba(94, 94, 94, 0.514) double;\n" +
+                "                background-color: rgba(0, 23, 32, 0.1);\n" +
+                "                border-radius: 3px;\n" +
+                "                margin-bottom: 10px;\n" +
+                "                transition: linear 0.2s;\n" +
+                "            }\n" +
+                "\n" +
+                "            #comic:hover{\n" +
+                "                background-color: rgba(0, 23, 32, 0.2);\n" +
+                "            }\n" +
+                "\n" +
+                "            .images{\n" +
+                "                flex: 0 0 auto;\n" +
+                "                background-color: rgb(255, 255, 255);\n" +
+                "                margin: 10px 20px 10px 20px;\n" +
+                "                min-width: 400px;\n" +
+                "                min-height: 400px;\n" +
+                "                width: 45%;\n" +
+                "                transition: linear 0.1s;\n" +
+                "            }\n" +
+                "\n" +
+                "            @media (max-width: 600px) {\n" +
+                "                #comic{\n" +
+                "                    max-width: 95%;\n" +
+                "                }\n" +
+                "            }\n" +
+                "\n" +
+                "            @media (min-width: 600px) and (max-width: 900px) {\n" +
+                "                .images{\n" +
+                "                    width: 95%;\n" +
+                "                }\n" +
+                "\n" +
+                "                #comic{\n" +
+                "                    max-width: 90%;\n" +
+                "                }\n" +
+                "            }\n" +
+                "        \n" +
+                "            @media (min-width: 900px) and (max-width: 1100px) {\n" +
+                "                .images{\n" +
+                "                    width: 80%;\n" +
+                "                }\n" +
+                "\n" +
+                "                #comic{\n" +
+                "                    max-width: 90%;\n" +
+                "                }\n" +
+                "            }\n" +
+                "\n" +
+                "            .images:hover{\n" +
+                "                transform: scale(1.02);\n" +
+                "            }\n" +
+                "\n" +
+                "            h1{\n" +
+                "                color: blanchedalmond;\n" +
+                "                padding: 20px;\n" +
+                "            }\n" +
+                "\n" +
+                "            ::-webkit-scrollbar {\n" +
+                "                width: 10px;\n" +
+                "            }\n" +
+                "\n" +
+                "            ::-webkit-scrollbar-track {\n" +
+                "                background: #cacaca;\n" +
+                "            }\n" +
+                "\n" +
+                "            ::-webkit-scrollbar-thumb {\n" +
+                "                background:#023246;\n" +
+                "            }\n" +
+                "            ::-webkit-scrollbar-thumb:hover {\n" +
+                "                background:#111;\n" +
+                "            }\n" +
+                "        </style>\n" +
+                "    </head>\n" +
+                "    <body>";
         return formatter;
     }
 }

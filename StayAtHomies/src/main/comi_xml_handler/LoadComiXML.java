@@ -14,7 +14,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,12 +33,11 @@ public class LoadComiXML implements DefaultColors {
     public LoadComiXML(){
         panels = new ArrayList<>();
     }
-    public ArrayList<Panel> createComicStripFromComiXML(File xmlFile, File charactersDir){
+    public void createComicStripFromComiXML(File xmlFile, File charactersDir){
         if(xmlFile == null){
-            return null;
+            return;
         }
 
-        ArrayList<Panel> panels = new ArrayList<>();
         try{
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -47,7 +45,7 @@ public class LoadComiXML implements DefaultColors {
 
             if(document == null){
                 LOGGER.log(Level.WARNING, "XML file format could not be parsed properly. Incorrect XML file format.");
-                return null;
+                return;
             }
             document.normalizeDocument();
             NodeList listOfPanels = document.getElementsByTagName("panel");
@@ -86,7 +84,6 @@ public class LoadComiXML implements DefaultColors {
             if(panels.isEmpty()){
                 LOGGER.info("No panels were found in the file provided.");
             }
-            return panels;
         }
         catch(ParserConfigurationException exception){
             exception.printStackTrace();
@@ -98,7 +95,6 @@ public class LoadComiXML implements DefaultColors {
             e.printStackTrace();
             LOGGER.log(Level.WARNING, "XML file format could not be parsed properly. Incorrect XML file format.");
         }
-        return null;
     }
 
     private static void parsePanel(Node panelNode, Panel panel, File charactersDir){
@@ -304,5 +300,17 @@ public class LoadComiXML implements DefaultColors {
             LOGGER.log(Level.WARNING, "Pose not found in the given directory. Neutral pose uploaded.");
             return new Image("/resources/neutral.png");
         }
+    }
+
+    public ArrayList<Panel> getPanels(){
+        return this.panels;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getCredits() {
+        return credits;
     }
 }
