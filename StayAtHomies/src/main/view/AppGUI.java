@@ -308,6 +308,8 @@ public class AppGUI implements ViewDefaultValues
         scrollPane.setPannable(true);
         scrollPane.setStyle("-fx-background-color: " + APP_THEME_COLOR);
 
+        VBox colorPickerPane = new VBox();
+
         importLeftCharButton = new Button("Import Left", setButtonImg( "importLeftChar.png"));
         buttonCommonStyles(importLeftCharButton);
 
@@ -361,10 +363,11 @@ public class AppGUI implements ViewDefaultValues
         setComicCredits = new Button("Comic Credits", setButtonImg("comicCreditsButton.png"));
         buttonCommonStyles(setComicCredits);
 
-        leftBarButtonsWrapper.getChildren().addAll(colorPalette, importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
+        leftBarButtonsWrapper.getChildren().addAll(importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
                 changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton, setComicTitle, setComicCredits);
+        colorPickerPane.getChildren().addAll(colorPalette, scrollPane);
 
-        layout.setLeft(scrollPane);
+        layout.setLeft(colorPickerPane);
     }
 
     public void createRightPaneHelp() {
