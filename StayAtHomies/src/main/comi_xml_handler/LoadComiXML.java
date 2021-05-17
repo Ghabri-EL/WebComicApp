@@ -54,7 +54,7 @@ public class LoadComiXML implements DefaultColors {
             for(int i = 0; i < listOfPanels.getLength(); i++){
                 Node node = listOfPanels.item(i);
                 Panel panel = new Panel();
-
+                LOGGER.log(Level.FINEST, "Parsing :: [Panel " + i +"]");
                 Element panelElement = (Element) node;
                 if(panelElement.hasAttribute("id")){
                     try{

@@ -343,6 +343,7 @@ public class Controller {
    }
 
    private void changePanelPosition(){
+       savePanelPrompt();
        String newPosition = view.changePanelIdWindow();
        if(newPosition == null){
            return;
@@ -358,6 +359,7 @@ public class Controller {
                comixApp.changePanelPosition(panelId, newId);
                refreshViewComicStrip();
                resetWorkingPane();
+               loadAndSelectPanel(newId);
                fail = false;
            }
 
@@ -371,26 +373,35 @@ public class Controller {
    }
 
    private void changePanelPositionLeft(){
-        int panelId = comixApp.getId();
-        if(comixApp.noPanels() || panelId < 1){
-            return;
-        }
-        int newId = panelId--;
-        comixApp.changePanelPosition(panelId, newId);
-        refreshViewComicStrip();
-        resetWorkingPane();
+       savePanelPrompt();
+       int panelId = comixApp.getId();
+       if(comixApp.noPanels() || panelId < 1){
+           return;
+       }
+       int newId = panelId - 1;
+       comixApp.changePanelPosition(panelId, newId);
+       refreshViewComicStrip();
+       resetWorkingPane();
+       loadAndSelectPanel(newId);
    }
 
-    private void changePanelPositionRight(){
-        int panelId = comixApp.getId();
-        if(comixApp.noPanels() || panelId >= (comixApp.getNumberOfPanels() - 1)){
-            return;
-        }
-        int newId = panelId++;
-        comixApp.changePanelPosition(panelId, newId);
-        refreshViewComicStrip();
-        resetWorkingPane();
-    }
+   private void changePanelPositionRight(){
+       savePanelPrompt();
+       int panelId = comixApp.getId();
+       if(comixApp.noPanels() || panelId >= (comixApp.getNumberOfPanels() - 1)){
+           return;
+       }
+       int newId = panelId + 1;
+       comixApp.changePanelPosition(panelId, newId);
+       refreshViewComicStrip();
+       resetWorkingPane();
+       loadAndSelectPanel(newId);
+   }
+
+   private void loadAndSelectPanel(int id){
+       loadSelectedPanel(id);
+       view.selectPanel(id);
+   }
 
    //add handler to panel to select panel and load it in the working pane
    private void addPanelEventHandler(PanelView panel){
@@ -455,6 +466,7 @@ public class Controller {
        ArrayList<PanelView> panelViewArray = new ArrayList<>();
        for(Panel p : comixApp.getComixStrip().getPanels()){
            PanelView panelView = new PanelView(p.getPanelShot(), p.getId());
+           //add handler to each panel
            addPanelEventHandler(panelView);
            panelViewArray.add(panelView);
        }

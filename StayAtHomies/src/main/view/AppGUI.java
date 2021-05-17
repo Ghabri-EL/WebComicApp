@@ -487,6 +487,17 @@ public class AppGUI implements ViewDefaultValues
         refreshPanelPositionBar();
     }
 
+    //deals with the selection of panels in the strip
+    public void selectPanel(int id){
+        PanelView panel = (PanelView) comicStrip.getChildren().get(id);
+        if(selectedPanel != null){
+            selectedPanel.setEffect(null);
+        }
+        selectedPanel = panel;
+        selectedPanel.setEffect(new DropShadow(15, Color.TURQUOISE));
+        refreshPanelPositionBar();
+    }
+
     //====> BUBBLE IMPORT METHODS
     private String importBubble(Image bubbleImage){
         ImageView bubble = new ImageView(bubbleImage);
@@ -803,7 +814,6 @@ public class AppGUI implements ViewDefaultValues
         if(confirmation.getResult() == ButtonType.YES) {
             return true;
         }
-
         return false;
     }
 
@@ -837,7 +847,7 @@ public class AppGUI implements ViewDefaultValues
     }
 
     private void panelPositionButtonsState(){
-        if(comicStripEmpty() || panelsInStrip() == 1){
+        if(comicStripEmpty() || panelsInStrip() == 1 || !isPanelSelected()){
             POSITION_TO_LEFT_BUTTON.setDisable(true);
             POSITION_TO_RIGHT_BUTTON.setDisable(true);
         }
