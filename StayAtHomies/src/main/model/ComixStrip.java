@@ -17,13 +17,6 @@ public class ComixStrip {
         recomputeIds();
     }
 
-    public Panel removePanel(Panel panel){
-        if(panels.remove(panel)){
-            return panel;
-        }
-        return null;
-    }
-
     public Panel removePanel(int id){
         Panel rePanel = panels.remove(id);
         recomputeIds();

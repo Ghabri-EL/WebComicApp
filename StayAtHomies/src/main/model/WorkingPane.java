@@ -9,15 +9,20 @@ public abstract class WorkingPane {
     private Character characterRight;
     private String leftBubbleText;
     private String rightBubbleText;
-    private BubbleType leftBubbleType = BubbleType.NONE;
-    private BubbleType rightBubbleType = BubbleType.NONE;
-    private String narrativeTextTop;
-    private String narrativeTextBottom;
+    private BubbleType leftBubbleType;
+    private BubbleType rightBubbleType;
+    private NarrativeText narrativeTextTop;
+    private NarrativeText narrativeTextBottom;
 
-    public WorkingPane(){};
+    public WorkingPane(){
+        this.leftBubbleType = BubbleType.NONE;
+        this.rightBubbleType = BubbleType.NONE;
+        this.narrativeTextTop = new NarrativeText();
+        this.narrativeTextBottom = new NarrativeText();
+    };
 
     public WorkingPane(int id, Image panelShot, Character characterLeft, Character characterRight, String leftBubbleText, String rightBubbleText,
-                       BubbleType leftBubbleType, BubbleType rightBubbleType, String narrativeTextTop, String narrativeTextBottom){
+                       BubbleType leftBubbleType, BubbleType rightBubbleType, NarrativeText narrativeTextTop, NarrativeText narrativeTextBottom){
         this.id = id;
         this.panelShot = panelShot;
         this.characterLeft = characterLeft;
@@ -94,19 +99,25 @@ public abstract class WorkingPane {
         this.rightBubbleType = rightBubbleType;
     }
 
-    public String getNarrativeTextTop() {
+    public NarrativeText getNarrativeTextTop() {
         return narrativeTextTop;
     }
 
-    public void setNarrativeTextTop(String narrativeTextTop) {
+    public void setNarrativeTextTop(NarrativeText narrativeTextTop) {
+        if(narrativeTextTop == null){
+            narrativeTextTop = new NarrativeText();
+        }
         this.narrativeTextTop = narrativeTextTop;
     }
 
-    public String getNarrativeTextBottom() {
+    public NarrativeText getNarrativeTextBottom() {
         return narrativeTextBottom;
     }
 
-    public void setNarrativeTextBottom(String narrativeTextBottom) {
+    public void setNarrativeTextBottom(NarrativeText narrativeTextBottom) {
+        if(narrativeTextBottom == null){
+            narrativeTextBottom = new NarrativeText();
+        }
         this.narrativeTextBottom = narrativeTextBottom;
     }
 
@@ -121,8 +132,8 @@ public abstract class WorkingPane {
                 ", rightBubbleText='" + rightBubbleText + '\'' +
                 ", leftBubbleType=" + leftBubbleType +
                 ", rightBubbleType=" + rightBubbleType +
-                ", narrativeTextTop='" + narrativeTextTop + '\'' +
-                ", narrativeTextBottom='" + narrativeTextBottom + '\'' +
+                ", narrativeTextTop=" + narrativeTextTop +
+                ", narrativeTextBottom=" + narrativeTextBottom +
                 '}';
     }
 }

@@ -5,10 +5,12 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 
-import javafx.scene.text.Font;
 import main.comi_xml_handler.ComiXML;
+import main.comi_xml_handler.LoadComiXML;
 import main.model.*;
 import main.model.Character;
 import main.project_enums.*;
@@ -30,7 +32,13 @@ public class Controller {
        isSaved = true;
    }
    public void execution(){
-       selectHandler();
+       selectCharacterAddEventHandler();
+       topBarButtonsHandler();
+       leftPanelButtonsHandler();
+       comicStripButtonsHandler();
+   }
+
+   private void leftPanelButtonsHandler(){
        view.getImportLeftCharButton().setOnAction(event -> importLeftModelEvent());
        view.getImportRightCharButton().setOnAction(event -> importRightModelEvent());
        view.getFlipButton().setOnAction(event -> flipCharacterEvent());
@@ -42,25 +50,35 @@ public class Controller {
        view.getAddThoughtBubbleButton().setOnAction(event -> addThoughtBubbleEvent());
        view.getRemoveBubbleButton().setOnAction(event -> removeBubbleEvent());
        view.getAddTextTopButton().setOnAction(event -> addNarrativeTextTopEvent());
+       view.getSingleLineOptionTop().setOnAction(event -> narrativeTopSingleLine());
+       view.getMultiLinesOptionTop().setOnAction(event -> narrativeTopMultiLines());
+       view.getSingleLineOptionBottom().setOnAction(event -> narrativeBottomSingleLine());
+       view.getMultiLinesOptionBottom().setOnAction(event -> narrativeBottomMultiLines());
        view.getAddTextBottomButton().setOnAction(event -> addNarrativeTextBottomEvent());
+       view.getSetComicTitle().setOnAction(event -> setComicTitle());
+       view.getSetComicCredits().setOnAction(event -> setComicCredits());
+   }
+
+   private void topBarButtonsHandler(){
        view.getFileMenuCharactersDir().setOnAction(event -> openCharacterDirectory());
        view.getPanelMenuNew().setOnAction(event -> newPanelEvent());
        view.getPanelMenuSave().setOnAction(event -> savePanelEvent());
-       view.getSavePanel().setOnAction(event -> savePanelEvent());
        view.getPanelMenuDelete().setOnAction(event -> deletePanelEvent());
-       view.getDeletePanel().setOnAction(event -> deletePanelEvent());
-       view.getChangePanelPosition().setOnAction(event -> changePanelPosition());
        view.getHelpPage().setOnAction(event -> helpPage());
        view.getHelpStartedPage().setOnAction(event -> gettingStarted());
        view.getAboutPage().setOnAction(event -> aboutPage());
        view.getFileMenuSaveXML().setOnAction(event -> saveComiXML());
        view.getFileMenuLoadXML().setOnAction(event -> loadComiXML());
        view.getSaveAsHtml().setOnAction(event -> saveAsHTML());
-       view.getSetComicTitle().setOnAction(event -> setComicTitle());
-       view.getSetComicCredits().setOnAction(event -> setComicCredits());
    }
 
-   private void selectHandler(){
+   private void comicStripButtonsHandler(){
+       view.getSavePanel().setOnAction(event -> savePanelEvent());
+       view.getDeletePanel().setOnAction(event -> deletePanelEvent());
+       view.getChangePanelPosition().setOnAction(event -> changePanelPosition());
+   }
+
+   private void selectCharacterAddEventHandler(){
        EventHandler<MouseEvent> leftViewEvent = event -> {
            view.selectFrame(Selected.LEFT);
            comixApp.selectCharacter(Selected.LEFT);
@@ -87,7 +105,6 @@ public class Controller {
            comixApp.selectCharacter(Selected.LEFT);
            view.selectFrame(Selected.LEFT);
        }
-
        isSaved = false;
    }
 
@@ -219,20 +236,42 @@ public class Controller {
    }
 
    private void addNarrativeTextTopEvent(){
-       String narrativeText = view.addNarrativeTextTop();
-       if(narrativeText != null){
+       String text = view.addNarrativeTextTop();
+       if(text != null){
+           NarrativeText narrativeText = new NarrativeText(text);
            comixApp.setNarrativeTextTop(narrativeText);
            isSaved = false;
        }
    }
 
    private void addNarrativeTextBottomEvent(){
-       String narrativeText = view.addNarrativeTextBottom();
-       if(narrativeText != null){
-           comixApp.setNarrativeTextBottom(narrativeText);
+       String text = view.addNarrativeTextBottom();
+       if(text != null){
+           NarrativeText narrativeText = new NarrativeText(text);
+           comixApp.setNarrativeTextTop(narrativeText);
            isSaved = false;
        }
    }
+
+   private void narrativeTopSingleLine(){
+        view.narrativeTextFormat(view.getTopNarrativeText());
+        comixApp.getNarrativeTextTop().setNarrativeTextWrap(NarrativeTextWrap.NOWRAP);
+   }
+
+   private void narrativeTopMultiLines(){
+       view.narrativeTextFormatTextWrapping(view.getTopNarrativeText());
+       comixApp.getNarrativeTextTop().setNarrativeTextWrap(NarrativeTextWrap.WRAP);
+   }
+
+   private void narrativeBottomSingleLine(){
+       view.narrativeTextFormat(view.getBottomNarrativeText());
+       comixApp.getNarrativeTextBottom().setNarrativeTextWrap(NarrativeTextWrap.NOWRAP);
+   }
+
+    private void narrativeBottomMultiLines(){
+        view.narrativeTextFormatTextWrapping(view.getBottomNarrativeText());
+        comixApp.getNarrativeTextBottom().setNarrativeTextWrap(NarrativeTextWrap.WRAP);
+    }
 
    private void setComicTitle(){
        String title = view.setComicTitleDialog();
@@ -361,6 +400,7 @@ public class Controller {
        if(loaded){
            Character leftChar = comixApp.getCharacterLeft();
            Character rightChar = comixApp.getCharacterRight();
+
            //parameters: Image leftCharacter, Image rightCharacter, main.project_enums.BubbleType leftBubbleType, main.project_enums.BubbleType rightBubbleType,
            //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
            view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),
@@ -470,7 +510,8 @@ public class Controller {
        if(load){
            File xmlFile = view.loadXMLFileWindow();
            if(xmlFile != null){
-               ArrayList<Panel> panels = ComiXML.createComicStripFromComiXML(xmlFile, view.getDefaultCharactersDirectory());
+               LoadComiXML loader = new LoadComiXML();
+               ArrayList<Panel> panels = loader.createComicStripFromComiXML(xmlFile, view.getDefaultCharactersDirectory());
                if(!panels.isEmpty()){
                    comixApp.clearComixStrip();
                    for(Panel p : panels){
@@ -488,6 +529,31 @@ public class Controller {
            }
        }
    }
+
+//   private BufferedImage endPanelPrompt(){
+//       if(view.confirmEndPanel){
+//           File file = view.getEndPanelWindow();
+//           if(file != null){
+//               try {
+//                   img = ImageIO.read(file);
+//                   return img;
+//               } catch (IOException e) {
+//                   //some info pop up
+//                   return null;
+//               }
+//           }
+//           else{
+//               try {
+//                   img = ImageIO.read(new File("/resources/endPanel.png"));
+//                   return img;
+//               } catch (IOException e) {
+//                   //some info pop up
+//                   return null;
+//               }
+//           }
+//       }
+//       return null;
+//   }
 
    //used to load panels parsed from the xml file into the scene/working space
     private void loadPanelToWorkingSpace(Panel panel){

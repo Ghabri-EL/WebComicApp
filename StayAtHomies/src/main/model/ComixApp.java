@@ -21,10 +21,6 @@ public class ComixApp extends WorkingPane
         return selectedCharacter;
     }
 
-    public void setSelectedCharacter(Character selectedCharacter) {
-        this.selectedCharacter = selectedCharacter;
-    }
-
     public ComixStrip getComixStrip() {
         return comixStrip;
     }
@@ -81,8 +77,8 @@ public class ComixApp extends WorkingPane
         setRightBubbleText(null);
         setLeftBubbleType(BubbleType.NONE);
         setRightBubbleType(BubbleType.NONE);
-        setNarrativeTextTop(null);
-        setNarrativeTextBottom(null);
+        setNarrativeTextTop(new NarrativeText());
+        setNarrativeTextBottom(new NarrativeText());
         resetSelectedCharacter();
     }
 
@@ -123,6 +119,8 @@ public class ComixApp extends WorkingPane
         //the user saving those changes
         Character leftChar = new Character(panel.getCharacterLeft());
         Character rightCharacter = new Character(panel.getCharacterRight());
+        NarrativeText topText = new NarrativeText(panel.getNarrativeTextTop());
+        NarrativeText bottomText = new NarrativeText(panel.getNarrativeTextBottom());
 
         resetSelectedCharacter();
         setId(panel.getId());
@@ -132,8 +130,8 @@ public class ComixApp extends WorkingPane
         setRightBubbleText(panel.getRightBubbleText());
         setLeftBubbleType(panel.getLeftBubbleType());
         setRightBubbleType(panel.getRightBubbleType());
-        setNarrativeTextTop(panel.getNarrativeTextTop());
-        setNarrativeTextBottom(panel.getNarrativeTextBottom());
+        setNarrativeTextTop(topText);
+        setNarrativeTextBottom(bottomText);
         setPanelShot(panel.getPanelShot());
         return true;
     }
