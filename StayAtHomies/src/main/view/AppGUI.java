@@ -20,44 +20,34 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import main.model.NarrativeText;
 import main.project_enums.BubbleType;
+import main.project_enums.NarrativeTextWrap;
 import main.project_enums.Selected;
 import java.io.File;
 import java.util.ArrayList;
 
 //main.view.AppGUI.java represents the View following the MVC pattern
-public class AppGUI implements ViewThemeColors
+public class AppGUI implements ViewDefaultValues
 {
-    private static final double SCENE_WIDTH = 1300;
-    private static final double SCENE_HEIGHT = 850;
-    private final double WORKING_PANE_WIDTH = 610;
-    private final double WORKING_PANE_HEIGHT = 600;
-    private final double BUBBLE_WIDTH = 290;
-    private final double BUBBLE_HEIGHT = 220;
-    private final double CHARACTER_VIEW_SIZE = 300;
-    private final double COMIC_STRIP_PANE_HEIGHT = 160;
-    private final double PANEL_SIZE = COMIC_STRIP_PANE_HEIGHT - 10;
-    private final double LEFT_BUTTONS_PANEL_WIDTH = 200;
-    private final Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
-    private final Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
-    private File defaultCharactersDirectory = new File("./");
-    private File defaultHTMLDirectory = new File("./");
+    private File defaultCharactersDirectory;
+    private File defaultHTMLDirectory;
 
     private Stage stage;
     private Scene scene;
     private BorderPane layout;
-    private GridPane mainPane = new GridPane();
-    private ImageView leftBubble = new ImageView();
-    private ImageView rightBubble = new ImageView();
-    private ImageView leftCharView = new ImageView();
-    private ImageView rightCharView = new ImageView();
-    private Label leftBubbleText = new Label();
-    private Label rightBubbleText = new Label();
-    private Text topNarrativeText = new Text();
-    private Text bottomNarrativeText = new Text();
-    private ImageView selectedCharacterView = null;
+    private GridPane mainPane;
+    private ImageView leftBubble;
+    private ImageView rightBubble;
+    private ImageView leftCharView;
+    private ImageView rightCharView;
+    private Label leftBubbleText;
+    private Label rightBubbleText;
+    private Text topNarrativeText;
+    private Text bottomNarrativeText;
+    private ImageView selectedCharacterView;
     private Color selectedColor = Color.WHITE;
-    private HBox comixStrip;
+    private HBox comicStrip;
     private PanelView selectedPanel;
     private HelpPage helpPageClass;
     private Label panelPosition;
@@ -118,6 +108,19 @@ public class AppGUI implements ViewThemeColors
 
     public AppGUI(Stage stage){
         this.stage = stage;
+        this.mainPane = new GridPane();
+        this.leftBubble = new ImageView();
+        this.rightBubble = new ImageView();
+        this.leftCharView = new ImageView();
+        this.rightCharView = new ImageView();
+        this.leftBubbleText = new Label();
+        this.rightBubbleText = new Label();
+        this.topNarrativeText = new Text();
+        this.bottomNarrativeText = new Text();
+        this.selectedCharacterView = null;
+
+        this.defaultCharactersDirectory = new File("./");
+        this.defaultHTMLDirectory = new File("./");
     }
 
     public void createUI()
@@ -214,14 +217,14 @@ public class AppGUI implements ViewThemeColors
     public void createBottomPane()
     {
         //Hbox containing the panels(the comic strip)
-        comixStrip = new HBox();
-        comixStrip.setSpacing(15);
-        comixStrip.setPadding(new Insets(5, 5, 5, 5));
-        comixStrip.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";");
-        comixStrip.setMinHeight(COMIC_STRIP_PANE_HEIGHT);
+        comicStrip = new HBox();
+        comicStrip.setSpacing(15);
+        comicStrip.setPadding(new Insets(5, 5, 5, 5));
+        comicStrip.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";");
+        comicStrip.setMinHeight(COMIC_STRIP_PANE_HEIGHT);
 
         //scroll pane wrapper for the comic strip
-        ScrollPane scrollPane = new ScrollPane(comixStrip);
+        ScrollPane scrollPane = new ScrollPane(comicStrip);
         //the value of 15 added to the default height is to account for the scroll bar
         scrollPane.setMinHeight(COMIC_STRIP_PANE_HEIGHT + 15);
         scrollPane.setFitToWidth(true);
@@ -339,12 +342,10 @@ public class AppGUI implements ViewThemeColors
         addTextTopButton = new Button("Top Narration", setButtonImg( "narrativeTextTop.png"));
         buttonCommonStyles(addTextTopButton);
         addTextTopButton.setContextMenu(TOP_NARRATIVE_TEXT_MENU);
-        setTopTextMenu();
 
         addTextBottomButton = new Button("Bottom Narration", setButtonImg("narrativeTextBottom.png"));
         buttonCommonStyles(addTextBottomButton);
         addTextBottomButton.setContextMenu(BOTTOM_NARRATIVE_TEXT_MENU);
-        setBottomTextMenu();
 
         setComicTitle = new Button("Comic Title", setButtonImg("comicTitleButton.png"));
         buttonCommonStyles(setComicTitle);
@@ -489,17 +490,13 @@ public class AppGUI implements ViewThemeColors
     }
 
     private void setLeftBubbleText(String text) {
-        if(text != null){
-            leftBubbleText.setText(text);
-            bubbleTextFormatting(leftBubbleText);
-        }
+        leftBubbleText.setText(text);
+        bubbleTextFormatting(leftBubbleText);
     }
 
     private void setRightBubbleText(String text){
-        if(text != null){
-            rightBubbleText.setText(text);
-            bubbleTextFormatting(rightBubbleText);
-        }
+        rightBubbleText.setText(text);
+        bubbleTextFormatting(rightBubbleText);
     }
 
     private void bubbleTextStyle(Label text){
@@ -521,17 +518,13 @@ public class AppGUI implements ViewThemeColors
         measurementsTextBox.setWrappingWidth(240);
         measurementsTextBox.setFont(Font.font(fontSize));
 
-        while(measurementsTextBox.getLayoutBounds().getHeight() < 130 && fontSize <= 40){
+        int maxHeight = 130;
+        while(measurementsTextBox.getLayoutBounds().getHeight() < maxHeight && fontSize <= 40){
             measurementsTextBox.setFont(Font.font(fontSize));
             int height = (int)measurementsTextBox.getLayoutBounds().getHeight();
-            System.out.println("BEFORE::: \tFNT: " + fontSize + "\t" + "HEIGHT: " + height);
-            System.out.println("BCHARS: " + measurementsTextBox.getText().length());
-            if(height > 135){
+            if(height > maxHeight){
                 fontSize--;
                 measurementsTextBox.setFont(Font.font(fontSize));
-                height = (int)measurementsTextBox.getLayoutBounds().getHeight();
-                System.out.println("FNT: " + fontSize + "\t" + "HEIGHT: " + height);
-                System.out.println("CHARS: " + measurementsTextBox.getText().length());
                 break;
             }
             fontSize++;
@@ -575,18 +568,15 @@ public class AppGUI implements ViewThemeColors
         return null;
     }
 
+    //set text with single line format
     private void setNarrativeTextTop(String text){
-        if(text != null){
-            topNarrativeText.setText(text);
-            narrativeTextFormat(topNarrativeText);
-        }
+        topNarrativeText.setText(text);
+        narrativeTextFormat(topNarrativeText);
     }
-
+    //set text with single line format
     private void setNarrativeTextBottom(String text){
-        if(text != null){
-            bottomNarrativeText.setText(text);
-            narrativeTextFormat(bottomNarrativeText);
-        }
+        bottomNarrativeText.setText(text);
+        narrativeTextFormat(bottomNarrativeText);
     }
 
     private void narrativeTextStyle(){
@@ -596,37 +586,30 @@ public class AppGUI implements ViewThemeColors
         bottomNarrativeText.setFont(Font.font("Arial"));
     }
 
-    private void setTopTextMenu(){
-        MULTI_LINES_OPTION_TOP.setOnAction(event -> narrativeTextFormatTextWrapping(topNarrativeText));
-        SINGLE_LINE_OPTION_TOP.setOnAction(event -> narrativeTextFormat(topNarrativeText));
-    }
-
-    private void setBottomTextMenu(){
-        MULTI_LINES_OPTION_BOTTOM.setOnAction(event -> narrativeTextFormatTextWrapping(bottomNarrativeText));
-        SINGLE_LINE_OPTION_BOTTOM.setOnAction(event -> narrativeTextFormat(bottomNarrativeText));
-    }
-
-    private void narrativeTextFormat(Text narrativeText){
-        int fontSize = (int)WORKING_PANE_WIDTH / 30;
+    //formats font size based on width and height in a single line
+    public void narrativeTextFormat(Text narrativeText){
+        int fontSize = (int)WORKING_PANE_WIDTH / 20;
+        int maxWidth = (int)WORKING_PANE_WIDTH - 10;
         narrativeText.setFont(Font.font(fontSize));
         narrativeText.setWrappingWidth(0.0);
-        while(narrativeText.getLayoutBounds().getHeight() > 40 || narrativeText.getLayoutBounds().getWidth() > WORKING_PANE_WIDTH){
+        while(narrativeText.getLayoutBounds().getHeight() > 40 || narrativeText.getLayoutBounds().getWidth() > maxWidth){
             fontSize -= 1;
             narrativeText.setFont(Font.font(fontSize));
         }
     }
 
-    private void narrativeTextFormatTextWrapping(Text narrativeText){
-        narrativeText.setWrappingWidth(WORKING_PANE_WIDTH);
-        int fontSize = (int)WORKING_PANE_WIDTH / 30;
+    //formats font size based on width and height in multiple lines
+    public void narrativeTextFormatTextWrapping(Text narrativeText){
+        narrativeText.setWrappingWidth(WORKING_PANE_WIDTH - 10);
+        int fontSize = (int)WORKING_PANE_WIDTH / 20;
         narrativeText.setFont(Font.font(fontSize));
         while(narrativeText.getLayoutBounds().getHeight() > 40){
-            System.out.println("THE HEIGHT IS: " + narrativeText.getLayoutBounds().getHeight() + "\t FONT SIZE: " + fontSize);
+            //System.out.println("THE HEIGHT IS: " + narrativeText.getLayoutBounds().getHeight() + "\t FONT SIZE: " + fontSize);
             fontSize -= 1;
             narrativeText.setFont(Font.font(fontSize));
         }
-        System.out.println("BNarrative width: " + narrativeText.getLayoutBounds().getWidth());
-        System.out.println("BNarrative height: " + narrativeText.getLayoutBounds().getHeight());
+//        System.out.println("BNarrative width: " + narrativeText.getLayoutBounds().getWidth());
+//        System.out.println("BNarrative height: " + narrativeText.getLayoutBounds().getHeight());
     }
     //END NARRATIVE TEXT METHODS
 
@@ -674,8 +657,6 @@ public class AppGUI implements ViewThemeColors
             selectedCharacterView.setEffect(null);
             image = mainPane.snapshot(new SnapshotParameters(), image);
             selectedCharacterView.setEffect(selectedEffect);
-            System.out.println("GRID W X H: " + mainPane.getWidth() + " " + mainPane.getHeight());
-            System.out.println("IMAGE W X H: " + image.getWidth() + " " + image.getHeight());
         }
         else{
              image = mainPane.snapshot(new SnapshotParameters(), image);
@@ -704,14 +685,27 @@ public class AppGUI implements ViewThemeColors
     }
 
     public void loadSelectedPanel(Image leftCharacter, Image rightCharacter, BubbleType leftBubbleType, BubbleType rightBubbleType,
-                                  String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText){
+                                  String leftBubbleText, String rightBubbleText, NarrativeText topNarrativeText, NarrativeText bottomNarrativeText){
         this.leftCharView.setImage(leftCharacter);
         this.rightCharView.setImage(rightCharacter);
         setLeftBubbleText(leftBubbleText);
         setRightBubbleText(rightBubbleText);
-        setNarrativeTextTop(topNarrativeText);
-        setNarrativeTextBottom(bottomNarrativeText);
-        this.bottomNarrativeText.setText(bottomNarrativeText);
+
+        if(topNarrativeText.getNarrativeTextWrap() == NarrativeTextWrap.WRAP){
+            this.topNarrativeText.setText(topNarrativeText.getNarrativeText());
+            narrativeTextFormatTextWrapping(this.topNarrativeText);
+        }
+        else{
+            setNarrativeTextTop(topNarrativeText.getNarrativeText());
+        }
+
+        if(bottomNarrativeText.getNarrativeTextWrap() == NarrativeTextWrap.WRAP){
+            this.bottomNarrativeText.setText(bottomNarrativeText.getNarrativeText());
+            narrativeTextFormatTextWrapping(this.bottomNarrativeText);
+        }
+        else{
+            setNarrativeTextBottom(bottomNarrativeText.getNarrativeText());
+        }
 
         if(leftBubbleType == BubbleType.SPEECH){
             this.leftBubble.setImage(SPEECH_BUBBLE_IMAGE);
@@ -784,13 +778,13 @@ public class AppGUI implements ViewThemeColors
         clearComicStrip();
         for(PanelView panel : panels){
             setPanelAttributes(panel);
-            comixStrip.getChildren().add(panel);
+            comicStrip.getChildren().add(panel);
         }
         refreshPanelPositionLabel();
     }
 
     public void refreshPanelPositionLabel(){
-        int numberOfPanels = comixStrip.getChildren().size();
+        int numberOfPanels = comicStrip.getChildren().size();
         int panelId = 0;
 
         if(isPanelSelected()){
@@ -824,7 +818,7 @@ public class AppGUI implements ViewThemeColors
     }
 
     public void clearComicStrip(){
-        comixStrip.getChildren().removeAll(comixStrip.getChildren());
+        comicStrip.getChildren().removeAll(comicStrip.getChildren());
     }
 
     public ImageView getLeftBubble() {
@@ -853,6 +847,14 @@ public class AppGUI implements ViewThemeColors
 
     public Label getRightBubbleText() {
         return rightBubbleText;
+    }
+
+    public Text getTopNarrativeText() {
+        return topNarrativeText;
+    }
+
+    public Text getBottomNarrativeText() {
+        return bottomNarrativeText;
     }
 
     public Color getSelectedColor() {
@@ -903,8 +905,24 @@ public class AppGUI implements ViewThemeColors
         return addTextTopButton;
     }
 
+    public MenuItem getSingleLineOptionTop() {
+        return SINGLE_LINE_OPTION_TOP;
+    }
+
+    public MenuItem getMultiLinesOptionTop() {
+        return MULTI_LINES_OPTION_TOP;
+    }
+
     public Button getAddTextBottomButton() {
         return addTextBottomButton;
+    }
+
+    public MenuItem getSingleLineOptionBottom() {
+        return SINGLE_LINE_OPTION_BOTTOM;
+    }
+
+    public MenuItem getMultiLinesOptionBottom() {
+        return MULTI_LINES_OPTION_BOTTOM;
     }
 
     public Button getSetComicTitle() {
@@ -1109,6 +1127,14 @@ public class AppGUI implements ViewThemeColors
             return true;
         }
         return false;
+    }
+
+    public File getEndPanelWindow(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(defaultCharactersDirectory);
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png"));
+        File file = fileChooser.showOpenDialog(stage);
+        return file;
     }
 }
 

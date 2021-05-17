@@ -139,7 +139,7 @@ public class Character implements CharacterInterface, DefaultColors
                     }
 
                     if(!lipsPixel.equals(Color.TRANSPARENT)){
-                        pixelWriterImage.setColor(x, y, skin);
+                        pixelWriterImage.setColor(x, y, DEFAULT_MALE_LIPS_COLOR);
                     }
                 }
                 else{
@@ -200,15 +200,13 @@ public class Character implements CharacterInterface, DefaultColors
         WritableImage newImage = new WritableImage(pixelReaderImage, width, height);
 
         PixelReader pixelReaderSkinMask = skinMask.getPixelReader();
-        PixelReader pixelReaderLipsMask = lipsMask.getPixelReader();
         PixelWriter pixelWriterImage = newImage.getPixelWriter();
 
         for(int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
                 Color pixel = pixelReaderSkinMask.getColor(x,y);
-                Color lipPixel = pixelReaderLipsMask.getColor(x, y);
 
-                if(!pixel.equals(Color.TRANSPARENT) || (!lipPixel.equals(Color.TRANSPARENT) && gender != Gender.FEMALE)){
+                if(!pixel.equals(Color.TRANSPARENT)){
                     pixelWriterImage.setColor(x, y, skinColor);
                 }
             }
@@ -288,9 +286,6 @@ public class Character implements CharacterInterface, DefaultColors
                 }
 
                 if(pixel.equals(DEFAULT_SKIN_COLOR)){
-//                    for(int i = 0; i < 4; i++){
-//                        pixelWriterBM.setColor(x, y, pixel);
-//                    }
                     pixelWriterBM.setColor(x, y, pixel);
                 }
                 else{
@@ -307,13 +302,16 @@ public class Character implements CharacterInterface, DefaultColors
         }
 
         //the int parameters are used to optimize the anti aliasing correction
-        this.maleHairMask = correctMaskEdges(maleHairMask, 4);
-        this.femaleHairMask = correctMaskEdges(femaleHairMask, 4);
+        this.maleHairMask = correctMaskEdges(maleHairMask, 5);
+        this.femaleHairMask = correctMaskEdges(femaleHairMask, 5);
         //combined these two masks again as there were a lot of antialiasing artefacts in the female hair color
         // due to the difference in color and antialiasing
         this.femaleHairMask = combineMasks(this.femaleHairMask, this.maleHairMask);
-        this.lipsMask = correctMaskEdges(lipsMask, 3);
+        this.lipsMask = correctMaskEdges(lipsMask, 4);
         this.skinMask = correctMaskEdges(bodyMask, 2);
+        //in some images, originally the skin to overlaps the hair color, hence subtracted the
+        //hair color pixels from the skin mask
+        this.skinMask = subtractMasks(this.skinMask, this.maleHairMask);
         this.bodyOutlineMask = correctMaskEdges(bodyOutlineMask, 1);
     }
 
@@ -369,7 +367,7 @@ public class Character implements CharacterInterface, DefaultColors
         return newMask;
     }
 
-    // applies visible pixels in mask2 over mask1 and returns the modified mask1
+    // applies visible pixels in mask2 over mask1 and returns the modified mask1(merging 2 masks)
     private Image combineMasks(Image mask1, Image mask2){
         int width = (int)mask1.getWidth();
         int height = (int)mask1.getHeight();
@@ -385,6 +383,28 @@ public class Character implements CharacterInterface, DefaultColors
 
                 if(!pixelMask2.equals(Color.TRANSPARENT)){
                     pixelWriterMask.setColor(x, y, pixelMask2);
+                }
+            }
+        }
+        return newMask;
+    }
+
+    // take 2 masks, subtracts mask 2 from mask 1 and return modified mask 1
+    private Image subtractMasks(Image mask1, Image mask2){
+        int width = (int)mask1.getWidth();
+        int height = (int)mask1.getHeight();
+
+        PixelReader pixelReaderMask1 = mask1.getPixelReader();
+        PixelReader pixelReaderMask2 = mask2.getPixelReader();
+        WritableImage newMask = new WritableImage(pixelReaderMask1, width, height);
+        PixelWriter pixelWriterMask = newMask.getPixelWriter();
+
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                Color pixelMask2 = pixelReaderMask2.getColor(x, y);
+
+                if(!pixelMask2.equals(Color.TRANSPARENT)){
+                    pixelWriterMask.setColor(x, y, Color.TRANSPARENT);
                 }
             }
         }
@@ -409,7 +429,6 @@ public class Character implements CharacterInterface, DefaultColors
                 }
             }
         }
-
         return image;
     }
 }

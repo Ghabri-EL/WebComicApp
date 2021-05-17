@@ -10,7 +10,6 @@ public class ComixApp extends WorkingPane
     private ComixStrip comixStrip;
     private String comicTitle;
     private String comicCredits;
-    private Image endPanel = new Image("/resources/theEnd.png");
 
     public ComixApp(){
         this.selectedCharacter = null;
@@ -21,10 +20,6 @@ public class ComixApp extends WorkingPane
 
     public Character getSelectedCharacter() {
         return selectedCharacter;
-    }
-
-    public void setSelectedCharacter(Character selectedCharacter) {
-        this.selectedCharacter = selectedCharacter;
     }
 
     public ComixStrip getComixStrip() {
@@ -65,14 +60,6 @@ public class ComixApp extends WorkingPane
         return this.comicCredits;
     }
 
-    public void setEndPanel(Image endPanel) {
-        this.endPanel = endPanel;
-    }
-
-    public Image getEndPanel() {
-        return this.endPanel;
-    }
-
     private int generateId(){
         setId(comixStrip.size());
         return getId();
@@ -91,8 +78,8 @@ public class ComixApp extends WorkingPane
         setRightBubbleText(null);
         setLeftBubbleType(BubbleType.NONE);
         setRightBubbleType(BubbleType.NONE);
-        setNarrativeTextTop(null);
-        setNarrativeTextBottom(null);
+        setNarrativeTextTop(new NarrativeText());
+        setNarrativeTextBottom(new NarrativeText());
         resetSelectedCharacter();
     }
 
@@ -133,6 +120,8 @@ public class ComixApp extends WorkingPane
         //the user saving those changes
         Character leftChar = new Character(panel.getCharacterLeft());
         Character rightCharacter = new Character(panel.getCharacterRight());
+        NarrativeText topText = new NarrativeText(panel.getNarrativeTextTop());
+        NarrativeText bottomText = new NarrativeText(panel.getNarrativeTextBottom());
 
         resetSelectedCharacter();
         setId(panel.getId());
@@ -142,8 +131,8 @@ public class ComixApp extends WorkingPane
         setRightBubbleText(panel.getRightBubbleText());
         setLeftBubbleType(panel.getLeftBubbleType());
         setRightBubbleType(panel.getRightBubbleType());
-        setNarrativeTextTop(panel.getNarrativeTextTop());
-        setNarrativeTextBottom(panel.getNarrativeTextBottom());
+        setNarrativeTextTop(topText);
+        setNarrativeTextBottom(bottomText);
         setPanelShot(panel.getPanelShot());
         return true;
     }

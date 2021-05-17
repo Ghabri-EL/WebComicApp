@@ -5,23 +5,28 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 
-import javafx.scene.text.Font;
 import main.comi_xml_handler.ComiXML;
+import main.comi_xml_handler.LoadComiXML;
 import main.model.*;
 import main.model.Character;
 import main.project_enums.*;
 import main.view.AppGUI;
 import main.view.PanelView;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import main.html.HtmlCreator;
+
+import javax.imageio.ImageIO;
 
 //main.controller.Controller.java represents the main.controller.Controller following the MVC pattern
 public class Controller {
    private final ComixApp comixApp;
    private final AppGUI view;
-
    private boolean isSaved;
 
    public Controller(ComixApp comixApp, AppGUI view){
@@ -29,8 +34,15 @@ public class Controller {
        this.view = view;
        isSaved = true;
    }
+
    public void execution(){
-       selectHandler();
+       selectCharacterAddEventHandler();
+       topBarButtonsHandler();
+       leftPanelButtonsHandler();
+       comicStripButtonsHandler();
+   }
+
+   private void leftPanelButtonsHandler(){
        view.getImportLeftCharButton().setOnAction(event -> importLeftModelEvent());
        view.getImportRightCharButton().setOnAction(event -> importRightModelEvent());
        view.getFlipButton().setOnAction(event -> flipCharacterEvent());
@@ -42,25 +54,35 @@ public class Controller {
        view.getAddThoughtBubbleButton().setOnAction(event -> addThoughtBubbleEvent());
        view.getRemoveBubbleButton().setOnAction(event -> removeBubbleEvent());
        view.getAddTextTopButton().setOnAction(event -> addNarrativeTextTopEvent());
+       view.getSingleLineOptionTop().setOnAction(event -> narrativeTopSingleLine());
+       view.getMultiLinesOptionTop().setOnAction(event -> narrativeTopMultiLines());
+       view.getSingleLineOptionBottom().setOnAction(event -> narrativeBottomSingleLine());
+       view.getMultiLinesOptionBottom().setOnAction(event -> narrativeBottomMultiLines());
        view.getAddTextBottomButton().setOnAction(event -> addNarrativeTextBottomEvent());
+       view.getSetComicTitle().setOnAction(event -> setComicTitle());
+       view.getSetComicCredits().setOnAction(event -> setComicCredits());
+   }
+
+   private void topBarButtonsHandler(){
        view.getFileMenuCharactersDir().setOnAction(event -> openCharacterDirectory());
        view.getPanelMenuNew().setOnAction(event -> newPanelEvent());
        view.getPanelMenuSave().setOnAction(event -> savePanelEvent());
-       view.getSavePanel().setOnAction(event -> savePanelEvent());
        view.getPanelMenuDelete().setOnAction(event -> deletePanelEvent());
-       view.getDeletePanel().setOnAction(event -> deletePanelEvent());
-       view.getChangePanelPosition().setOnAction(event -> changePanelPosition());
        view.getHelpPage().setOnAction(event -> helpPage());
        view.getHelpStartedPage().setOnAction(event -> gettingStarted());
        view.getAboutPage().setOnAction(event -> aboutPage());
        view.getFileMenuSaveXML().setOnAction(event -> saveComiXML());
        view.getFileMenuLoadXML().setOnAction(event -> loadComiXML());
        view.getSaveAsHtml().setOnAction(event -> saveAsHTML());
-       view.getSetComicTitle().setOnAction(event -> setComicTitle());
-       view.getSetComicCredits().setOnAction(event -> setComicCredits());
    }
 
-   private void selectHandler(){
+   private void comicStripButtonsHandler(){
+       view.getSavePanel().setOnAction(event -> savePanelEvent());
+       view.getDeletePanel().setOnAction(event -> deletePanelEvent());
+       view.getChangePanelPosition().setOnAction(event -> changePanelPosition());
+   }
+
+   private void selectCharacterAddEventHandler(){
        EventHandler<MouseEvent> leftViewEvent = event -> {
            view.selectFrame(Selected.LEFT);
            comixApp.selectCharacter(Selected.LEFT);
@@ -87,8 +109,7 @@ public class Controller {
            comixApp.selectCharacter(Selected.LEFT);
            view.selectFrame(Selected.LEFT);
        }
-
-       isSaved = false;
+       unsavedChanges();
    }
 
    private void importRightModelEvent(){
@@ -102,8 +123,7 @@ public class Controller {
            comixApp.selectCharacter(Selected.RIGHT);
            view.selectFrame(Selected.RIGHT);
        }
-
-       isSaved = false;
+       unsavedChanges();
    }
 
    private void flipCharacterEvent(){
@@ -112,7 +132,7 @@ public class Controller {
            selectedCharacter.flipImage();
            Image newCharImage = selectedCharacter.getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
-           isSaved = false;
+           unsavedChanges();
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -124,7 +144,7 @@ public class Controller {
            comixApp.getSelectedCharacter().switchGenders();
            Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
-           isSaved = false;
+           unsavedChanges();
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -136,7 +156,7 @@ public class Controller {
            comixApp.getSelectedCharacter().skinChange(view.getSelectedColor());
            Image newCharImage = comixApp.getSelectedCharacter().getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
-           isSaved = false;
+           unsavedChanges();
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -149,7 +169,7 @@ public class Controller {
            selectedCharacter.hairChange(view.getSelectedColor());
            Image newCharImage = selectedCharacter.getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
-           isSaved = false;
+           unsavedChanges();
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -162,7 +182,7 @@ public class Controller {
            selectedCharacter.changeLipsColor(view.getSelectedColor());
            Image newCharImage = selectedCharacter.getCharacterImage();
            view.getSelectedCharacterView().setImage(newCharImage);
-           isSaved = false;
+           unsavedChanges();
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -177,7 +197,7 @@ public class Controller {
                comixApp.setBubbleText(bubbleText);
                comixApp.setBubbleType(BubbleType.SPEECH);
            }
-           isSaved = false;
+           unsavedChanges();
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -192,7 +212,7 @@ public class Controller {
                comixApp.setBubbleText(bubbleText);
                comixApp.setBubbleType(BubbleType.THOUGHT);
            }
-           isSaved = false;
+           unsavedChanges();
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -211,7 +231,7 @@ public class Controller {
            }
            comixApp.setBubbleText(null);
            comixApp.setBubbleType(BubbleType.NONE);
-           isSaved = false;
+           unsavedChanges();
        }
        else{
            view.userInformationAlert("Select character", "Select the characters on which you want to perform the operation");
@@ -219,20 +239,46 @@ public class Controller {
    }
 
    private void addNarrativeTextTopEvent(){
-       String narrativeText = view.addNarrativeTextTop();
-       if(narrativeText != null){
+       String text = view.addNarrativeTextTop();
+       if(text != null){
+           NarrativeText narrativeText = new NarrativeText(text);
            comixApp.setNarrativeTextTop(narrativeText);
-           isSaved = false;
+           unsavedChanges();
        }
    }
 
    private void addNarrativeTextBottomEvent(){
-       String narrativeText = view.addNarrativeTextBottom();
-       if(narrativeText != null){
-           comixApp.setNarrativeTextBottom(narrativeText);
-           isSaved = false;
+       String text = view.addNarrativeTextBottom();
+       if(text != null){
+           NarrativeText narrativeText = new NarrativeText(text);
+           comixApp.setNarrativeTextTop(narrativeText);
+           unsavedChanges();
        }
    }
+
+   private void narrativeTopSingleLine(){
+        view.narrativeTextFormat(view.getTopNarrativeText());
+        comixApp.getNarrativeTextTop().setNarrativeTextWrap(NarrativeTextWrap.NOWRAP);
+        unsavedChanges();
+   }
+
+   private void narrativeTopMultiLines(){
+       view.narrativeTextFormatTextWrapping(view.getTopNarrativeText());
+       comixApp.getNarrativeTextTop().setNarrativeTextWrap(NarrativeTextWrap.WRAP);
+       unsavedChanges();
+   }
+
+   private void narrativeBottomSingleLine(){
+       view.narrativeTextFormat(view.getBottomNarrativeText());
+       comixApp.getNarrativeTextBottom().setNarrativeTextWrap(NarrativeTextWrap.NOWRAP);
+       unsavedChanges();
+   }
+
+    private void narrativeBottomMultiLines(){
+        view.narrativeTextFormatTextWrapping(view.getBottomNarrativeText());
+        comixApp.getNarrativeTextBottom().setNarrativeTextWrap(NarrativeTextWrap.WRAP);
+        unsavedChanges();
+    }
 
    private void setComicTitle(){
        String title = view.setComicTitleDialog();
@@ -261,7 +307,7 @@ public class Controller {
                saveNewPanel();
                refreshViewComicStrip();
            }
-           isSaved = true;
+           savedChanges();
        }
        else{
            view.userInformationAlert("Import characters", "You need two characters on a panel in order to save a panel");
@@ -295,6 +341,7 @@ public class Controller {
    private void resetWorkingPane(){
        comixApp.resetWorkingSpace();
        view.resetWorkingPane();
+       savedChanges();
    }
 
    private void changePanelPosition(){
@@ -350,7 +397,7 @@ public class Controller {
                savePanelEvent();
            }
            else{
-               isSaved = true;
+               savedChanges();
            }
        }
    }
@@ -361,6 +408,7 @@ public class Controller {
        if(loaded){
            Character leftChar = comixApp.getCharacterLeft();
            Character rightChar = comixApp.getCharacterRight();
+
            //parameters: Image leftCharacter, Image rightCharacter, main.project_enums.BubbleType leftBubbleType, main.project_enums.BubbleType rightBubbleType,
            //String leftBubbleText, String rightBubbleText, String topNarrativeText, String bottomNarrativeText
            view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), comixApp.getLeftBubbleType(),
@@ -405,45 +453,68 @@ public class Controller {
         view.createRightPaneAbout();
    }
 
-   private void saveAsHTML()
-   {
-       if(comixApp.noPanels()){
-           view.userErrorAlert("Failed to save ", "Comic strip is empty");
-           return;
-       }
-       view.userInformationAlert("Save as HTML", "Please select a directory for the panels, then enter the name of the html file and select file destination");
-       File dir = view.setHTMLDirectory();
-       File outputter = view.saveHTMLFileWindow();
-
-       if(dir != null && outputter != null){
-           changeTitlePrompt();
-           changeCreditsPrompt();
-           endPanelPrompt();
-           ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
-           new HtmlCreator().snapToHTML(arraySnaps, outputter, dir, comixApp.getComicTitle(), comixApp.getComicCredits(), comixApp.getEndPanel());
-       }
-    }
-
-    private void changeTitlePrompt() {
+   private void changeTitlePrompt() {
        if(comixApp.getComicTitle() == "HomiesComix"){
            if(view.confirmTitleChange()){
                setComicTitle();
            }
        }
-    }
+   }
 
-    private void changeCreditsPrompt() {
+   private void changeCreditsPrompt() {
        if(comixApp.getComicCredits() == "HomiesComix"){
            if(view.confirmCreditsChange()){
                setComicCredits();
            }
        }
-    }
+   }
 
-    private void endPanelPrompt() {
-       if(view.confirmEndPanel()) {
-           comixApp.getEndPanel();
+   private BufferedImage endPanelPrompt(){
+       if(view.confirmEndPanel()){
+            File file = view.getEndPanelWindow();
+            if(file != null){
+                try {
+                    BufferedImage img = ImageIO.read(file);
+                    return img;
+                } catch (IOException e) {
+                    //some info pop up
+                    return defaultEndPanel();
+                }
+            }
+            else{
+                defaultEndPanel();
+            }
        }
+       return null;
+   }
+
+   private BufferedImage defaultEndPanel(){
+       try {
+           BufferedImage img = ImageIO.read(new File("/resources/closingPanel.png"));
+           return img;
+       } catch (IOException e) {
+           //some info pop up
+           return null;
+       }
+   }
+
+    private void saveAsHTML()
+    {
+        if(comixApp.noPanels()){
+            view.userErrorAlert("Failed to save ", "Comic strip is empty");
+            return;
+        }
+        view.userInformationAlert("Save as HTML", "Please select a directory for the panels, then enter the name of the html file and select file destination");
+        File dir = view.setHTMLDirectory();
+        File outputter = view.saveHTMLFileWindow();
+
+        if(dir != null && outputter != null){
+            changeTitlePrompt();
+            changeCreditsPrompt();
+            BufferedImage closingPanel = endPanelPrompt();
+            ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
+            new HtmlCreator().snapToHTML(arraySnaps, outputter, dir, comixApp.getComicTitle(), comixApp.getComicCredits(), closingPanel);
+        }
     }
 
    private void saveComiXML(){
@@ -477,7 +548,9 @@ public class Controller {
        if(load){
            File xmlFile = view.loadXMLFileWindow();
            if(xmlFile != null){
-               ArrayList<Panel> panels = ComiXML.createComicStripFromComiXML(xmlFile, view.getDefaultCharactersDirectory());
+               LoadComiXML loader = new LoadComiXML();
+               loader.createComicStripFromComiXML(xmlFile, view.getDefaultCharactersDirectory());
+               ArrayList<Panel> panels = loader.getPanels();
                if(!panels.isEmpty()){
                    comixApp.clearComixStrip();
                    for(Panel p : panels){
@@ -507,5 +580,13 @@ public class Controller {
        view.loadSelectedPanel(leftChar.getCharacterImage(), rightChar.getCharacterImage(), panel.getLeftBubbleType(),
                 panel.getRightBubbleType(), panel.getLeftBubbleText(), panel.getRightBubbleText(),
                 panel.getNarrativeTextTop(), panel.getNarrativeTextBottom());
+    }
+
+    private void unsavedChanges(){
+       isSaved = false;
+    }
+
+    private void savedChanges(){
+       isSaved = true;
     }
 }
