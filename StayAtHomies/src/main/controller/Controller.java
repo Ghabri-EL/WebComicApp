@@ -509,12 +509,10 @@ public class Controller {
                     BufferedImage img = ImageIO.read(file);
                     return img;
                 } catch (IOException e) {
-                    //some info pop up
+                    view.userErrorAlert("Failed to open file", "Failed to open the selected image you selected as a closing panel." +
+                            "\nImporting default closing panel.");
                     return defaultEndPanel();
                 }
-            }
-            else{
-                defaultEndPanel();
             }
        }
        return null;
@@ -523,9 +521,10 @@ public class Controller {
    private BufferedImage defaultEndPanel(){
        try {
            BufferedImage img = ImageIO.read(new File("/resources/closingPanel.png"));
+           System.out.println("IMAGE: " + img);
            return img;
        } catch (IOException e) {
-           //some info pop up
+           view.userErrorAlert("Failed to open file", "Failed to import default closing panel");
            return null;
        }
    }
@@ -581,8 +580,8 @@ public class Controller {
        if(load){
            File xmlFile = view.loadXMLFileWindow();
            if(xmlFile != null){
-               LoadComiXML loader = new LoadComiXML();
-               loader.createComicStripFromComiXML(xmlFile, view.getDefaultCharactersDirectory());
+               LoadComiXML loader = new LoadComiXML(xmlFile, view.getDefaultCharactersDirectory());
+               loader.createComicStripFromComiXML();
                ArrayList<Panel> panels = loader.getPanels();
                if(!panels.isEmpty()){
                    comixApp.clearComixStrip();
@@ -590,12 +589,25 @@ public class Controller {
                        loadPanelToWorkingSpace(p);
                        saveNewPanel();
                    }
-                   view.userInformationAlert("Loaded successfully", "Xml file loaded successfully." +
-                           " Please check the log file for more details");
                    //panels loaded in the model, refresh view comic strip based on model
                    refreshViewComicStrip();
+
+                   if(loader.getTitle() != null){
+                       comixApp.setComicTitle(loader.getTitle());
+                   }
+
+                   if(loader.getCredits() != null){
+                       comixApp.setComicCredits(loader.getCredits());
+                   }
+
+                   view.userInformationAlert("Loaded ComiXML File", "Xml file loaded successfully." +
+                           " Please check the log file for any errors encountered while loading the file." +
+                           "\n[Log file located in the same directory as the executable]");
                }
                else{
+                   if(loader.failedToParse()){
+                       view.userErrorAlert("Corrupted XML File", "Provided ComiXML file is corrupted and could not be parsed");
+                   }
                    view.userInformationAlert("Loading status", "No panels were loaded");
                }
            }

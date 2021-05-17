@@ -198,4 +198,9 @@ public class ComixApp extends WorkingPane
         }
         return selectedCharacter == getCharacterRight();
     }
+
+    public void resetTitleAndCredits(){
+        this.comicTitle = "HomiesComix";
+        this.comicCredits = "HomiesComix";
+    }
 }

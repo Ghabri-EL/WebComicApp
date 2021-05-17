@@ -15,7 +15,8 @@ public interface ViewDefaultValues {
     double LEFT_BUTTONS_PANEL_WIDTH = 200;
     Image THOUGHT_BUBBLE_IMAGE = new Image("/resources/thoughtBubble.png");
     Image SPEECH_BUBBLE_IMAGE = new Image("/resources/speechBubble.png");
-    String APP_THEME_COLOR = "#103859";
+    String APP_THEME_COLOR = "#003f63";
     String APP_THEME_COLOR_SCENE = "#04263b";
-    String BORDER_COLOR = "rgba(240, 240, 240, 0.2)";
+    String BORDER_COLOR_LIGHT = "rgba(240, 240, 240, 0.2)";
+    String BORDER_COLOR_DARK = "rgba(0, 0, 0, 0.5)";
 }

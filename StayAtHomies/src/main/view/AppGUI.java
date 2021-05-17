@@ -242,7 +242,7 @@ public class AppGUI implements ViewDefaultValues
         //the id of a panel into a vbox
         VBox bottomPaneWrapper = new VBox();
         bottomPaneWrapper.setAlignment(Pos.CENTER);
-        bottomPaneWrapper.setStyle("-fx-border-color: " + BORDER_COLOR + "; -fx-border-width: 1 0 0 0");
+        bottomPaneWrapper.setStyle("-fx-border-color: " + BORDER_COLOR_LIGHT + "; -fx-border-width: 1 0 0 0");
 
         //contains the buttons and label for the panel position (aka. the panelPositionBar)
         HBox panelPositionBar = new HBox();
@@ -298,8 +298,8 @@ public class AppGUI implements ViewDefaultValues
         leftBarButtonsWrapper.setPrefWidth(LEFT_BUTTONS_PANEL_WIDTH);
         leftBarButtonsWrapper.setSpacing(2);
         leftBarButtonsWrapper.setAlignment(Pos.TOP_CENTER);
-        leftBarButtonsWrapper.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" +
-                "-fx-border-color: " + BORDER_COLOR + "; -fx-border-width: 0 1 0 0");
+        leftBarButtonsWrapper.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";");
+
 
         ScrollPane scrollPane = new ScrollPane(leftBarButtonsWrapper);
         scrollPane.setFitToHeight(true);
@@ -308,7 +308,9 @@ public class AppGUI implements ViewDefaultValues
         scrollPane.setPannable(true);
         scrollPane.setStyle("-fx-background-color: " + APP_THEME_COLOR);
 
-        VBox colorPickerPane = new VBox();
+        VBox leftButtonsPaneWrapper = new VBox();
+        leftButtonsPaneWrapper.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" +
+                "-fx-border-color: " + BORDER_COLOR_DARK + "; -fx-border-width: 0 1 0 0");
 
         importLeftCharButton = new Button("Import Left", setButtonImg( "importLeftChar.png"));
         buttonCommonStyles(importLeftCharButton);
@@ -320,10 +322,9 @@ public class AppGUI implements ViewDefaultValues
         buttonCommonStyles(flipButton);
 
         colorPalette = new ColorPicker();
-        colorPalette.setMinHeight(30);
+        colorPalette.setMinHeight(40);
         colorPalette.setMinWidth(LEFT_BUTTONS_PANEL_WIDTH);
-        colorPalette.setStyle("-fx-background-color: " + APP_THEME_COLOR + ";" + "-fx-background-radius: 1;" +
-                "-fx-highlight-fill: white;-fx-cursor: hand");
+        colorPalette.setStyle("-fx-background-color: rgb(127, 118, 85);" + "-fx-background-radius: 1; -fx-cursor: hand");
         colorPalette.setOnAction(event ->{
             selectedColor = colorPalette.getValue();
         });
@@ -365,9 +366,9 @@ public class AppGUI implements ViewDefaultValues
 
         leftBarButtonsWrapper.getChildren().addAll(importLeftCharButton, importRightCharButton, flipButton, genderSwapButton, changeSkinToneButton, changeHairColorButton,
                 changeLipsColorButton, addSpeechBubbleButton, addThoughtBubbleButton, removeBubbleButton, addTextTopButton, addTextBottomButton, setComicTitle, setComicCredits);
-        colorPickerPane.getChildren().addAll(colorPalette, scrollPane);
+        leftButtonsPaneWrapper.getChildren().addAll(colorPalette, scrollPane);
 
-        layout.setLeft(colorPickerPane);
+        layout.setLeft(leftButtonsPaneWrapper);
     }
 
     public void createRightPaneHelp() {
@@ -393,7 +394,7 @@ public class AppGUI implements ViewDefaultValues
 
     private void buttonCommonStyles(Button btn){
         btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
-                "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold; -fx-padding: 10");
+                "-fx-text-fill: rgb(237, 237, 237); -fx-font-weight: bold; -fx-padding: 10");
         btn.setAlignment(Pos.BASELINE_LEFT);
         btn.setGraphicTextGap(15);
         btn.prefWidthProperty().setValue(LEFT_BUTTONS_PANEL_WIDTH);
@@ -403,7 +404,7 @@ public class AppGUI implements ViewDefaultValues
         });
         btn.setOnMouseExited(mouseEvent -> {
             btn.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-font-size: 16px;-fx-cursor: hand; -fx-background-radius: 1;"+
-                    "-fx-text-fill: rgb(184, 205, 217); -fx-font-weight: bold; -fx-padding: 10");
+                    "-fx-text-fill: rgb(237, 237, 237); -fx-font-weight: bold; -fx-padding: 10");
         });
     }
 

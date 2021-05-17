@@ -29,45 +29,72 @@ public class LoadComiXML implements DefaultColors {
     private String title;
     private String credits;
     private ArrayList<Panel> panels;
+    private boolean failedToParse;
+    private File xmlFile;
+    private File charactersDir;
 
-    public LoadComiXML(){
+    public LoadComiXML(File xmlFile, File charactersDir){
         panels = new ArrayList<>();
+        failedToParse = false;
+        this.xmlFile = xmlFile;
+        this.charactersDir = charactersDir;
     }
-    public void createComicStripFromComiXML(File xmlFile, File charactersDir){
+    public void createComicStripFromComiXML(){
         if(xmlFile == null){
+            LOGGER.log(Level.SEVERE, "Given xml file is is null");
             return;
         }
 
         try{
+            LOGGER.log(Level.FINEST, "Loading ComiXML logger");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(xmlFile);
 
             if(document == null){
                 LOGGER.log(Level.WARNING, "XML file format could not be parsed properly. Incorrect XML file format.");
+                failedToParse = true;
                 return;
             }
             document.normalizeDocument();
-            NodeList listOfPanels = document.getElementsByTagName("panel");
+            Node title = document.getElementsByTagName("title").item(0);
+            Node credits = document.getElementsByTagName("credits").item(0);
 
+            if(title != null){
+                this.title = title.getTextContent();
+            }
+            else {
+                LOGGER.log(Level.WARNING, "Failed to parse title element");
+            }
+
+            if(credits != null){
+                this.credits = credits.getTextContent();
+            }
+            else{
+                LOGGER.log(Level.WARNING, "Failed to parse credits element");
+            }
+
+            NodeList listOfPanels = document.getElementsByTagName("panel");
             int id;
+            int idGenerated = 0;
             for(int i = 0; i < listOfPanels.getLength(); i++){
                 Node node = listOfPanels.item(i);
                 Panel panel = new Panel();
                 LOGGER.log(Level.FINEST, "Parsing :: [Panel " + i +"]");
+
                 Element panelElement = (Element) node;
                 if(panelElement.hasAttribute("id")){
                     try{
                         id = Integer.parseInt(panelElement.getAttribute("id"));
                         panel.setId(id);
                     }catch(NumberFormatException ex){
-                        //ex.printStackTrace();
-                        LOGGER.info("Panel does not contain an id attribute. Id generated: " + i);
-                        id = i;
+                        LOGGER.info("Panel does not contain an id attribute. Id generated: " + idGenerated);
+                        id = idGenerated;
                     }
                 }else{
-                    id = i;
+                    id = idGenerated;
                 }
+
                 panel.setId(id);
                 //parse the current panel
                 parsePanel(node, panel, charactersDir);
@@ -75,10 +102,11 @@ public class LoadComiXML implements DefaultColors {
                 if(panel.getCharacterLeft() != null && panel.getCharacterRight() != null){
                     panels.add(panel);
                     //log panel created successfully
-                    LOGGER.info("Panel [" +  panel.getId() + "] loaded successfully");
+                    LOGGER.info("Panel [id:" +  panel.getId() + "] loaded successfully");
+                    idGenerated++;
                 }else{
                     //to add error to log
-                    LOGGER.log(Level.WARNING, "Panel [" + panel.getId() +"]could not be parsed");
+                    LOGGER.log(Level.WARNING, "Panel number [" + panel.getId() +"]could not be parsed");
                 }
             }
             if(panels.isEmpty()){
@@ -87,19 +115,22 @@ public class LoadComiXML implements DefaultColors {
         }
         catch(ParserConfigurationException exception){
             exception.printStackTrace();
-            LOGGER.log(Level.WARNING, "Parser configuration error");
+            LOGGER.log(Level.SEVERE, "Parser configuration error");
         } catch (IOException e) {
             e.printStackTrace();
-            LOGGER.log(Level.WARNING, "XML file could not be loaded properly.");
+            LOGGER.log(Level.SEVERE, "XML file could not be loaded properly.");
         } catch (SAXException e) {
             e.printStackTrace();
-            LOGGER.log(Level.WARNING, "XML file format could not be parsed properly. Incorrect XML file format.");
+            LOGGER.log(Level.SEVERE, "XML file format could not be parsed properly. Incorrect XML file format.");
+            failedToParse = true;
         }
     }
 
-    private static void parsePanel(Node panelNode, Panel panel, File charactersDir){
+    private void parsePanel(Node panelNode, Panel panel, File charactersDir){
         NodeList panelElements = panelNode.getChildNodes();
 
+        boolean leftFound = false;
+        boolean rightFound = false;
         for(int i = 0; i < panelElements.getLength(); i++){
             Node node = panelElements.item(i);
             if(node.getNodeType() == Node.ELEMENT_NODE){
@@ -108,9 +139,11 @@ public class LoadComiXML implements DefaultColors {
                     panel.setNarrativeTextTop(topNarrativeText);
                 }
                 else if(node.getNodeName().equalsIgnoreCase("left")){
+                    leftFound = true;
                     parseLeftAndRightElement(node, panel, Selected.LEFT, charactersDir);
                 }
                 else if(node.getNodeName().equalsIgnoreCase("right")){
+                    rightFound = true;
                     parseLeftAndRightElement(node, panel, Selected.RIGHT, charactersDir);
                 }else if(node.getNodeName().equalsIgnoreCase("below")){
                     NarrativeText bottomNarrativeText = parseNarrativeText(node);
@@ -121,9 +154,18 @@ public class LoadComiXML implements DefaultColors {
                 }
             }
         }
+        if(!leftFound){
+            panel.setCharacterLeft(null);
+            LOGGER.log(Level.WARNING, "Left element in [panel " + panel.getId() + "] not found");
+        }
+
+        if(!rightFound){
+            panel.setCharacterRight(null);
+            LOGGER.log(Level.WARNING, "Right element in [panel " + panel.getId() + "] not found");
+        }
     }
 
-    private static NarrativeText parseNarrativeText(Node narrativeTextNode){
+    private NarrativeText parseNarrativeText(Node narrativeTextNode){
         String text;
         if(narrativeTextNode.getChildNodes().getLength() == 1){
             text = narrativeTextNode.getTextContent();
@@ -156,24 +198,25 @@ public class LoadComiXML implements DefaultColors {
     }
 
     //partition refers to the left or right side of the panel
-    private static void parseLeftAndRightElement(Node partition, Panel panel, Selected selected, File charactersDir){
+    private void parseLeftAndRightElement(Node partition, Panel panel, Selected selected, File charactersDir){
         NodeList list = partition.getChildNodes();
 
+        boolean bubblePresent = false;
+        boolean figurePresent = false;
         for(int i = 0; i < list.getLength(); i++) {
             Node node = list.item(i);
 
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 if(node.getNodeName().equalsIgnoreCase("figure")){
+                    figurePresent = true;
                     Character character = parseFigure(node, charactersDir);
-                    if(character == null){
-                        LOGGER.log(Level.WARNING, "Failed to load "+ selected.toString().toLowerCase()+ " character/pose in panel ["+ panel.getId() + "]");
-                    }
                     if(selected == Selected.LEFT){
                         panel.setCharacterLeft(character);
                     }else{
                         panel.setCharacterRight(character);
                     }
                 }else if(node.getNodeName().equalsIgnoreCase("balloon")){
+                    bubblePresent = true;
                     Element element = (Element) node;
                     String bubbleType = element.getAttribute("status");
                     String bubbleText = element.getElementsByTagName("content").item(0).getTextContent();
@@ -197,9 +240,21 @@ public class LoadComiXML implements DefaultColors {
                 }
             }
         }
+        if(!figurePresent){
+            if(selected == Selected.LEFT){
+                panel.setCharacterLeft(new Character(loadNeutralPose(), "neutral"));
+            }else{
+                panel.setCharacterRight(new Character(loadNeutralPose(), "neutral"));
+            }
+            LOGGER.log(Level.WARNING, "Figure: "+ selected.toString().toLowerCase()+ " character in [panel "+ panel.getId() + "] " +
+                    "not found. Neutral loaded.");
+        }
+        if(!bubblePresent){
+            LOGGER.log(Level.WARNING, "Failed to load "+ selected.toString().toLowerCase()+ " bubble in [panel "+ panel.getId() + "]");
+        }
     }
 
-    private static Character parseFigure(Node figureNode, File charactersDir){
+    private Character parseFigure(Node figureNode, File charactersDir){
         NodeList figureElements = figureNode.getChildNodes();
 
         String appearance = "female";
@@ -216,6 +271,9 @@ public class LoadComiXML implements DefaultColors {
             if(node.getNodeType() == Node.ELEMENT_NODE){
                 if(node.getNodeName().equalsIgnoreCase("appearance")){
                     appearance = node.getTextContent();
+                    if(!(appearance.equalsIgnoreCase("male") || appearance.equalsIgnoreCase("female"))){
+                        LOGGER.log(Level.WARNING, "Appearance value is invalid. Appearance set to default(female).");
+                    }
                 }else if(node.getNodeName().equalsIgnoreCase("skin")){
                     //Color.web encased in a try as it returns illegal argument exception on invalid color argument
                     String skin = node.getTextContent();
@@ -223,11 +281,9 @@ public class LoadComiXML implements DefaultColors {
                         skinColor = Color.web(skin);
                     }catch(IllegalArgumentException ex){
                         //ex.printStackTrace();
-                        //to add error message to logger
                         LOGGER.log(Level.WARNING, "Skin color invalid. Skin tone set to default");
                     }catch(NullPointerException ex){
                         //ex.printStackTrace();
-                        //add error to logger
                         LOGGER.log(Level.WARNING, "Skin color invalid. Skin tone set to default");
                     }
                 }else if(node.getNodeName().equalsIgnoreCase("hair")){
@@ -235,11 +291,10 @@ public class LoadComiXML implements DefaultColors {
                     try{
                         hairColor = Color.web(hair);
                     }catch(IllegalArgumentException ex){
-                        //to add error message to logger
+                        //ex.printStackTrace();
                         LOGGER.log(Level.WARNING, "Hair color invalid. Hair color set to default");
                     }catch(NullPointerException ex){
                         //ex.printStackTrace();
-                        //add error to logger
                         LOGGER.log(Level.WARNING, "Hair color invalid. Hair color set to default");
                     }
                 }else if(node.getNodeName().equalsIgnoreCase("lips")){
@@ -247,17 +302,19 @@ public class LoadComiXML implements DefaultColors {
                     try{
                         lipsColor = Color.web(lips);
                     }catch(IllegalArgumentException ex){
-                        //to add error message to logger
+                        //ex.printStackTrace();
                         LOGGER.log(Level.WARNING, "Lips color invalid. Lips color set to default");
                     }catch(NullPointerException ex){
                         //ex.printStackTrace();
-                        //add error to logger
                         LOGGER.log(Level.WARNING, "Lips color invalid. Lips color set to default");
                     }
                 }else if(node.getNodeName().equalsIgnoreCase("pose")){
                     pose = node.getTextContent();
                 }else if(node.getNodeName().equalsIgnoreCase("facing")){
                     facing = node.getTextContent();
+                    if(!(facing.equalsIgnoreCase("left") || facing.equalsIgnoreCase("right"))){
+                        LOGGER.log(Level.WARNING, "Orientation/Facing value is invalid. Orientation set to default(right).");
+                    }
                 }
                 else{
                     LOGGER.info("Figure element ["+ node.getNodeName() + "] cannot be parsed in this app.");
@@ -267,6 +324,7 @@ public class LoadComiXML implements DefaultColors {
 
         Image charImage = loadCharacterPose(charactersDir, pose);
         if(charImage == null){
+            LOGGER.log(Level.WARNING, "Failed to load character pose");
             return null;
         }
         Character character = new Character(charImage, pose);
@@ -285,21 +343,31 @@ public class LoadComiXML implements DefaultColors {
         return character;
     }
 
-    private static Image loadCharacterPose(File charDir, String pose){
+    private Image loadCharacterPose(File charDir, String pose){
         if(pose == null){
-            return null;
+            LOGGER.log(Level.WARNING, "Pose invalid. Neutral pose imported.");
+            return loadNeutralPose();
         }
-        final String POSE = pose.toLowerCase();
 
+        if(charDir == null){
+            LOGGER.log(Level.WARNING, "Invalid characters directory. Neutral pose imported.");
+            return loadNeutralPose();
+        }
+
+        final String POSE = pose.toLowerCase();
         FileFilter filter = file -> file.getName().endsWith("png") && file.getName().startsWith(POSE);
         File [] files = charDir.listFiles(filter);
 
         if(files.length != 0){
             return new Image(files[0].toURI().toString());
         }else{
-            LOGGER.log(Level.WARNING, "Pose not found in the given directory. Neutral pose uploaded.");
-            return new Image("/resources/neutral.png");
+            LOGGER.log(Level.WARNING, "Pose not found in the given directory. Neutral pose imported.");
+            return loadNeutralPose();
         }
+    }
+
+    private Image loadNeutralPose(){
+        return new Image("/resources/neutral.png");
     }
 
     public ArrayList<Panel> getPanels(){
@@ -312,5 +380,13 @@ public class LoadComiXML implements DefaultColors {
 
     public String getCredits() {
         return credits;
+    }
+
+    public boolean isXMLNull(){
+        return this.xmlFile == null;
+    }
+
+    public boolean failedToParse(){
+        return failedToParse;
     }
 }

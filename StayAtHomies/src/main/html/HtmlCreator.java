@@ -18,7 +18,6 @@ public class HtmlCreator
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title, String credits, BufferedImage endPanel)
     {
-        System.out.println("Filename: " + new File("/resources/neutral.png").getName());
         BufferedImage bi;
         BufferedWriter bw = null;
         try {
@@ -27,6 +26,8 @@ public class HtmlCreator
             bw.write("<h1>" + title + "</h1>\n");
             bw.write("<div id=\"comic\"> \n \t");
 
+            int width = 610;
+            int height = 600;
             for(int i=0; i<images.size(); i++)
             {
                 File currentPanelSnapshot = new File(dir + "/panel" + i + ".png"); //Add directory in front of file name here.
@@ -34,17 +35,20 @@ public class HtmlCreator
                 bw.flush();
                 Image image = images.get(i);
                 bi = SwingFXUtils.fromFXImage(image, null);
-                int width = (int)image.getWidth();
-                int height = (int)image.getHeight();
-                java.awt.Image scaledImg = bi.getScaledInstance(width * 2, height * 2, java.awt.Image.SCALE_SMOOTH);
+                width = (int)image.getWidth();
+                height = (int)image.getHeight();
+                //scale up image to get a higher quality panel
+                java.awt.Image scaledImg = bi.getScaledInstance(width * 3, height * 3, java.awt.Image.SCALE_SMOOTH);
                 ImageIO.write(convertToBufferedImage(scaledImg), "png", currentPanelSnapshot);
             }
 
-            File closingPanelFile = new File(dir + "/closingPanel.png");
-            bw.write("<div class=\"images\"><img src=\"" + closingPanelFile +"\" alt='ClosingPanel' style='width:100%'></div> \n");
-            bw.flush();
-            java.awt.Image scaledClosingPanel = endPanel.getScaledInstance(1220, 1200, java.awt.Image.SCALE_SMOOTH);
-            ImageIO.write(convertToBufferedImage(scaledClosingPanel), "png", closingPanelFile);
+            if(endPanel != null){
+                File closingPanelFile = new File(dir + "/closingPanel.png");
+                bw.write("<div class=\"images\"><img src=\"" + closingPanelFile +"\" alt='ClosingPanel' style='width:100%'></div> \n");
+                bw.flush();
+                java.awt.Image scaledClosingPanel = endPanel.getScaledInstance(width * 3, height * 3, java.awt.Image.SCALE_SMOOTH);
+                ImageIO.write(convertToBufferedImage(scaledClosingPanel), "png", closingPanelFile);
+            }
 
             bw.write("</div>\n" + "<h1>" + credits + "</h1>\n" +
                     "    </body>\n" +
@@ -66,16 +70,15 @@ public class HtmlCreator
             return (BufferedImage) img;
         }
 
-        // Create a buffered image with transparency
-        BufferedImage bi = new BufferedImage(
+        BufferedImage bufferedImage = new BufferedImage(
                 img.getWidth(null), img.getHeight(null),
                 BufferedImage.TYPE_INT_ARGB);
 
-        Graphics2D graphics2D = bi.createGraphics();
+        Graphics2D graphics2D = bufferedImage.createGraphics();
         graphics2D.drawImage(img, 0, 0, null);
         graphics2D.dispose();
 
-        return bi;
+        return bufferedImage;
     }
 
     private String formatHTML()
