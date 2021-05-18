@@ -46,7 +46,7 @@ public class LoadComiXML implements DefaultColors {
         }
 
         try{
-            LOGGER.log(Level.FINEST, "Loading ComiXML logger");
+            LOGGER.log(Level.FINEST, "LOADING COMIXML LOG");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(xmlFile);

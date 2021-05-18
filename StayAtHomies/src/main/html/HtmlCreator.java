@@ -15,9 +15,15 @@ import java.awt.*;
 
 public class HtmlCreator
 {
-    private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private boolean saved;
+
+    public HtmlCreator(){
+        saved = false;
+    }
     public void snapToHTML(ArrayList<Image> images, File outputFile, File dir, String title, String credits, BufferedImage endPanel)
     {
+        LOGGER.log(Level.FINEST, "GENERATING HTML FILE LOG");
         BufferedImage bi;
         BufferedWriter bw = null;
         try {
@@ -44,24 +50,24 @@ public class HtmlCreator
 
             if(endPanel != null){
                 File closingPanelFile = new File(dir + "/closingPanel.png");
-                bw.write("<div class=\"images\"><img src=\"" + closingPanelFile +"\" alt='ClosingPanel' style='width:100%'></div> \n");
+                bw.write("<div class=\"images\"><img src=\"" + closingPanelFile +"\" alt='ClosingPanel' style='width:100%; display:block;'></div> \n");
                 bw.flush();
                 java.awt.Image scaledClosingPanel = endPanel.getScaledInstance(width * 3, height * 3, java.awt.Image.SCALE_SMOOTH);
-                ImageIO.write(convertToBufferedImage(scaledClosingPanel), "png", closingPanelFile);
+                ImageIO.write(convertToBufferedImage(endPanel), "png", closingPanelFile);
             }
 
             bw.write("</div>\n" + "<h1>" + credits + "</h1>\n" +
                     "    </body>\n" +
                     "</html>");
             bw.close();
+            saved = true;
         }
         catch (IOException e)
         {
-            System.out.println("Error saving Images in snapToHTML method");
-            logger.log(Level.WARNING, "An error was encountered while saving the panels.");
+            LOGGER.log(Level.WARNING, "An error was encountered while saving the panels.");
         }
-        System.out.println("Files saved to HTML successfully");
-        logger.info("HTML file and panels saved successfully");
+        LOGGER.info("HTML file and panels saved successfully");
+
     }
 
     public static BufferedImage convertToBufferedImage(java.awt.Image img) {
@@ -79,6 +85,10 @@ public class HtmlCreator
         graphics2D.dispose();
 
         return bufferedImage;
+    }
+
+    public boolean isSaved(){
+        return saved;
     }
 
     private String formatHTML()
@@ -133,6 +143,8 @@ public class HtmlCreator
                 "                min-width: 400px;\n" +
                 "                min-height: 400px;\n" +
                 "                width: 45%;\n" +
+                "                overflow: hidden;\n" +
+                "                border-radius: 5px;\n" +
                 "                transition: linear 0.1s;\n" +
                 "            }\n" +
                 "\n" +

@@ -44,9 +44,15 @@ public class HelpPage {
             + "1.11  \"Remove Bubble\" button allows you to remove any speech/thought bubble .\n" +
                     "Character has to be selected in order for the operation to work .\n"
                     + "\n"
-            + "1.12 \"Top Narration\" button allows you to add narrative text at the TOP of the panel .\n"
+            + "1.12 \"Top Narration\" button allows you to add narrative text at the TOP of the panel. When you first add the text, the text is displayed in a single line." +
+                    "If the font size is too small you can right click the [Top Narration] button and select wrap text to display the text in multiple lines. If the wrap feature" +
+                    "decreases the font size of the text, smaller than it is in a single line, then the text will be preserved in a single line. If the text is wrapped and you " +
+                    "want to have it in a single line, you right click the button again and select single line option.\n"
                     + "\n"
-            + "1.13 \"Bottom Narration\" button allows you to add narrative text at the BOTTOM of the panel .\n"
+            + "1.13 \"Bottom Narration\" button allows you to add narrative text at the BOTTOM of the panel. When you first add the text, the text is displayed in a single line." +
+                    "If the font size is too small you can right click the [Bottom Narration] button and select wrap text to display the text in multiple lines. If the wrap feature" +
+                    "decreases the font size of the text, smaller than it is in a single line, then the text will be preserved in a single line. If the text is wrapped and you " +
+                    "want to have it in a single line, you right click the button again and select single line option.\n"
                     + "\n"
             + "1.14 \"Comic Title\" button allows you to set the title of the WebComic. Default name is HomiesComix and the character limit is 100 .\n"
                     + "\n"
@@ -55,24 +61,25 @@ public class HelpPage {
             "2. Top Bar Buttons\n"
                     + "\n"
             + "2.1 To save a panel select Panel->Save from the Top Bar or, if the panel exists in the comic strip, right click the panel and select the Save option." +
-                    " Make sure two characters have been selected .\n"
+                    " Make sure two characters have been imported.\n"
                     + "\n"
             + "2.2 To go back and work on a previous panel , simply click on the panel you desire to open again .\n"
                     + "\n"
-            + "2.3 To delete a panel you no longer need , select Panel->Delete or right click the panel and select the Delete option." +
+            + "2.3 To delete a panel you can either select Panel->Delete or right click the panel and select the Delete option." +
                     "A popup will show on screen to make sure you want to delete the panel . By clicking yes the panel will be deleted .\n"
                     + "\n"
             + "2.4 To save file in xml format select File->Save and select directory where file should be saved . " +
                     "The log file is saved in the directory as the executable file . Make sure the panel is saved first .\n"
                     + "\n"
-            + "2.5 To load an xml file select File->Load. Make sure to set the directory of the character first, File -> Characters Directory." +
+            + "2.5 To load an xml file select File->Load. Make sure to set the directory of the characters first, File -> Characters Directory." +
                     " This will allow the app to load the proper pose for each figure in the xml\n"
                     + "\n"
-            + "2.6 To save file in html format select File->Save as HTML . A popup will show with instructions on how and where to save " +
+            + "2.6 To save file in html format select File->Save as HTML. A popup will show with instructions on how and where to save " +
                     "the file .\n"
                     + "\n"
             + "2.7 To change panel position in the comic strip right click on the panel you wish to re-arrange and select Change Panel Position ." +
-                    "Then introduce the new position of the panel .\n"
+                    "Then introduce the new position of the panel. You can also use the arrow buttons at the top of the strip to change the position" +
+                    "of the selected panel to the left or to the right.\n"
 
     };
 

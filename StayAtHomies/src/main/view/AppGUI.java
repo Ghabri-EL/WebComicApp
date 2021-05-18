@@ -650,16 +650,17 @@ public class AppGUI implements ViewDefaultValues
 
     //formats font size based on width and height in multiple lines
     public void narrativeTextFormatTextWrapping(Text narrativeText){
+        double height = narrativeText.getLayoutBounds().getHeight();
         narrativeText.setWrappingWidth(WORKING_PANE_WIDTH - 10);
         int fontSize = (int)WORKING_PANE_WIDTH / 20;
         narrativeText.setFont(Font.font(fontSize));
         while(narrativeText.getLayoutBounds().getHeight() > 40){
-            //System.out.println("THE HEIGHT IS: " + narrativeText.getLayoutBounds().getHeight() + "\t FONT SIZE: " + fontSize);
             fontSize -= 1;
             narrativeText.setFont(Font.font(fontSize));
         }
-//        System.out.println("BNarrative width: " + narrativeText.getLayoutBounds().getWidth());
-//        System.out.println("BNarrative height: " + narrativeText.getLayoutBounds().getHeight());
+        if(height == narrativeText.getLayoutBounds().getHeight()){
+            userInformationAlert("Narrative text", "Wrapping the text will decrease the font size. Text preserved in single line.");
+        }
     }
     //END NARRATIVE TEXT METHODS
 

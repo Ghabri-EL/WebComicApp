@@ -133,9 +133,15 @@ Daiana Morjolic : Worked on implementing sprint 6 feedback and added new informa
 -Command to execute : java -jar StayAtHomies.jar
 -Required to execute: JDK version 13 or above
 
+Story 14 was implemented last week and improved this week. To change the position of a panel you can either use the arrow buttons at the top of the strip
+or right click a panel and select change position.
+
+Story 18 was implemented in the beginning of the of the project, which allows the user to import a character image with the help of a pop up window that lets
+you browse the. Clicking on File -> Characters Directory lets you choose a default directory for the characters.
+
 Niall McGurk:
-Gabriel Gherasim:
-Daiana Morjolic: implemented Comic Credits button, title and credits prompts from sprint 7 feedback, new information for help page added .
+Gabriel Gherasim: For this sprint I worked on and improved the 'change panel position' feature; testing, debugging and fixing bugs. Improved logger formatting and logfile readability. Improved loading and creating xml features. Helped create the 'add closing panel' feature. Created button icons and worked with my team to improve the ui design. Refactored parts of code. Worked on narrative text and bubble text auto font resizing feature.
+Daiana Morjolic: implemented Comic Credits button, title and credits prompts from sprint 7 feedback, new information for help page added.
 
 === COMPLAINTS ===
 

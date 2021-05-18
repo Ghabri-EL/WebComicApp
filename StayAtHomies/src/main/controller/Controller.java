@@ -7,7 +7,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import main.comi_xml_handler.ComiXML;
+import main.comi_xml_handler.GenerateComiXML;
 import main.comi_xml_handler.LoadComiXML;
 import main.model.*;
 import main.model.Character;
@@ -514,14 +514,16 @@ public class Controller {
                     return defaultEndPanel();
                 }
             }
+            else{
+                return defaultEndPanel();
+            }
        }
        return null;
    }
 
    private BufferedImage defaultEndPanel(){
        try {
-           BufferedImage img = ImageIO.read(new File("/resources/closingPanel.png"));
-           System.out.println("IMAGE: " + img);
+           BufferedImage img = ImageIO.read(getClass().getResourceAsStream("/resources/closingPanel.png"));
            return img;
        } catch (IOException e) {
            view.userErrorAlert("Failed to open file", "Failed to import default closing panel");
@@ -545,7 +547,15 @@ public class Controller {
             changeCreditsPrompt();
             BufferedImage closingPanel = endPanelPrompt();
             ArrayList <Image> arraySnaps = comixApp.getComixStrip().sendSnapshot();
-            new HtmlCreator().snapToHTML(arraySnaps, outputter, dir, comixApp.getComicTitle(), comixApp.getComicCredits(), closingPanel);
+            HtmlCreator htmlCreator = new HtmlCreator();
+            htmlCreator.snapToHTML(arraySnaps, outputter, dir, comixApp.getComicTitle(), comixApp.getComicCredits(), closingPanel);
+
+            if(htmlCreator.isSaved()){
+                view.userInformationAlert("Saved HTML", "Html file saved successfully");
+            }
+            else{
+                view.userErrorAlert("Failed to save", "Failed to save the html and panels properly");
+            }
         }
     }
 
@@ -560,10 +570,9 @@ public class Controller {
            changeTitlePrompt();
            changeCreditsPrompt();
 
-           boolean created = ComiXML.createXML(comixApp.getComixStrip().getPanels(), xmlFile, comixApp.getComicTitle(), comixApp.getComicCredits());
+           boolean created = GenerateComiXML.createXML(comixApp.getComixStrip().getPanels(), xmlFile, comixApp.getComicTitle(), comixApp.getComicCredits());
            if(!created){
-               //log file feature to be added
-               view.userErrorAlert("Failed to save ", "Failed to save the XML file.");
+               view.userErrorAlert("Failed to save ", "Failed to save the XML file.\nPlease check the log file for more details.");
            }
            else{
                view.userInformationAlert("Saved file", "Project saved in XML format successfully");
