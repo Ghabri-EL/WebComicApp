@@ -73,7 +73,6 @@ public class AppGUI implements ViewDefaultValues
     private Menu fileMenu;
     private Menu panelMenu;
     private Menu helpMenu;
-    private Menu messageMenu;
 
     //TOP BAR MENU OPTIONS
     private final MenuItem fileMenuSaveXML = new MenuItem("Save");
@@ -269,7 +268,6 @@ public class AppGUI implements ViewDefaultValues
         fileMenu = new Menu("File");
         panelMenu = new Menu("Panel");
         helpMenu = new Menu("Help");
-        messageMenu = new Menu("Messages");
 
         fileMenu.getItems().add(fileMenuLoadXML);
         fileMenu.getItems().add(fileMenuSaveXML);
@@ -285,7 +283,7 @@ public class AppGUI implements ViewDefaultValues
         helpMenu.getItems().add(about);
 
         MenuBar topMenuBar = new MenuBar();
-        topMenuBar.getMenus().addAll(fileMenu, panelMenu, helpMenu, messageMenu);
+        topMenuBar.getMenus().addAll(fileMenu, panelMenu, helpMenu);
 
         layout.setTop(topMenuBar);
     }
@@ -374,16 +372,19 @@ public class AppGUI implements ViewDefaultValues
     public void createRightPaneHelp() {
         helpPageClass = new HelpPage();
         layout.setRight(helpPageClass.helpPage("HELP"));
+        stage.setWidth(SCENE_WIDTH);
     }
 
     public void createRightPaneGS() {
         helpPageClass = new HelpPage();
         layout.setRight(helpPageClass.helpPage("STARTED"));
+        stage.setWidth(SCENE_WIDTH);
     }
 
     public void createRightPaneAbout() {
         helpPageClass = new HelpPage();
         layout.setRight(helpPageClass.helpPage("ABOUT"));
+        stage.setWidth(SCENE_WIDTH);
     }
 
     private void createContextMenu(){
