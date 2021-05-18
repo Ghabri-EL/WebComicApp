@@ -667,16 +667,16 @@ public class AppGUI implements ViewDefaultValues
     public String setComicTitleDialog(){
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Comic Title");
-        textInput.setHeaderText("Enter comic title. Max 150 characters.");
+        textInput.setHeaderText("Enter comic title. Max 200 characters.");
         textInput.showAndWait();
 
         String title = textInput.getResult();
         if(title != null){
-            if(title.length() <= 100){
+            if(title.length() <= 200){
                 return title;
             }
             else{
-                userErrorAlert("Set title error", "Failed to set comic title. Over 150 characters entered");
+                userErrorAlert("Set title error", "Failed to set comic title. Over 200 characters entered");
             }
         }
         return null;
@@ -685,16 +685,16 @@ public class AppGUI implements ViewDefaultValues
     public String setComicCreditsDialog() {
         TextInputDialog textInput = new TextInputDialog();
         textInput.setTitle("Comic Credits");
-        textInput.setHeaderText("Enter comic credits...");
+        textInput.setHeaderText("Enter comic credits. Max 200 characters.");
         textInput.showAndWait();
 
         String credits = textInput.getResult();
         if(credits != null){
-            if(credits.length() <= 100){
+            if(credits.length() <= 200){
                 return credits;
             }
             else{
-                userErrorAlert("Set credits error", "Failed to set comic credits. Over 100 characters entered");
+                userErrorAlert("Set credits error", "Failed to set comic credits. Over 200 characters entered");
             }
         }
         return null;

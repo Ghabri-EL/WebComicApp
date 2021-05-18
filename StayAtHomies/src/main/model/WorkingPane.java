@@ -72,6 +72,9 @@ public abstract class WorkingPane {
     }
 
     public void setLeftBubbleText(String leftBubbleText) {
+        if(leftBubbleText != null){
+            leftBubbleText = (leftBubbleText.length() < 250 ? leftBubbleText : leftBubbleText.substring(0 , 250));
+        }
         this.leftBubbleText = leftBubbleText;
     }
 
@@ -80,6 +83,9 @@ public abstract class WorkingPane {
     }
 
     public void setRightBubbleText(String rightBubbleText) {
+        if(rightBubbleText != null){
+            rightBubbleText = (rightBubbleText.length() < 250 ? rightBubbleText : rightBubbleText.substring(0 , 250));
+        }
         this.rightBubbleText = rightBubbleText;
     }
 

@@ -14,11 +14,6 @@ public class NarrativeText {
         this.narrativeTextWrap = NarrativeTextWrap.NOWRAP;
     }
 
-    public NarrativeText(String narrativeText, NarrativeTextWrap narrativeTextLine){
-        this.narrativeText = narrativeText;
-        this.narrativeTextWrap = narrativeTextLine;
-    }
-
     public NarrativeText(NarrativeText narrativeText){
         this.narrativeText = narrativeText.narrativeText;
         this.narrativeTextWrap = narrativeText.narrativeTextWrap;
@@ -29,6 +24,9 @@ public class NarrativeText {
     }
 
     public void setNarrativeText(String narrativeText) {
+        if(narrativeText != null){
+            narrativeText = (narrativeText.length() <= 300 ? narrativeText : narrativeText.substring(0 , 300));
+        }
         this.narrativeText = narrativeText;
     }
 

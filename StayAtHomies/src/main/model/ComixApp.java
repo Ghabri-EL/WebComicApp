@@ -45,6 +45,9 @@ public class ComixApp extends WorkingPane
     }
 
     public void setComicTitle(String title){
+        if(title != null){
+            title = (title.length() < 200 ? title : title.substring(0 , 200));
+        }
         this.comicTitle = title;
     }
 
@@ -53,6 +56,9 @@ public class ComixApp extends WorkingPane
     }
 
     public void setComicCredits(String credits) {
+        if(credits != null){
+            credits = (credits.length() < 200 ? credits : credits.substring(0 , 200));
+        }
         this.comicCredits = credits;
     }
 
