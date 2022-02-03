@@ -1,5 +1,14 @@
+App Description: Application that allows your to create a web comic based on pre-defined models. It provides a set of tools to defify the models, add text bubbles, narration, title and credits. The app provides the functionality to save and load the comic as an XML file, and also save and present the comic as an HTML file.
+
+Execution:
+	-Command to execute jar: java -jar StayAtHomies.jar
+
+	-Required to execute: JDK version 13 or above
+
+	-Instructions: It is recommended to select the default directory for the models(images folder in this repo contains models). For further 	instructions access the help page in the app.
+
 Team Name: StayAtHomies
-Team Members : Daiana Morjolic , Ryan Daly , Niall McG , Vasile Gabriel Gherasim
+Team Members : Gabriel Gherasim, Daiana Morjolic , Niall McG
 
 === Story 1 ===
 
