@@ -324,7 +324,7 @@ public class LoadComiXML implements DefaultColors {
 
         Image charImage = loadCharacterPose(charactersDir, pose);
         if(charImage == null){
-            LOGGER.log(Level.WARNING, "Failed to load character pose");
+            LOGGER.log(Level.WARNING, "Failed to load character pose [" + pose + "]");
             return null;
         }
         Character character = new Character(charImage, pose);
@@ -361,7 +361,7 @@ public class LoadComiXML implements DefaultColors {
         if(files.length != 0){
             return new Image(files[0].toURI().toString());
         }else{
-            LOGGER.log(Level.WARNING, "Pose not found in the given directory. Neutral pose imported.");
+            LOGGER.log(Level.WARNING, "Pose [" + pose + "] not found in the given directory. Neutral pose imported.");
             return loadNeutralPose();
         }
     }

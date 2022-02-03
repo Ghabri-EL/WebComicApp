@@ -75,9 +75,9 @@ public class AppGUI implements ViewDefaultValues
     private Menu helpMenu;
 
     //TOP BAR MENU OPTIONS
-    private final MenuItem fileMenuSaveXML = new MenuItem("Save");
-    private final MenuItem fileMenuLoadXML = new MenuItem("Load");
     private final MenuItem fileMenuCharactersDir = new MenuItem("Characters Directory");
+    private final MenuItem fileMenuSaveXML = new MenuItem("Save as XML");
+    private final MenuItem fileMenuLoadXML = new MenuItem("Load XML");
     private final MenuItem saveAsHtml = new MenuItem("Save as HTML");
     private final MenuItem panelMenuNew = new MenuItem("New");
     private final MenuItem panelMenuSave = new MenuItem("Save");
@@ -269,9 +269,9 @@ public class AppGUI implements ViewDefaultValues
         panelMenu = new Menu("Panel");
         helpMenu = new Menu("Help");
 
+        fileMenu.getItems().add(fileMenuCharactersDir);
         fileMenu.getItems().add(fileMenuLoadXML);
         fileMenu.getItems().add(fileMenuSaveXML);
-        fileMenu.getItems().add(fileMenuCharactersDir);
         fileMenu.getItems().add(saveAsHtml);
 
         panelMenu.getItems().add(panelMenuNew);
@@ -594,7 +594,6 @@ public class AppGUI implements ViewDefaultValues
             String text = textInput.getResult();
             //limit the narrative text to 300 characters
             text = (text.length() <= 300 ? text : text.substring(0 , 300));
-            System.out.println(text.length());
             return text;
         }
         return null;
@@ -621,12 +620,12 @@ public class AppGUI implements ViewDefaultValues
     //set text with single line format
     private void setNarrativeTextTop(String text){
         topNarrativeText.setText(text);
-        narrativeTextFormat(topNarrativeText);
+        narrativeTextFormatTextWrapping(topNarrativeText);
     }
     //set text with single line format
     private void setNarrativeTextBottom(String text){
         bottomNarrativeText.setText(text);
-        narrativeTextFormat(bottomNarrativeText);
+        narrativeTextFormatTextWrapping(bottomNarrativeText);
     }
 
     private void narrativeTextStyle(){
@@ -650,16 +649,12 @@ public class AppGUI implements ViewDefaultValues
 
     //formats font size based on width and height in multiple lines
     public void narrativeTextFormatTextWrapping(Text narrativeText){
-        double height = narrativeText.getLayoutBounds().getHeight();
         narrativeText.setWrappingWidth(WORKING_PANE_WIDTH - 10);
         int fontSize = (int)WORKING_PANE_WIDTH / 20;
         narrativeText.setFont(Font.font(fontSize));
         while(narrativeText.getLayoutBounds().getHeight() > 40){
             fontSize -= 1;
             narrativeText.setFont(Font.font(fontSize));
-        }
-        if(height == narrativeText.getLayoutBounds().getHeight()){
-            userInformationAlert("Narrative text", "Wrapping the text will decrease the font size. Text preserved in single line.");
         }
     }
     //END NARRATIVE TEXT METHODS

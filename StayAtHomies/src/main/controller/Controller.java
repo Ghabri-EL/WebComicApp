@@ -249,7 +249,7 @@ public class Controller {
        String text = view.addNarrativeTextBottom();
        if(text != null){
            NarrativeText narrativeText = new NarrativeText(text);
-           comixApp.setNarrativeTextTop(narrativeText);
+           comixApp.setNarrativeTextBottom(narrativeText);
            unsavedChanges();
        }
    }

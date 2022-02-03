@@ -142,13 +142,3 @@ you browse the. Clicking on File -> Characters Directory lets you choose a defau
 Niall McGurk:
 Gabriel Gherasim: For this sprint I worked on and improved the 'change panel position' feature; testing, debugging and fixing bugs. Improved logger formatting and logfile readability. Improved loading and creating xml features. Helped create the 'add closing panel' feature. Created button icons and worked with my team to improve the ui design. Refactored parts of code. Worked on narrative text and bubble text auto font resizing feature.
 Daiana Morjolic: implemented Comic Credits button, title and credits prompts from sprint 7 feedback, new information for help page added.
-
-=== COMPLAINTS ===
-
-I am writing in regards to our team contribution throughout the project , specifically about a team member Ryan Daly that has done no
-work since the start of the team project . We have given Ryan many chances throughout the past few weeks to do some work or contribute in
-discussions regarding each weeks sprint and he has done nothing . More so he has slowed us down due to taking on tasks and then disappearing
-for days with no work done or letting us know he has done nothing . Due to this it was harder for us as a team to complete each weeks sprint
-and go above and beyond when it comes to adding new functionalities to our application or fixing all bugs in time in between just 3 people .
-And for these reasons me and my teammates , Niall McGurk and Gabriel Gherasim , feel these complaints and challenges should be taken in
-consideration when awarding our grades .
