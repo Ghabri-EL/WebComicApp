@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<comic>
+    <title>The tale of the homies!!</title>
+    <panels>
+        <panel id="0">
+            <above>
+                <content>Auric Goldfinger had insisted on daily briefings.</content>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>listening</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>keep me in the loop please</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>saluting</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>I'll keep you up to date</content>
+                </balloon>
+            </right>
+            <below>
+                <content>So at first, James reported everything to Auric.</content>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="1">
+            <above>
+                <content>But Auric used James to get what he wanted</content>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>confused</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>are you taking advantage of me?</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>sneaky</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>you have been very useful to me.</content>
+                </balloon>
+            </right>
+            <below>
+                <content/>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="2">
+            <above>
+                <content>Then James kept Dr. Julius No under close observation</content>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>monitoring</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="thought">
+                    <content>I am going to report everything I see</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffff00ff</skin>
+                    <hair>0x000000ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>unaware</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="thought">
+                    <content>why do I feel I am being watched?</content>
+                </balloon>
+            </right>
+            <below>
+                <content/>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="3">
+            <above>
+                <content>So James interacted with Julius socially</content>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>handshaking</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>we have a lot going on</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffff00ff</skin>
+                    <hair>0x000000ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>handshaking</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>we should hang out more</content>
+                </balloon>
+            </right>
+            <below>
+                <content/>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="4">
+            <above>
+                <content>Well, Julius shared intimate stories with James</content>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffff00ff</skin>
+                    <hair>0x000000ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>speaking</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>just wait until I tell you</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>speaking</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>what’s the story with you?</content>
+                </balloon>
+            </right>
+            <below>
+                <content/>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="5">
+            <above>
+                <content/>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>listening</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>well did you dig up anything?</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>gossipy</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>prick up your ears for this</content>
+                </balloon>
+            </right>
+            <below>
+                <content>Then James became a stool pigeon for Auric.</content>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="6">
+            <above>
+                <content/>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>rewarding</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>you deserve a big bonus for what you've done</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>joy</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>I appreciate that</content>
+                </balloon>
+            </right>
+            <below>
+                <content>So Auric rewarded James for devising evil schemes so effectively.</content>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="7">
+            <above>
+                <content/>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>confident</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>will you attest to my good character?</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>supporting</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>you can count on me</content>
+                </balloon>
+            </right>
+            <below>
+                <content>Well, James testified for Auric, saying he'd been with him in a health farm, cheating at golf.</content>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="8">
+            <above>
+                <content/>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>worried</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>I promise to tell the truth and nothing but the truth</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>interrogating</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>where were you on the day in question?</content>
+                </balloon>
+            </right>
+            <below>
+                <content>So Auric cross examined James in a tense face-off.</content>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="9">
+            <above>
+                <content>But resourceful James lied to Auric about his true intentions when shagging spies</content>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>deceptive</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>watch me lie to this guy</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>confused</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>I don't know what to believe.</content>
+                </balloon>
+            </right>
+            <below>
+                <content/>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="10">
+            <above>
+                <content>So Auric consulted with Ernst Stavro Blofeld on important matters</content>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>speaking</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>I need your opinion on something</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>listening</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>so what is the problem?</content>
+                </balloon>
+            </right>
+            <below>
+                <content/>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="11">
+            <above>
+                <content>Then Ernst became a stool pigeon for Auric</content>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>gossipy</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>prick up your ears for this</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>listening</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>do you have any good gossip for me?</content>
+                </balloon>
+            </right>
+            <below>
+                <content/>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="12">
+            <above>
+                <content/>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>accusing</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>you will pay for your crimes</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>suspicious</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>you are surely over reacting</content>
+                </balloon>
+            </right>
+            <below>
+                <content>After this, Auric accused James of bad faith when foiling the schemes of evil villains.</content>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="13">
+            <above>
+                <content>But James taunted Auric about his failure at cheating at golf</content>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>laughing</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>you have disgraced yourself again</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>defiant</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>look who's talking.</content>
+                </balloon>
+            </right>
+            <below>
+                <content/>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="14">
+            <above>
+                <content/>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>interrogating</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>you will tell me everything. Eventually</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>defensive</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>I will tell you nothing</content>
+                </balloon>
+            </right>
+            <below>
+                <content>So cruel Auric interrogated James about his life foiling the schemes of evil villains.</content>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="15">
+            <above>
+                <content/>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>interviewing</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>can you please answer some questions?</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>thinking</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>OK. Ask away</content>
+                </balloon>
+            </right>
+            <below>
+                <content>Well, James answered all of Auric's questions about foiling the schemes of evil villains.</content>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="16">
+            <above>
+                <content/>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>pleading</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>there's something I need to get off my chest</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>listening</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>ok make a clean breast of it</content>
+                </balloon>
+            </right>
+            <below>
+                <content>Then James confessed all his wrongdoings to Auric.</content>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+        <panel id="17">
+            <above>
+                <content>But in the end ruthless Auric betrayed all of James's confidences to his rival, Sir Hugo Drax.</content>
+                <wrap>nowrap</wrap>
+            </above>
+            <left>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffe8d8ff</skin>
+                    <hair>0xa52a2aff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>unaware</pose>
+                    <facing>right</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>you would never betray me would you?</content>
+                </balloon>
+            </left>
+            <right>
+                <figure>
+                    <appearance>male</appearance>
+                    <skin>0xffd700ff</skin>
+                    <hair>0xf0ff00ff</hair>
+                    <lips>0xff0000ff</lips>
+                    <pose>stabbing</pose>
+                    <facing>left</facing>
+                </figure>
+                <balloon status="speech">
+                    <content>you and I have different agendas</content>
+                </balloon>
+            </right>
+            <below>
+                <content>Betrayal is good for the wallet; thereafter James learned that it also kills the soul  thereafter ruthless Auric could never look in the mirror again; nor look James in the eye.</content>
+                <wrap>nowrap</wrap>
+            </below>
+        </panel>
+    </panels>
+    <credits>The end tale of the homies working on  project!</credits>
+</comic>
